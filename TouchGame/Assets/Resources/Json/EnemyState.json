@@ -1,0 +1,43 @@
+{
+  "dokuros": [
+    {
+      "id": "stage1",
+      "floor": [
+        {
+          "state": [],
+          "shot": [
+            {
+              "name": "DokuroShot_",
+              "shotSpeed": [],
+              "shotPos": [],
+              "shotTime": []
+            }
+          ],
+          "move": [
+            {
+              "name": "DokuroMove_",
+              "moveSpeed": []
+            }
+          ]
+        },
+        {
+          "state": [ "ev1", "ev1", "evP1" ],
+          "shot": [
+            {
+              "name": "DokuroShot_",
+              "shotSpeed": [ 5, 5, 10 ],
+              "shotPos": [ "RD", "LD", "RUL" ],
+              "shotTime": [ 5, 5, 3 ]
+            }
+          ],
+          "move": [
+            {
+              "name": "DokuroMove_",
+              "moveSpeed": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

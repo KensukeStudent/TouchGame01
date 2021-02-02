@@ -1,0 +1,31 @@
+{
+  "dokuros": [
+    {
+      "id": "stage1",//ステージ名
+      "floor": [
+        {
+          "state": [ "ev1", "ev1", "evP1" ], //ステータス nomalかev
+          //evの時書き方 ev+番号名(主にブロックなどの同一番号と一緒に使う)
+          //ev-->普通のイベント敵
+          //ev〇-->イベント〇番と紐づける敵
+          //evP〇-->イベント〇番のev〇の親となるもの
+
+          "shot": [ //Shot時の能力
+            {
+              "name": "DokuroShot_", //名前_+Floor番号
+              "shotSpeed": [], //ショットスピード
+              "shotPos": [ "RULD", "LD", "RUL" ], //ショットポジション-->R→U↑L←D↓
+              "shotTime": [] //ショット時間
+            }
+          ],
+          "move": [ //move時の能力
+            {
+              "name": "DokuroMove_", //名前_+Floor番号
+              "moveSpeed": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
