@@ -124,7 +124,7 @@ public class ScrollSelect : MonoBehaviour
     {
         //右に引っ張る
         //contentのポジションとnextPosを引いて0になったら処理します  (InstantはStageCount - maxInstant分使いまわします)
-        while ( -rt.anchoredPosition.x + nextPos > 0 && currentNo < stageCount - maxInstant)
+        while ( -rt.anchoredPosition.x + nextPos > 0 && currentNo < stageCount - 1)
         {
             //nextPosに値を足す(-100 + (-100))次のcontentのポジションを等しい値にするため
             nextPos += -rCanvas.sizeDelta.x;
@@ -138,6 +138,7 @@ public class ScrollSelect : MonoBehaviour
             stage.anchoredPosition = new Vector2(pos, 0);
 
             AutoScrollFalse();
+            Debug.Log("あ");
 
             currentNo++;
 
@@ -214,10 +215,10 @@ public class ScrollSelect : MonoBehaviour
     void AutoScroll()
     {
         //現在のcurrentNo + 1番目のリスト番号の位置に移動
-        if (moveR && rt.anchoredPosition.x >= sPos[currentNo + 1] && currentNo < stageCount - maxInstant)
+        if (moveR && -rt.anchoredPosition.x >= nextPos && currentNo < stageCount - 1)
         {
             var rPos = rt.anchoredPosition;
-            rPos.x += Time.deltaTime * 1000;
+            rPos.x -= Time.deltaTime * 1000;
             rt.anchoredPosition = rPos;
         }
         //現在のcurrentNo - 1番目のリスト番号の位置に移動
