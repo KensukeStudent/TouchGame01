@@ -27,7 +27,6 @@ public class ScrollSelect : MonoBehaviour
     /// ステージプレファブ
     /// </summary>
     [SerializeField] GameObject stagePre;
-    const float preSizeX = 600f / 2;
     /// <summary>
     /// 位置をリストに保存 
     /// </summary>
@@ -39,7 +38,16 @@ public class ScrollSelect : MonoBehaviour
     /// <summary>
     /// 次の番号になったら前の情報を+2番目の情報に書き換えます
     /// </summary>
-    float nextPos = 0;
+    float updatePos = 0;
+
+    /// <summary>
+    /// スクロールカウント
+    /// </summary>
+    int scrollNo = 0;
+    /// <summary>
+    /// スクロール位置
+    /// </summary>
+    List<float> rPos = new List<float>();
 
     private void Start()
     {
@@ -49,17 +57,32 @@ public class ScrollSelect : MonoBehaviour
         InitSizeContent();
         //stageSelectサイズの指定
         InstantStage(sm);
-        //ステージ位置を格納
-        AllRectPos();
+
+        for (int i = 0; i < stageCount; i++)
+        {
+            rPos.Add(rCanvas.sizeDelta.x * i);
+        }
     }
 
     private void Update()
     {
+        while (scrollNo < stageCount - 1 && -rt.anchoredPosition.x > rPos[scrollNo + 1])
+        {
+            scrollNo++;
+            AutoScrollFalse();
+        }
+
+        while (scrollNo > 0 && -rt.anchoredPosition.x < rPos[scrollNo - 1])
+        {
+            scrollNo--;
+            AutoScrollFalse();
+        }
+
         //ボタンを押したときにオートでスクロールします
         AutoScroll();
 
         //スクロールされたときに呼ばれます
-        ScrollStage();
+        StageUpdate();
     }
 
     /// <summary>
@@ -71,8 +94,8 @@ public class ScrollSelect : MonoBehaviour
         var size = rt.sizeDelta;
         size.x = rCanvas.sizeDelta.x * stageCount;
         rt.sizeDelta = size;
-        //画面サイズ分の位置をnextPosに設定します
-        nextPos = - rCanvas.sizeDelta.x;
+        //画面サイズ分の位置をupdatePosに設定します
+        updatePos = -rCanvas.sizeDelta.x;
     }
 
     /// <summary>
@@ -113,22 +136,25 @@ public class ScrollSelect : MonoBehaviour
     /// </summary>
     void InitStageInfo(StageManager sm,StageContent sc,int num)
     {
+        //Stage名を数字の値にします
         var stageNo = "Stage" + (num + 1);
+        //ステージ名、そのステージのスコア、背景、クリア済みかの情報を入れます
         sc.SetContent(stageNo, sm.ScoreMan[num], sm.BackGroundMan[num], sm.StageClearMan[num]);
     }
 
     /// <summary>
-    /// スクロールする時に呼ぶ処理
+    /// スクロールされ位置が一定なったら情報を更新します
     /// </summary>
-    void ScrollStage()
+    void StageUpdate()
     {
         //右に引っ張る
-        //contentのポジションとnextPosを引いて0になったら処理します  (InstantはStageCount - maxInstant分使いまわします)
-        while ( -rt.anchoredPosition.x + nextPos > 0 && currentNo < stageCount - 1)
+        //contentのポジションとnextPosを引いて0になったら処理します  (stageCount - maxInstant)分使いまわします
+        while ( -rt.anchoredPosition.x + updatePos > 0 && currentNo < stageCount - maxInstant)
         {
             //nextPosに値を足す(-100 + (-100))次のcontentのポジションを等しい値にするため
-            nextPos += -rCanvas.sizeDelta.x;
-            //一番上のlist.Valueを一番下に入れる
+            updatePos += -rCanvas.sizeDelta.x;
+
+            //一番上のlist.Value削除して一番下に入れ直します
             var stage = linkList.First.Value;
             linkList.RemoveFirst();
             linkList.AddLast(stage);
@@ -137,24 +163,21 @@ public class ScrollSelect : MonoBehaviour
             var pos = stage.anchoredPosition.x + rCanvas.sizeDelta.x * maxInstant;
             stage.anchoredPosition = new Vector2(pos, 0);
 
-            AutoScrollFalse();
-            Debug.Log("あ");
-
             currentNo++;
-
             //(maxInstant + currentNo)番目のリストを参照します
 
             //余分に処理してしまったものを非表示にします
-            //SetActive(stage.gameObject);
+            SetActiveR(stage.gameObject);
         }
 
         //左に引っ張る
-        //contentのポジションとnextPosを引いて右辺より大きくなったら処理します
-        while (-rt.anchoredPosition.x + nextPos < -rCanvas.sizeDelta.x && currentNo > 0)
+        //contentのポジションとupdatePosを引いて右辺より大きくなったら処理します
+        while (-rt.anchoredPosition.x + updatePos < -rCanvas.sizeDelta.x && currentNo > 0)
         {
             //nextPosに値を引く(-100 + 100) -contentのポジションを引き値を0にするため
-            nextPos += rCanvas.sizeDelta.x;
-            //一番下のlist.Valueを一番上に入れる
+            updatePos += rCanvas.sizeDelta.x;
+
+            //一番下のlist.Valueを削除して一番上に入れ直します
             var stage = linkList.Last.Value;
             linkList.RemoveLast();
             linkList.AddFirst(stage);
@@ -163,32 +186,34 @@ public class ScrollSelect : MonoBehaviour
             var pos = stage.anchoredPosition.x - rCanvas.sizeDelta.x * maxInstant;
             stage.anchoredPosition = new Vector2(pos, 0);
 
-            AutoScrollFalse();
-
             currentNo--;
 
             //currentNo番目のリストを参照します
 
             //余分に処理してしまったものを非表示にします
-            //SetActive(stage.gameObject);
+            SetActiveL(stage.gameObject);
         }
     }
 
     /// <summary>
-    /// currentNoが指定の値になれば表示、非表示させます
+    /// currentNoが指定の値になれば表示させます
     /// </summary>
-    void SetActive(GameObject obj)
+    void SetActiveR(GameObject obj)
     {
-        //生成される分 - すでに生成されているもの = 残り生成すべきものをtrueにします 
-        if(currentNo <= stageCount - maxInstant) obj.SetActive(true);
-        //生成分が終われば新たに生成されてしまったものをfalseにします
-        else obj.SetActive(false);
+        //stageCount - maxInstant = 使いまわします数以上ならfalse
+        if(currentNo > stageCount - maxInstant) obj.SetActive(false);
     }
 
     /// <summary>
-    /// 全てのステージ位置(X軸)を格納します
+    /// currentNoが指定の値になれば非表示させます
     /// </summary>
-    List<float> sPos = new List<float>();
+    void SetActiveL(GameObject obj)
+    {
+        //stageCount - maxInstant = currentNoが使いまわします数以上の値ならtrueにして戻します
+        if (currentNo >= stageCount - maxInstant) obj.SetActive(true);
+    }
+
+
     bool moveR;
     /// <summary>
     /// 右ボタンを押したときの処理
@@ -215,16 +240,18 @@ public class ScrollSelect : MonoBehaviour
     void AutoScroll()
     {
         //現在のcurrentNo + 1番目のリスト番号の位置に移動
-        if (moveR && -rt.anchoredPosition.x >= nextPos && currentNo < stageCount - 1)
+        if (moveR && scrollNo < stageCount - 1 && -rt.anchoredPosition.x < rPos[scrollNo + 1])
         {
             var rPos = rt.anchoredPosition;
             rPos.x -= Time.deltaTime * 1000;
             rt.anchoredPosition = rPos;
         }
         //現在のcurrentNo - 1番目のリスト番号の位置に移動
-        else if (moveL)
+        else if (moveL && scrollNo > 0 && -rt.anchoredPosition.x > rPos[scrollNo - 1])
         {
-
+            var rPos = rt.anchoredPosition;
+            rPos.x += Time.deltaTime * 1000;
+            rt.anchoredPosition = rPos;
         }
     }
 
@@ -232,17 +259,5 @@ public class ScrollSelect : MonoBehaviour
     {
         moveR = false;
         moveL = false;
-    }
-
-    /// <summary>
-    /// ステージのすべての位置を格納します
-    /// </summary>
-    void AllRectPos()
-    {
-        for (int i = 0; i < stageCount; i++)
-        {
-            var pos = rCanvas.sizeDelta.x / 2 + rCanvas.sizeDelta.x * i;
-            sPos.Add(pos);
-        }
     }
 }
