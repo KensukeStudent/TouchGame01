@@ -4,24 +4,30 @@ using UnityEngine;
 
 public class aaaa : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    List<GameObject> o = new List<GameObject>();
+    [SerializeField] GameObject a;
+    private void Start()
     {
-        A();
-        Debug.Log("ｚ");
-
+        for (int i = 0; i < 10; i++)
+        {
+            var go = Instantiate(a);
+            go.name = i.ToString();
+            o.Add(go);
+        }
     }
 
-    void A()
+
+    private void Update()
     {
-        var a = 1;
-        if (a == 1) return;
-        Debug.Log("1");
+        if (Input.GetMouseButtonDown(0))
+        {
+            for (int i = o.Count - 1; i > -1; i--)
+            {
+                var go = o[i];
+                Destroy(go);
+                o.Remove(go);
+            }
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

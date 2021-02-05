@@ -24,7 +24,13 @@ public class UIManager : MonoBehaviour
     /// true -> down,false -> up
     /// </summary>
     bool downOrUp = false;
+    /// <summary>
+    /// 鍵の取得数UIの最上位置
+    /// </summary>
     const float maxPos = 135f;
+    /// <summary>
+    /// 鍵の取得数UIの最低位置
+    /// </summary>
     const float minPos = -105f;
 
     /// <summary>
@@ -34,7 +40,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject catHand;
     AudioSource aud;
     [SerializeField] AudioClip catVoice;
-    bool catb = true;
+    bool clickWait = true;
     [SerializeField] GameObject textObj;
     string changeText = "We Love Cats";
 
@@ -47,16 +53,15 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
-        //if (!GameStart && Input.GetMouseButtonDown(0)) SetCatHand();
-        //else if (GameStart && !aud.isPlaying && catb)
-        //{
-        //    catb = false;
-        //    aud.clip = catVoice;
-        //    aud.Play();
-        //}
+        //クリックしたら音が鳴り遷移開始
+        if (!GameManager.Instance.GameStart && Input.GetMouseButtonDown(0) && clickWait)
+        {
+            //遷移準備
+            SetCatHand();
+        }
 
-         //if(GameManager.Instance.GameStart)
-        PanelMove();
+        //もしゲームスタートならUI鍵取得数を上下出来ます
+        if (GameManager.Instance.GameStart) PanelMove();
     }
 
     /// <summary>
@@ -64,12 +69,29 @@ public class UIManager : MonoBehaviour
     /// </summary>
     void SetCatHand()
     {
+        //猫の手を表示
         catHand.SetActive(true);
-        GameManager.Instance.SetGame(true);
+        //GameManager.Instance.SetGame(true);
+        //テキスト変更とアニメーションの停止
         var text = textObj.GetComponent<TMP_Text>();
         text.text = changeText;
         var tAnim = textObj.GetComponent<Animator>();
         tAnim.enabled = false;
+        //クリック待ちフラグの解除
+        clickWait = false;
+        var clip = aud.clip;
+        //現在のclipの長さ時間を待った後に処理開始
+        Invoke(nameof(SetCatVoice), clip.length);
+    }
+
+    /// <summary>
+    /// ボタンの音が終わったタイミングで猫の鳴き声を鳴かせます
+    /// </summary>
+    void SetCatVoice()
+    {
+        aud.clip = catVoice;
+        aud.Play();
+
     }
 
     /// <summary>

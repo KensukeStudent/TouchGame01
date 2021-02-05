@@ -115,7 +115,7 @@ public class FloorMoveObj : MonoBehaviour
                 break;
 
             case "L"://左か下
-                floor.Floors[stageH, nowFloor - 1].ActiveFloor();//左のフロアを表示
+                floor.Floors[stageH, nowFloor].ActiveFloor();//左のフロアを表示
                 floor.Floors[stageH, nowFloor].InActiveFloor();//右のフロアを非表示(今いたフロア)
                 break;
 

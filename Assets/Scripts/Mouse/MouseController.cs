@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// 現在のプレイヤーからマウス座標までの位置を描くクラス
@@ -14,7 +11,7 @@ public class MouseController : MonoBehaviour
     GameObject mouseToPoint;
     GameObject mousePad;
     /// <summary>
-    /// 直径1cmにするのにこの画像比では何倍する必要があるか求めます
+    /// 1マスが1cmなのでこの画像比では何倍する必要があるか求めます
     /// </summary>
     float length;
     
@@ -23,6 +20,7 @@ public class MouseController : MonoBehaviour
         mouseToPoint = GameObject.Find("CatArm");
         mousePad = GameObject.Find("CatPad");
         var s = mouseToPoint.GetComponent<SpriteRenderer>().size;
+        //1マスをこの画像では何倍するかを計算します
         length = 1 / s.y;
 
         FromPlayerToMouse();
@@ -45,6 +43,7 @@ public class MouseController : MonoBehaviour
 
         //マウスとオブジェクト分の長さにします
         var size = mouseToPoint.transform.localScale;
+        //正規化します
         size.y = Mathf.Sqrt(Mathf.Pow(pos.x - objPos.x, 2) + Mathf.Pow(pos.y - objPos.y, 2)) * length;
 
         mouseToPoint.transform.localScale = size;
