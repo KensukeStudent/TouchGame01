@@ -36,7 +36,7 @@ public class FeedInOut : MonoBehaviour
 
     private void Update()
     {
-        UpDown(SceneState.selectEnd);
+        ReturnUpDown(SceneState.selectEnd);
     }
 
     #region ステートに応じての遷移
@@ -95,7 +95,7 @@ public class FeedInOut : MonoBehaviour
         }
         //遷移処理
         //終了後selectEndへ変更
-        UpDown(SceneState.selectEnd);
+        if(Flag) UpDown(SceneState.selectEnd);
     }
 
     /// <summary>
@@ -103,19 +103,28 @@ public class FeedInOut : MonoBehaviour
     /// </summary>
     void SelectEnd()
     {
-        if (Input.GetMouseButtonDown(0) && !Flag) Flag = true;
-        //数秒後Scene変更
+        //クリック
+        if (Input.GetMouseButtonDown(0) && !Flag)
+        {
+            //Scene遷移
+
+            //遷移フラグ立ち
+            Flag = true;
+            //タイル削除
+            UITest.Instant.ClearList();
+            //タイルの張り直し
+            UITest.Instant.SetSizeWHCount(2);
+        }
 
         //開ける遷移開始
-        ReturnUpDown(SceneState.touch);
+        if (Flag) ReturnUpDown(SceneState.touch);
+
         //終了後クリック可能操作
         //->touchへ
         if (UITest.Instant.State == SceneState.touch)
         {
-            //タイルの削除
-            UITest.Instant.ClearList();
-            //クリック後遷移開始(左右から猫の手)
-            UITest.Instant.SetSizeWHCount(1);
+            //クリック可能フラグ立ち
+
         }
     }
 
@@ -124,16 +133,35 @@ public class FeedInOut : MonoBehaviour
     /// </summary>
     void Touch()
     {
-        RightLeft(SceneState.touchEnd);
+        //タイムラグもあるのでそこを後で見とけ
+        //クリック可能モードでクリックしたら処理
+        if (Input.GetMouseButtonDown(0) && !Flag)
+        {
+            //遷移フラグ立ち
+            Flag = true;
+            //タイル削除
+            UITest.Instant.ClearList();
+
+            //タイルを貼ります
+            UITest.Instant.SetSizeWHCount(1);
+        }
+
+        //クリック後遷移開始(左右から猫の手)
+        if(Flag) RightLeft(SceneState.touchEnd);
+
         //終了後touchEnd
-        if (UITest.Instant.State == SceneState.touch)
+        if (UITest.Instant.State == SceneState.touchEnd)
         {
             //ゲーム画面に移行
 
-            //新しいタイルを貼りなおす
-
-            //猫の手の遷移をすべて消す
+            //タイルの削除
             UITest.Instant.ClearList();
+
+            //新しいタイルを貼りなおす
+            //タイルを貼ります
+            UITest.Instant.SetSizeWHCount(2);
+            
+            //幕が開く ---->touchEndで
         }
     }
 
@@ -225,16 +253,16 @@ public class FeedInOut : MonoBehaviour
         switch (direction)
         {
             case "DOWN":
-                if (rt.anchoredPosition.y <= -goalRectY)
-                    pos.y -= Time.deltaTime * speedY;
+                if (rt.anchoredPosition.y <= goalRectY)
+                    pos.y += Time.deltaTime * speedY;
                 else
                     Flag = false;
 
                 break;
 
             case "UP":
-                if (rt.anchoredPosition.y >= -goalRectY)
-                    pos.y -= Time.deltaTime * speedY;
+                if (rt.anchoredPosition.y >= goalRectY)
+                    pos.y += Time.deltaTime * speedY;
                 else
                     Flag = false;
 
@@ -243,7 +271,7 @@ public class FeedInOut : MonoBehaviour
 
         if (!Flag)
         {
-            pos.y = -goalRectY;
+            pos.y = goalRectY;
             UITest.Instant.StateChange(state);
         }
         rt.anchoredPosition = pos;

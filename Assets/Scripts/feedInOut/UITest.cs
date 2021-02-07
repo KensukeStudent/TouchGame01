@@ -82,11 +82,11 @@ public class UITest : MonoBehaviour
         calcList = new Calc[]
         {
             UpDown,
-            LeftAndRight
+            LeftAndRight,
+            Center
         };
 
-        SetSizeWHCount(0);
-
+        SetSizeWHCount(2);
     }
 
     #region 遷移をさせるための関数
@@ -159,21 +159,8 @@ public class UITest : MonoBehaviour
     }
 
     /// <summary>
-    /// 中心にタイルを貼ります
-    /// </summary>
-    void Center()
-    {
-
-    }
-
-    /// <summary>
     /// サイズを指定の大きさに、目的位置を設定
     /// </summary>
-    /// <param name="rt"></param>
-    /// <param name="initPosY"></param>
-    /// <param name="wCounter"></param>
-    /// <param name="tileSizeW"></param>
-    /// <param name="goalRtY"></param>
     void TileInfo(RectTransform rt, float initPosY, int wCounter, float tileSizeW, out float goalRtY)
     {
         //生成したtileRectの位置座標を取得
@@ -181,12 +168,72 @@ public class UITest : MonoBehaviour
 
         //サイズを設定します
         var size = rt.sizeDelta;
+        //横の長さを横に出せる分の数でサイズを取得します ※---->canvas.sizeDlta.xでも同じこと
         size.x = tileSizeW * wCounter;
         size.y = canvas.sizeDelta.y / 2;
         rt.sizeDelta = size;
 
         //ゴール位置、画面中心の座標
         goalRtY = rt.sizeDelta.y / 2;
+    }
+
+    /// <summary>
+    /// 中心にタイルを貼ります
+    /// </summary>
+    void Center(int wCounter, int hCounter, float tileSizeW, float tileSizeH)
+    {
+        //アンカーの位置を配列にしまいます
+        Vector2[] anchorPos = { upCenterAnchor, bottomCenterAncor };
+
+        for (int i = 0; i < 2; i++)
+        {
+            GameObject tile = null;
+            RectTransform rt = null;
+            FeedInOut feed = null;
+            var initPosY = 0.0f;//y軸の初期位置
+            var goalRtY = 0.0f; ;//最終到着地点
+            var speedY = 0.0f; ;//到着地点までの速度
+
+            var direct = "";
+
+            //アンカーポジションに応じて生成位置を指定します
+            InitInstant(out tile, out rt, out feed, anchorPos[i]);
+
+            rt.sizeDelta = new Vector2(canvas.sizeDelta.x, canvas.sizeDelta.y / 2);
+
+            switch (i)
+            {
+                //上の中心
+                case 0:
+                    initPosY = -canvas.sizeDelta.y / 2 + rt.sizeDelta.y / 2;
+                    direct = "DOWN";
+                    break;
+
+                //下の中心
+                case 1:
+                    initPosY = canvas.sizeDelta.y / 2 - rt.sizeDelta.y / 2;
+                    direct = "UP";
+                    break;
+            }
+            //中心にタイルを生成します
+            CenterSizePos(rt, initPosY, out goalRtY);
+            //速度を「はじき」で計算 距離 / second秒で移動する速さ
+            speedY = (goalRtY - rt.anchoredPosition.y) / second;
+            //情報をタイルへ伝えます
+            feed.SetPosKey(goalRtY, speedY, direct);
+        }
+    }
+
+    /// <summary>
+    /// 中心から生成する時に呼ぶ処理
+    /// </summary>
+    void CenterSizePos(RectTransform rt,float initPosY,out float goalRtY)
+    {
+        //位置指定
+        rt.anchoredPosition = new Vector2(0, initPosY);
+
+        //ゴール位置、上下画面外
+        goalRtY = -rt.anchoredPosition.y;
     }
 
     /// <summary>
@@ -264,7 +311,6 @@ public class UITest : MonoBehaviour
         //このキャンバス内に出せる数を切り上げ計算
         var wCounter = Mathf.CeilToInt(canvasSizeX / tileSizeW);
         var hCounter = Mathf.CeilToInt(canvasSizeY / tileSizeH);
-
         //パターンを入れます
         calc = calcList[pattern];
 
