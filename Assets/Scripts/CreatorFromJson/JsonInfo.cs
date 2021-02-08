@@ -31,7 +31,9 @@ public class JsonInfo
         {
             using (StreamReader sr = new StreamReader(Application.dataPath + "/Resources/Json/"+ fileName + ".json"))
             {
+                //ファイルの読み込み
                 string json = sr.ReadToEnd();
+                //読み込んだデータをオブジェクト化します
                 data = JsonMapper.ToObject<T>(json);
             }
         }

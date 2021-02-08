@@ -5,7 +5,7 @@
 /// </summary>
 public class FeedInOut : MonoBehaviour
 {
-    public bool Flag { set; get; } = false;
+    public bool Flag { set; get; } = true;
 
     //大きいサイズへ
     RectTransform rt;
@@ -24,148 +24,35 @@ public class FeedInOut : MonoBehaviour
     /// </summary>
     float framePos;
 
+    /// <summary>
+    /// 遷移の関数を格納
+    /// </summary>
+    delegate void SceneTransiton();
+    SceneTransiton[] sts;
+    SceneTransiton st;
+
     private void Start()
     {
         rt = GetComponent<RectTransform>();
         framePos = Time.deltaTime * speedX;
         ChildPos();
 
-        //test
-        Flag = true;
+        sts = new SceneTransiton[]
+        {
+            UpDown,
+            ReturnUpDown,
+            RightLeft
+        };
+
+        //Patternの遷移動作を入れます
+        st = sts[UITest.Instant.Pattern];
     }
 
     private void Update()
     {
-        ReturnUpDown(SceneState.selectEnd);
+        //Patternの遷移動作をさせます
+        if(Flag) st();
     }
-
-    #region ステートに応じての遷移
-
-    /// <summary>
-    /// 遷移を状態に応じて変えます
-    /// </summary>
-    void SceneTransition()
-    {
-        switch (UITest.Instant.State)
-        {
-            //ステージ選択(Flagがtrueになった時に処理)
-            case SceneState.stageSelect:
-                
-                SelectMode();
-                
-                break;
-
-            //遷移終了
-            case SceneState.selectEnd:
-                
-                SelectEnd();
-                
-                break;
-
-            //クリック可能モード中
-            case SceneState.touch:
-                
-                Touch();
-                
-                break;
-
-            //遷移終了
-            case SceneState.touchEnd:
-                //遷移開始(幕が開ける)
-                //終了後GameModeに変更
-                break;
-
-            //プレイヤーの方でステートは変更します
-            case SceneState.gameOverMode:
-
-                break;
-        }
-    }
-
-    /// <summary>
-    /// 状態stageSelect時の処理
-    /// </summary>
-    void SelectMode()
-    {
-        if (Input.GetMouseButtonDown(0) && !Flag)
-        {
-            Flag = true;
-            //tileの作成
-            UITest.Instant.SetSizeWHCount(0);
-        }
-        //遷移処理
-        //終了後selectEndへ変更
-        if(Flag) UpDown(SceneState.selectEnd);
-    }
-
-    /// <summary>
-    /// 状態selectEnd時の処理
-    /// </summary>
-    void SelectEnd()
-    {
-        //クリック
-        if (Input.GetMouseButtonDown(0) && !Flag)
-        {
-            //Scene遷移
-
-            //遷移フラグ立ち
-            Flag = true;
-            //タイル削除
-            UITest.Instant.ClearList();
-            //タイルの張り直し
-            UITest.Instant.SetSizeWHCount(2);
-        }
-
-        //開ける遷移開始
-        if (Flag) ReturnUpDown(SceneState.touch);
-
-        //終了後クリック可能操作
-        //->touchへ
-        if (UITest.Instant.State == SceneState.touch)
-        {
-            //クリック可能フラグ立ち
-
-        }
-    }
-
-    /// <summary>
-    /// 状態touch時の処理
-    /// </summary>
-    void Touch()
-    {
-        //タイムラグもあるのでそこを後で見とけ
-        //クリック可能モードでクリックしたら処理
-        if (Input.GetMouseButtonDown(0) && !Flag)
-        {
-            //遷移フラグ立ち
-            Flag = true;
-            //タイル削除
-            UITest.Instant.ClearList();
-
-            //タイルを貼ります
-            UITest.Instant.SetSizeWHCount(1);
-        }
-
-        //クリック後遷移開始(左右から猫の手)
-        if(Flag) RightLeft(SceneState.touchEnd);
-
-        //終了後touchEnd
-        if (UITest.Instant.State == SceneState.touchEnd)
-        {
-            //ゲーム画面に移行
-
-            //タイルの削除
-            UITest.Instant.ClearList();
-
-            //新しいタイルを貼りなおす
-            //タイルを貼ります
-            UITest.Instant.SetSizeWHCount(2);
-            
-            //幕が開く ---->touchEndで
-        }
-    }
-
-    #endregion
 
     #region 遷移中のアニメーションのための関数
 
@@ -213,7 +100,7 @@ public class FeedInOut : MonoBehaviour
     /// <summary>
     /// 幕のようなアニメーション
     /// </summary>
-    void UpDown(SceneState state)
+    void UpDown()
     {
         var pos = rt.anchoredPosition;
         switch (direction)
@@ -238,7 +125,8 @@ public class FeedInOut : MonoBehaviour
         if (!Flag)
         {
             pos.y = goalRectY;
-            UITest.Instant.StateChange(state);
+            //全てのtileが終了していれば、state変更フラグを立てます
+            UITest.Instant.FinishScene();
         }
 
         rt.anchoredPosition = pos;
@@ -247,7 +135,7 @@ public class FeedInOut : MonoBehaviour
     /// <summary>
     /// 幕が上がる
     /// </summary>
-    void ReturnUpDown(SceneState state)
+    void ReturnUpDown()
     {
         var pos = rt.anchoredPosition;
         switch (direction)
@@ -272,11 +160,11 @@ public class FeedInOut : MonoBehaviour
         if (!Flag)
         {
             pos.y = goalRectY;
-            UITest.Instant.StateChange(state);
+            //全てのtileが終了していれば、state変更フラグを立てます
+            UITest.Instant.FinishScene();
         }
         rt.anchoredPosition = pos;
     }
-
 
     /// <summary>
     /// 目的位置とX軸の移動速度を取得
@@ -293,7 +181,7 @@ public class FeedInOut : MonoBehaviour
     /// <summary>
     /// 右から左へ、左から右へ
     /// </summary>
-    void RightLeft(SceneState state)
+    void RightLeft()
     {
         var pos = rt.anchoredPosition;
         switch (direction)
@@ -313,7 +201,11 @@ public class FeedInOut : MonoBehaviour
                 break;
         }
 
-        if (!Flag) UITest.Instant.StateChange(state);
+        if (!Flag)
+        {
+            //全てのtileが終了していれば、state変更フラグを立てます
+            UITest.Instant.FinishScene();
+        }
 
         rt.anchoredPosition = pos;
     }

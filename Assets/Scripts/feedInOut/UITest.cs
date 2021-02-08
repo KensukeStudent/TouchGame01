@@ -20,7 +20,7 @@ public class UITest : MonoBehaviour
     /// <summary>
     /// 遷移のステート
     /// </summary>
-    public SceneState State { set; get; } = SceneState.stageSelect;
+    SceneState state = SceneState.stageSelect;
     /// <summary>
     /// Scene遷移クラス
     /// </summary>
@@ -59,7 +59,17 @@ public class UITest : MonoBehaviour
     /// <summary>
     /// 生成したタイルを保存
     /// </summary>
-    List<GameObject> tileList = new List<GameObject>();
+    List<FeedInOut> tileList = new List<FeedInOut>();
+
+    /// <summary>
+    /// ステートの変更
+    /// </summary>
+    bool stateFlag = false;
+
+    /// <summary>
+    /// 遷移のパターン
+    /// </summary>
+    public int Pattern { private set; get; } = 0;
 
     private void Awake()
     {
@@ -82,11 +92,14 @@ public class UITest : MonoBehaviour
         calcList = new Calc[]
         {
             UpDown,
-            LeftAndRight,
-            Center
+            Center,
+            RightAndLeft
         };
+    }
 
-        SetSizeWHCount(2);
+    private void Update()
+    {
+        SceneTransition();
     }
 
     #region 遷移をさせるための関数
@@ -99,10 +112,15 @@ public class UITest : MonoBehaviour
         //綺麗に並べる
         tile = Instantiate(tilePrefab);
         rt = tile.transform as RectTransform;
+        //アンカーを指定します
         rt.anchorMin = anchor;
         rt.anchorMax = anchor;
+        //canvasを親指定します
         tile.transform.SetParent(canvas);
+        
         feed = tile.GetComponent<FeedInOut>();
+        //生成するtileを格納します
+        tileList.Add(feed);
     }
 
     /// <summary>
@@ -239,7 +257,7 @@ public class UITest : MonoBehaviour
     /// <summary>
     /// 左右に生成
     /// </summary>
-    void LeftAndRight(int wCounter, int hCounter, float tileSizeW, float tileSizeH)
+    void RightAndLeft(int wCounter, int hCounter, float tileSizeW, float tileSizeH)
     {
         for (int i = 0; i < hCounter * 2; i++)
         {
@@ -319,15 +337,6 @@ public class UITest : MonoBehaviour
     }
 
     /// <summary>
-    /// 遷移の変更
-    /// </summary>
-    /// <param name="state">変更するステートを入れます</param>
-    public void StateChange(SceneState state)
-    {
-        State = state;
-    }
-
-    /// <summary>
     ///格納したタイルの削除 
     /// </summary>
     public void ClearList()
@@ -336,9 +345,173 @@ public class UITest : MonoBehaviour
         for (int i = tileList.Count - 1; i > -1; i--)
         {
             var obj = tileList[i];
-            Destroy(obj);
+            Destroy(obj.gameObject);
             tileList.Remove(obj);
         }
+    }
+
+    #endregion
+
+    #region ステートに応じての遷移
+
+    /// <summary>
+    /// 遷移を状態に応じて変えます
+    /// </summary>
+    void SceneTransition()
+    {
+        switch (state)
+        {
+            //ステージ選択(stateFlagがtrueになった時に処理)
+            case SceneState.stageSelect:
+
+                SelectMode();
+
+                break;
+
+            //遷移終了
+            case SceneState.selectEnd:
+
+                SelectEnd();
+
+                break;
+
+            //クリック可能モード中
+            case SceneState.touch:
+
+                Touch();
+
+                break;
+
+            //遷移終了
+            case SceneState.touchEnd:
+                //終了後GameModeに変更
+                TouchEnd();
+                break;
+
+            //プレイヤーの方でステートは変更します
+            case SceneState.gameOverMode:
+
+                break;
+        }
+    }
+
+    /// <summary>
+    /// 状態stageSelect時の処理
+    /// </summary>
+    void SelectMode()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            //tileの作成
+            Pattern = 0;
+            SetSizeWHCount(Pattern);
+        }
+
+        //遷移処理
+        //終了後selectEndへ変更
+        if (stateFlag)
+        {
+            state = SceneState.selectEnd;
+            stateFlag = false;
+        }
+    }
+
+    /// <summary>
+    /// 状態selectEnd時の処理
+    /// </summary>
+    void SelectEnd()
+    {
+        //クリック
+        if (Input.GetMouseButtonDown(0) && !stateFlag)
+        {
+            //Scene遷移
+
+            //タイル削除
+            ClearList();
+
+            //タイルの張り直し -->//開ける遷移開始
+            Pattern = 1;
+            SetSizeWHCount(Pattern);
+        }
+
+        //終了後クリック可能操作
+        //->touchへ
+        if (stateFlag)
+        {
+            //クリック可能フラグ立ち
+
+            state = SceneState.touch;
+            stateFlag = false;
+        }
+    }
+
+    /// <summary>
+    /// 状態touch時の処理
+    /// </summary>
+    void Touch()
+    {
+        //タイムラグもあるのでそこを後で見とけ
+        //クリック可能モードでクリックしたら処理
+        if (Input.GetMouseButtonDown(0) && !stateFlag)
+        {
+            //タイル削除
+            ClearList();
+
+            //タイルを貼ります --->クリック後遷移開始(左右から猫の手)
+            Pattern = 2;
+            SetSizeWHCount(Pattern);
+        }
+
+        //終了後touchEnd
+        if (stateFlag)
+        {
+            state = SceneState.touchEnd;
+
+            stateFlag = false;
+        }
+    }
+
+    /// <summary>
+    /// 状態TouchEnd時の処理
+    /// </summary>
+    void TouchEnd()
+    {
+        if (Input.GetMouseButtonDown(0) && !stateFlag)
+        {
+            //ゲーム画面に移行
+
+            //タイルの削除
+            Instant.ClearList();
+
+            //新しいタイルを貼りなおす
+            //タイルを貼ります
+            Pattern = 1;
+            SetSizeWHCount(Pattern);
+        }
+
+        if (stateFlag)
+        {
+            state = SceneState.gameMode;
+            stateFlag = false;
+        }
+    }
+
+    /// <summary>
+    /// タイルの遷移が終了したら呼ぶ関数
+    /// </summary>
+    /// <returns></returns>
+    public void FinishScene()
+    {
+        //tileのフラグ完了数
+        var result = 0;
+
+        for (int i = 0; i < tileList.Count; i++)
+        {
+            if (!tileList[i].Flag) result++;
+        }
+
+        //全てのタイルがsceneを完了していればステートを変更します
+        if (result == tileList.Count) stateFlag = true;
     }
 
     #endregion
