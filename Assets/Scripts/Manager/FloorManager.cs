@@ -97,7 +97,7 @@ public class FloorManager : MonoBehaviour
     /// <summary>
     /// プレイヤーのいるフロア番号を獲得
     /// </summary>
-    /// <param name="fn"></param>
+    /// <param name="fn">文字型の数字</param>
     public void SetPlayerFloor(string fn)
     {
         playerFloor = int.Parse(fn);

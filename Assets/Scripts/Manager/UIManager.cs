@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using TMPro;
 using UnityEngine;
-using TMPro;
 #pragma warning disable 649
 
 public class UIManager : MonoBehaviour
@@ -40,7 +38,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject catHand;
     AudioSource aud;
     [SerializeField] AudioClip catVoice;
-    bool clickWait = true;
     [SerializeField] GameObject textObj;
     string changeText = "We Love Cats";
 
@@ -54,7 +51,7 @@ public class UIManager : MonoBehaviour
     private void Update()
     {
         //クリックしたら音が鳴り遷移開始
-        if (!GameManager.Instance.GameStart && Input.GetMouseButtonDown(0) && clickWait)
+        if (!GameManager.Instance.GameStart && Input.GetMouseButtonDown(0) && UITest.Instance.TouchClick)
         {
             //遷移準備
             SetCatHand();
@@ -71,14 +68,12 @@ public class UIManager : MonoBehaviour
     {
         //猫の手を表示
         catHand.SetActive(true);
-        //GameManager.Instance.SetGame(true);
+        GameManager.Instance.SetGame(true);
         //テキスト変更とアニメーションの停止
         var text = textObj.GetComponent<TMP_Text>();
         text.text = changeText;
         var tAnim = textObj.GetComponent<Animator>();
         tAnim.enabled = false;
-        //クリック待ちフラグの解除
-        clickWait = false;
         var clip = aud.clip;
         //現在のclipの長さ時間を待った後に処理開始
         Invoke(nameof(SetCatVoice), clip.length);
@@ -92,6 +87,8 @@ public class UIManager : MonoBehaviour
         aud.clip = catVoice;
         aud.Play();
 
+        //ステージのクリックイベントがすべて終わったら遷移を開始します
+        UITest.Instance.TimeST(0);
     }
 
     /// <summary>

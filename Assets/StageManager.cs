@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEngine.UI;
+using UnityEngine;
 
 /// <summary>
 /// 各ステージを管理するクラス
@@ -54,5 +55,34 @@ public class StageManager : MonoBehaviour
         for (int c = 0; c < ScoreMan.Length; c++) ScoreMan[c] = initClear;
         //ステージクリアを初期値で設定します
         for (int s = 0; s < StageClearMan.Length; s++) StageClearMan[s] = false;
+    }
+
+    /// <summary>
+    /// 各ステージに情報を生成時に入れます
+    /// </summary>
+    public void InitStageInfo(StageContent sc, int num)
+    {
+        //Stage名を数字の値にします
+        var stageNo = "Stage" + (num + 1);
+        //ステージ名、そのステージのスコア、背景、クリア済みかの情報を入れます
+        sc.SetContent(stageNo, ScoreMan[num], BackGroundMan[num], StageClearMan[num]);
+
+        //Buttonスクリプトを持っている子要素にアクセスします
+        var b = sc.transform.Find("Button").GetComponent<Button>();
+        b.onClick.AddListener(() => StageScene(num));
+    }
+
+    /// <summary>
+    /// 各ステージの要素を割り当てます
+    /// </summary>
+    void StageScene(int stageNo)
+    {
+        //生成するステージを指定します
+        GameManager.Instance.StageSet(stageNo);
+
+        //スクールやスクロールボタンフラグを消して操作できなくします
+
+        //シーン遷移を開始します
+        UITest.Instance.TimeST(0);
     }
 }

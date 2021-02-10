@@ -1,4 +1,5 @@
 ﻿ using UnityEngine;
+ using UnityEngine.SceneManagement;
 
 /// <summary>
 /// ゲームを管理するクラス
@@ -47,4 +48,29 @@ public class GameManager : MonoBehaviour
     {
         StageNo = no;
     }
+
+    #region TitleButton
+
+    public void StartButton()
+    {
+        //セーブデータを初期化
+        SceneManager.LoadScene("StageSelect");       
+    }
+
+    public void ContinueButton()
+    {
+        //セーブデータを参照しつづきから始めます
+
+    }
+
+    public void EndButton()
+    {
+        //ゲームを終わりにします
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else 
+        Application.Quit();
+#endif
+    }
+    #endregion
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public enum SceneState
@@ -9,6 +10,7 @@ public enum SceneState
     touchEnd,//遷移終了後ゲーム開始 ->gameMode
     gameMode,//ゲームクリアしプレイヤーにアニメーション終了後gameOverMode
     gameOverMode,//閉じる遷移を開始,終了後->stageSelect
+    reState,//元のステートに戻します
 }
 
 
@@ -24,7 +26,7 @@ public class UITest : MonoBehaviour
     /// <summary>
     /// Scene遷移クラス
     /// </summary>
-    public static UITest Instant { private set; get; } 
+    public static UITest Instance { private set; get; } 
     /// <summary>
     /// 親canvasのRect
     /// </summary>
@@ -71,16 +73,26 @@ public class UITest : MonoBehaviour
     /// </summary>
     public int Pattern { private set; get; } = 0;
 
+    /// <summary>
+    /// GameStart前に遷移中にクリック不可能にするためのフラグ
+    /// </summary>
+    public bool TouchClick { private set; get; } = false;
+
+    /// <summary>
+    /// 遷移をオートで始めるタイムラグ
+    /// </summary>
+    const float tLag = 1.0f;
+
     private void Awake()
     {
         //Sceneをまたいでもこのオブジェクトを引き継ぎます
-        if (Instant)
+        if (Instance)
         {
             Destroy(gameObject);
         }
         else
         {
-            Instant = this;
+            Instance = this;
         }
 
         DontDestroyOnLoad(this);
@@ -95,7 +107,6 @@ public class UITest : MonoBehaviour
             Center,
             RightAndLeft
         };
-        //SceneTransition();
     }
 
     #region 遷移をさせるための関数
@@ -351,6 +362,15 @@ public class UITest : MonoBehaviour
     #region ステートに応じての遷移
 
     /// <summary>
+    /// 時間指定で遷移を始めます
+    /// </summary>
+    /// <param name="time">遷移を始める時間</param>
+    public void TimeST(float time)
+    {
+        Invoke(nameof(SceneTransition), time);
+    }
+
+    /// <summary>
     /// 遷移を状態に応じて変えます
     /// </summary>
     void SceneTransition()
@@ -386,7 +406,14 @@ public class UITest : MonoBehaviour
 
             //プレイヤーの方でステートは変更します
             case SceneState.gameOverMode:
+                //幕が閉じる----->その後reStartへ
+                GameOver();
+                break;
 
+            //最初のステートに戻します
+            case SceneState.reState:
+                //幕が開く---->その後stageSelectへ
+                ReStart();
                 break;
         }
     }
@@ -397,13 +424,13 @@ public class UITest : MonoBehaviour
     /// </summary>
     void SelectMode()
     {
-        //tileの作成
-        Pattern = 0;
-        SetSizeWHCount(Pattern);
+        //初期化としてリストの中をクリアします
+        Pattern = 0;//幕が閉じる
+        SetTile(Pattern);
 
         //遷移処理
         //終了後selectEndへ変更
-        state = SceneState.selectEnd;
+        ChangeState(SceneState.selectEnd);
     }
 
     /// <summary>
@@ -412,15 +439,13 @@ public class UITest : MonoBehaviour
     void SelectEnd()
     {
         //Scene遷移
+        const string stage = "Stage";
+        ChangeScene(stage);
 
-        //タイル削除
-        ClearList();
-
-        //タイルの張り直し -->//開ける遷移開始
         Pattern = 1;
-        SetSizeWHCount(Pattern);
+        SetTile(Pattern); //-->開ける遷移開始
 
-        state = SceneState.touch;
+        ChangeState(SceneState.touch);
     }
 
     /// <summary>
@@ -429,34 +454,46 @@ public class UITest : MonoBehaviour
     /// </summary>
     void Touch()  //クリック可能モードでクリックしたら処理
     {
-        //タイル削除
-        ClearList();
-
-        //タイルを貼ります --->クリック後遷移開始(左右から猫の手)
-        Pattern = 2;
-        SetSizeWHCount(Pattern);
+        Pattern = 2;//--->クリック後遷移開始(左右から猫の手)
+        SetTile(Pattern);
 
         //終了後touchEnd
-        state = SceneState.touchEnd;
-        click = false;
+        ChangeState(SceneState.touchEnd);
+        TouchClick = false;
     }
 
     /// <summary>
     /// 状態TouchEnd時の処理
     /// </summary>
-    void TouchEnd()
+    void TouchEnd()  //ゲーム画面に移行
     {
-        //ゲーム画面に移行
+        Pattern = 1;//-->開ける遷移開始
+        SetTile(Pattern);
 
-        //タイルの削除
-        Instant.ClearList();
+        ChangeState(SceneState.gameMode);
+    }
 
-        //新しいタイルを貼りなおす
-        //タイルを貼ります
-        Pattern = 1;
-        SetSizeWHCount(Pattern);
+    /// <summary>
+    /// 状態GameOverModeの処理 ゲームクリア時に処理
+    /// </summary>
+    void GameOver()
+    {
+        //tileの作成
+        Pattern = 0;
+        SetSizeWHCount(Pattern);//幕が閉じる
 
-        state = SceneState.gameMode;
+        ChangeState(SceneState.reState);
+    }
+
+    /// <summary>
+    /// 状態ReStartの処理 //StateSelectへ戻る時の処理
+    /// </summary>
+    void ReStart()
+    {
+        Pattern = 1; //-->開ける遷移開始
+        SetTile(Pattern);
+
+        ChangeState(SceneState.stageSelect);
     }
 
     /// <summary>
@@ -480,8 +517,6 @@ public class UITest : MonoBehaviour
         }
     }
 
-    bool click = false;
-
     /// <summary>
     /// ステートに応じて処理をします
     /// </summary>
@@ -489,21 +524,75 @@ public class UITest : MonoBehaviour
     {
         switch (state)
         {
+            //ステージをクリアした際に呼ばれます
+            case SceneState.stageSelect:
+                //やりこみ要素でクリアしたものがあれば処理開始 ----> 別のスクリプトから呼び出します
+                //終わり次第ステート変更します
+
+                break;
+
             case SceneState.selectEnd:
                 //オートで遷移を呼びます
-                Invoke(nameof(SceneTransition), 1.0f);
+                TimeST(tLag);
                 break;
 
             case SceneState.touch:
                 //クリック可能フラグを立てます
-                click = true;
+                TouchClick = true;
                 break;
 
             case SceneState.touchEnd:
+                //Stageフロアを隠していたUIを非表示にします
+                var hideUI = GameObject.Find("StageBacCanvas");
+                hideUI.SetActive(false);
+
                 //オートで遷移を呼びます
-                Invoke(nameof(SceneTransition), 1.0f);
+                TimeST(tLag);
+                break;
+
+            case SceneState.gameMode:
+                //プレイヤーを操作可能にします
+
+                //初めにこのフロアの目標を画面にUIで表示します
+
+                break;
+
+            case SceneState.reState:
+                //オートで遷移を呼びます
+                TimeST(tLag);
+
+                //Scene遷移
+                const string stage = "StageSelect";
+                ChangeScene(stage);
                 break;
         }
+    }
+
+    /// <summary>
+    /// tileを貼ります
+    /// </summary>
+    /// <param name="pattern">貼り方</param>
+    void SetTile(int pattern)
+    {
+        //タイル削除
+        ClearList();
+        SetSizeWHCount(pattern);
+    }
+
+    /// <summary>
+    /// Scene変更します
+    /// </summary>
+    void ChangeScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+    }
+
+    /// <summary>
+    /// ステージクリア時に呼びます
+    /// </summary>
+    public void ChangeState(SceneState nextState)
+    {
+        state = nextState;
     }
 
     #endregion

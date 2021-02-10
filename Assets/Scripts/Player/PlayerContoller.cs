@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 #pragma warning disable 649
 
 enum State
@@ -77,6 +78,8 @@ public class PlayerContoller : MonoBehaviour
         Ray();
         if (move) CheckMoveDistance();
     }
+
+    #region Ray
 
     /// <summary>
     /// レイでマウス座標にあるものを取得します
@@ -160,6 +163,10 @@ public class PlayerContoller : MonoBehaviour
         return false;
     }
 
+    #endregion
+
+    #region Jumpオブジェクト
+
     /// <summary>
     /// 親が同じかを判定します
     /// </summary>
@@ -237,6 +244,10 @@ public class PlayerContoller : MonoBehaviour
         hitJumpObj = null;
     }
 
+    #endregion
+
+    #region 当たり判定
+
     private void OnTriggerEnter2D(Collider2D col)
     {
         //敵に当たったら処理
@@ -313,10 +324,22 @@ public class PlayerContoller : MonoBehaviour
     void GoalClear(Collider2D col)
     {
         anim.SetBool("Goal", true);
+
+        //もし攻撃モードだった場合のため色を変更処理します
         var sprite = GetComponent<SpriteRenderer>();
         sprite.color = Color.white;
+        
+        //ステートを変更します
         currentState = State.goal;
+
         Destroy(col.gameObject);
+
+        //sceneステートを変更します
+        UITest.Instance.ChangeState(SceneState.gameOverMode);
+
+        //Goalアニメーションが終わったら遷移を開始します
+        const float goalLag = 1.2f;
+        UITest.Instance.TimeST(goalLag);
     }
 
     private void OnTriggerStay2D(Collider2D col)
@@ -344,4 +367,5 @@ public class PlayerContoller : MonoBehaviour
             bS.InActive();
         }
     }
+    #endregion
 }

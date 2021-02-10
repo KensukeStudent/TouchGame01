@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
 /// <summary>
@@ -133,25 +134,15 @@ public class ScrollSelect : MonoBehaviour
             sPos.x = rCanvas.sizeDelta.x / 2 + rCanvas.sizeDelta.x * i;
             sPos.y = 0;
             sRt.anchoredPosition = sPos;
+            
             //ステージ表示するための情報の箱を取得
             var sc = sRt.GetComponent<StageContent>();
             //このステージに情報を入れます
-            InitStageInfo(sm, sc, i);
+            sm.InitStageInfo(sc, i);
 
             //後入れでリストの中にStageContentをしまっていきます
             linkList.AddLast(sRt);
         }
-    }
-
-    /// <summary>
-    /// 初期値として生成されるステージ分、情報を設定します
-    /// </summary>
-    void InitStageInfo(StageManager sm,StageContent sc,int num)
-    {
-        //Stage名を数字の値にします
-        var stageNo = "Stage" + (num + 1);
-        //ステージ名、そのステージのスコア、背景、クリア済みかの情報を入れます
-        sc.SetContent(stageNo, sm.ScoreMan[num], sm.BackGroundMan[num], sm.StageClearMan[num]);
     }
 
     /// <summary>
