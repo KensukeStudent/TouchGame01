@@ -219,8 +219,8 @@ public class StageCreator : MonoBehaviour
             //xを初期位置yを-1下げたところから生成を再開しします
             pos.x = createPos.x;
             pos.y -= 1;
-            counter = 0;
         }
+        counter = 0;
     }
 
     /// <summary>
@@ -275,7 +275,8 @@ public class StageCreator : MonoBehaviour
             case "0":
                 var e = InstantObj(enemy[0], pos, floor);
                 var d = e.GetComponent<DokuroShot>();
-                ji.SetDokuro("stage1", d, floorNum);
+                ji.SetDokuro("stage1", d, floorNum, counter);
+                counter++;
                 break;
             //どくろMove
             case "1":

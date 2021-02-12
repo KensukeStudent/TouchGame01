@@ -80,8 +80,8 @@ public class JsonInfo
     /// 生成されたどくろのステータス場所を参照
     /// </summary>
     /// <param name="stageId"></param>
-    /// <param name="num"></param>
-    public void SetDokuro(string stageId,DokuroShot dokuro,int floorNum)
+    /// <param name="num">何番目の敵</param>
+    public void SetDokuro(string stageId,DokuroShot dokuro,int floorNum,int num)
     {
         //ステージ番号の敵を指定
         var d = dokuroList.dokuros.Find(ds => ds.id == stageId);
@@ -95,7 +95,7 @@ public class JsonInfo
         var listNum = dokuroList.dokuros.IndexOf(d);
 
         //値の代入
-        EnemyMan.DokuroShot(dokuro, dokuroList, listNum, floorNum);
+        EnemyMan.DokuroShot(dokuro, dokuroList, listNum, floorNum, num);
     }
 
     /// <summary>

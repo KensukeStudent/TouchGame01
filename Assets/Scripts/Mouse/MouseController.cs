@@ -19,11 +19,14 @@ public class MouseController : MonoBehaviour
     /// 障害物のレイヤー
     /// </summary>
     [SerializeField] LayerMask obstacle;
+     GameObject player;
 
     private void Start()
     {
         mouseToPoint = GameObject.Find("CatArm");
         mousePad = GameObject.Find("CatPad");
+        player = GameObject.FindGameObjectWithTag("Player");
+
         var s = mouseToPoint.GetComponent<SpriteRenderer>().size;
         //1マスをこの画像では何倍するかを計算します
         length = 1 / s.y;
@@ -33,6 +36,8 @@ public class MouseController : MonoBehaviour
     {
         //画像のマウスまでの距離を描画します
         FromPlayerToMouse();
+
+        mouseToPoint.transform.position = player.transform.position;
     }
 
     /// <summary>

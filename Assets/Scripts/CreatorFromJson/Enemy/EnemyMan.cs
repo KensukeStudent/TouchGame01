@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 /// <summary>
@@ -7,21 +6,18 @@ using System.Text.RegularExpressions;
 /// </summary>
 public class EnemyMan
 {
-    public static List<DokuroShot> dS = new List<DokuroShot>();
-
     /// <summary>
     /// どくろ(弾)
     /// </summary>
-    public static void DokuroShot(DokuroShot dokuro, DokuroList list, int listNum, int floorNum)
+    public static void DokuroShot(DokuroShot dokuro, DokuroList list, int listNum, int floorNum, int num)
     {
         var d = list.dokuros[listNum].floor[floorNum];
         var s = d.shot[0];
-        var count = dS.Count;
+        var count = num;
         var name = s.name;
 
         //Jsonのデータを入れる
         dokuro.SetShotStates(d, s, count, name);
-        dS.Add(dokuro);
     } 
 
     /// <summary>
