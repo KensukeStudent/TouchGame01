@@ -8,9 +8,12 @@ using System.Text.RegularExpressions;
 /// </summary>
 public class BlocksScript : MonoBehaviour
 {
+    /// <summary>
+    /// textを持つ親
+    /// </summary>
+    GameObject back;
     TMP_Text nameText;
     TMP_Text senText;
-    GameObject canvas;
 
     /// <summary>
     /// このブロック役割をプレイヤーに知らせます
@@ -37,10 +40,12 @@ public class BlocksScript : MonoBehaviour
 
     protected virtual void Awake()
     {
-        nameText = GameObject.Find("Name").GetComponent<TMP_Text>();
-        senText = GameObject.Find("Text").GetComponent<TMP_Text>();
-
-        canvas = GameObject.Find("DescriptionCanvas");
+        //順を追って探します
+        var canvas = GameObject.Find("DescriptionCanvas");
+        back = canvas.transform.Find("Back").gameObject;
+        senText = back.transform.Find("Text").GetComponent<TMP_Text>();
+        var image = back.transform.Find("Image").gameObject;
+        nameText = image.transform.Find("Name").GetComponent<TMP_Text>();
     }
 
     /// <summary>
@@ -79,7 +84,7 @@ public class BlocksScript : MonoBehaviour
     /// </summary>
     public void SetText()
     {
-        canvas.SetActive(true);
+        back.SetActive(true);
         nameText.text = name;
         senText.text = role;
     }
@@ -89,7 +94,7 @@ public class BlocksScript : MonoBehaviour
     /// </summary>
     public void InActive()
     {
-        canvas.SetActive(false);
+        back.SetActive(false);
     }
 
     /// <summary>

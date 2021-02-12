@@ -83,6 +83,6 @@ public class StageManager : MonoBehaviour
         //スクールやスクロールボタンフラグを消して操作できなくします
 
         //シーン遷移を開始します
-        UITest.Instance.TimeST(0);
+        ScreenTransition.Instance.TimeST(0);
     }
 }

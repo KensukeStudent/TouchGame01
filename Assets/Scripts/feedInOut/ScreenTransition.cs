@@ -17,7 +17,7 @@ public enum SceneState
 /// <summary>
 /// ステージ選択ステージクリア時のシーン遷移クラス
 /// </summary>
-public class UITest : MonoBehaviour
+public class ScreenTransition : MonoBehaviour
 {
     /// <summary>
     /// 遷移のステート
@@ -26,7 +26,7 @@ public class UITest : MonoBehaviour
     /// <summary>
     /// Scene遷移クラス
     /// </summary>
-    public static UITest Instance { private set; get; } 
+    public static ScreenTransition Instance { private set; get; } 
     /// <summary>
     /// 親canvasのRect
     /// </summary>

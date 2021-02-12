@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 #pragma warning disable 649
 
@@ -27,7 +29,7 @@ public class PlayerContoller : MonoBehaviour
     /// <summary>
     /// イベント壁かを判別します
     /// </summary>
-    LayerMask evWallLayer;
+    [SerializeField] LayerMask evWallLayer;
 
     /// <summary>
     /// 現在移動中
@@ -41,6 +43,7 @@ public class PlayerContoller : MonoBehaviour
     /// ジャンプオブジェクトに当たっている
     /// </summary>
     GameObject hitJumpObj;
+    GameObject hintObj;
     [SerializeField] GameObject dustEffect;
 
     public static bool AttackMode { private set; get; } = false;
@@ -63,8 +66,6 @@ public class PlayerContoller : MonoBehaviour
 
     private void Start()
     {
-        evWallLayer = LayerMask.GetMask("EventWall");
-
         pi = new PlayerInventory();
         anim = GetComponent<Animator>();
         moveObj = GameObject.FindGameObjectWithTag("InitPos");
@@ -90,28 +91,31 @@ public class PlayerContoller : MonoBehaviour
         pos.z = 10f;
         var mouseRay = Camera.main.ScreenPointToRay(pos);
         var hit = Physics2D.Raycast(mouseRay.origin, mouseRay.direction, Mathf.Infinity, hitLayer);
-        //プレイヤーから矢印のようなものを出す場合マウスの位置に出す予定です
+
+        //ヒットしたものの状態を更新します
+        Object(hit);
+
+        //何も当たってない又は移動中なら判定しません
+        if (!hit || move) return;
 
         //ヒット先がイベントの壁ならこちらを処理します
         //※ただし現在ジャンプオブジェクト先にマウス座標はいない
-        if (hit && !move && CheckObstacles(hit.transform.gameObject, evWallLayer) && touch &&
-            Input.GetMouseButtonDown(0) && !hitJumpObj)
+        if (!CheckObstacles(hit, evWallLayer) && touch && Input.GetMouseButtonDown(0) && !hitJumpObj)
         {
             //クリックして鍵があれば、ブロックを破壊する
             pi.UseKindKey(hit.transform.name, hit.transform.gameObject);
         }
+
         //移動開始
-        else if (hit && !move && !CheckObstacles(hit.transform.gameObject, obstaclesLayer) && !SameParent(hit.transform.gameObject))
+        //障害物が当たるまでの距離、載っているジャンプ台でない、レイヤーがJumpPosである
+        if (!CheckObstacles(hit, obstaclesLayer) && !SameJumpObj(hit.transform.gameObject) && SameLayer(hit, "JumpPos"))
         {
             //レイがジャンプオブジェクトに当たっている時にJumpObjの色を変更
             ChangeJumpObjColor(hit);
 
             //ジャンプ先に移動します
-            if (hit.transform.gameObject.layer == LayerMask.NameToLayer("JumpPos")) ClickMoveToJumpObj(hit);
+            ClickMoveToJumpObj(hit);
         }
-
-        //ジャンプ先のオブジェクトの色を元に戻します
-        if (hitJumpObj && !hit) RemoveJumpObj();
     }
 
     /// <summary>
@@ -147,8 +151,10 @@ public class PlayerContoller : MonoBehaviour
     /// レイを出す先に障害物があるかどうかを判定します
     /// </summary>
     /// <returns></returns>
-    bool CheckObstacles(GameObject hitObj,LayerMask layer)
+    bool CheckObstacles(RaycastHit2D hit,LayerMask layer)
     {
+        var hitObj = hit.transform.gameObject;
+
         //物体からプレイヤーへのベクトル方向を取得
         var direction = (hitObj.transform.position - transform.position).normalized;
         //距離を求めます(長さを指定することで無作為に障害物に当たることを防ぐ)
@@ -156,22 +162,22 @@ public class PlayerContoller : MonoBehaviour
         //レイに方向を入れ飛ばします
         var ray = new Ray(transform.position, direction);
         //レイ方向へ放射したものを検知
-        var hit = Physics2D.Raycast(ray.origin, ray.direction, dis, layer);
+        var hitL = Physics2D.Raycast(ray.origin, ray.direction, dis, layer);
         //Debug.DrawRay(ray.origin, ray.direction, Color.green, Mathf.Infinity);
-        if (hit) return true;
+        if (hitL) return true;
 
         return false;
     }
 
     #endregion
 
-    #region Jumpオブジェクト
+    #region オブジェクト
 
     /// <summary>
-    /// 親が同じかを判定します
+    /// 今のマウスカーソルが載っているジャンプ台ではない
     /// </summary>
     /// <returns></returns>
-    bool SameParent(GameObject hitObj)
+    bool SameJumpObj(GameObject hitObj)
     {
         //比較する初期値
         var result = 0;
@@ -187,13 +193,10 @@ public class PlayerContoller : MonoBehaviour
     void ChangeJumpObjColor(RaycastHit2D hit)
     {
         //ジャンプ先のオブジェクトの色を変更します
-        if (!hitJumpObj && hit.transform.gameObject.layer == LayerMask.NameToLayer("JumpPos"))
-        {
-            //ヒット先の足場を現在の足場に代入
-            hitJumpObj = hit.transform.gameObject;
-            var jumpObj = hit.transform.GetComponent<JumpObj>();
-            jumpObj?.NowRay();
-        }
+        //ヒット先の足場を現在の足場に代入
+        hitJumpObj = hit.transform.gameObject;
+        var jumpObj = hit.transform.GetComponent<JumpObj>();
+        jumpObj?.NowRay();
     }
 
     /// <summary>
@@ -207,22 +210,11 @@ public class PlayerContoller : MonoBehaviour
             moveObj = hit.transform.gameObject;
 
             transform.SetParent(null);
+
             //角度設定
             var q = transform.localEulerAngles;
-
             //-----角度を親の角度にします-----//
-
-                //親要素があり
-            if (moveObj.transform.parent)
-            {
-                var root = moveObj.transform.root.localEulerAngles.z;
-                var parent = moveObj.transform.parent.localEulerAngles.z;
-                var child = moveObj.transform.localEulerAngles.z;
-                q.z = root + parent + child;
-            }
-            //親要素がない
-            else q.z = moveObj.transform.localEulerAngles.z;
-
+            q.z = GetJumpAngle(moveObj.transform);
             transform.localEulerAngles = q;
 
             //ジャンプエフェクトを入れます
@@ -235,6 +227,56 @@ public class PlayerContoller : MonoBehaviour
     }
 
     /// <summary>
+    /// ジャンプ先の角度を求めます
+    /// </summary>
+    float GetJumpAngle(Transform child)
+    {
+        //子要素
+        var c = child;
+        //角度
+        var angle = c.transform.localEulerAngles.z;
+
+        //親要素のすべての角度を取得   
+        do
+        {
+            var parent = c.transform.parent;
+            if (!OnlyNum(parent.name))
+            {
+                var q = parent.localEulerAngles.z;
+                angle += q;
+
+                c = parent;
+            }
+            else break;
+
+        } while (true);
+        
+        return angle;
+    }
+
+    /// <summary>
+    /// 数値のみの取得
+    /// </summary>
+    bool OnlyNum(string s)
+    {
+        //数値でない文字があるかを判別それを反転させて数値のみかを取得
+        return _ = !Regex.IsMatch(s, @"[^0-9]");
+    }
+
+    /// <summary>
+    /// Rayにヒットした、していた物の状態を更新します
+    /// </summary>
+    void Object(RaycastHit2D hit)
+    {
+        //Jumpオブジェクト
+        //ジャンプ先のオブジェクトの色を元に戻します
+        if (hitJumpObj && !hit) RemoveJumpObj();
+
+        //Hintオブジェクト
+        HintObj(hit);
+    }
+
+    /// <summary>
     /// マウス座標がジャンプオブジェクトから外れたら処理します
     /// </summary>
     void RemoveJumpObj()
@@ -242,6 +284,37 @@ public class PlayerContoller : MonoBehaviour
         var jumpObj = hitJumpObj.GetComponent<JumpObj>();
         jumpObj?.RemoveNowRay();
         hitJumpObj = null;
+    }
+
+    /// <summary>
+    /// ヒントオブジェクトに当たったら処理します
+    /// 猫の手アニメーションを開始フラグを立てます
+    /// </summary>
+    /// <param name="hit"></param>
+    void HintObj(RaycastHit2D hit)
+    {
+        //hintObjがない、ヒットしている、間に障害物がない
+        if (hintObj == null && hit && SameLayer(hit, "Hint") && !CheckObstacles(hit, obstaclesLayer))
+        {
+            hintObj = hit.transform.gameObject;
+            var hint = hintObj.GetComponent<HintCat>();
+            hint?.SetHint();//レイがhintLayer上を通ってしまった時は通過してしまいます
+        }
+        else if(hintObj && (!hit || hit && CheckObstacles(hit, obstaclesLayer)))
+        {
+            var a = GameObject.Find("Canvas").GetComponent<test>();
+            a.ReturnFlag();
+            hintObj = null;
+        }
+    }
+
+    /// <summary>
+    /// ヒットしたオブジェクトと比較するレイヤーを比較します
+    /// </summary>
+    bool SameLayer(RaycastHit2D hit,string layerName)
+    {
+        var hitObj = hit.transform.gameObject;
+        return hitObj.layer == LayerMask.NameToLayer(layerName);
     }
 
     #endregion
@@ -335,11 +408,11 @@ public class PlayerContoller : MonoBehaviour
         Destroy(col.gameObject);
 
         //sceneステートを変更します
-        UITest.Instance.ChangeState(SceneState.gameOverMode);
+        ScreenTransition.Instance.ChangeState(SceneState.gameOverMode);
 
         //Goalアニメーションが終わったら遷移を開始します
         const float goalLag = 1.2f;
-        UITest.Instance.TimeST(goalLag);
+        ScreenTransition.Instance.TimeST(goalLag);
     }
 
     private void OnTriggerStay2D(Collider2D col)

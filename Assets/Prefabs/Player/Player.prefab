@@ -66,7 +66,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 406934331
-  m_SortingLayer: 7
+  m_SortingLayer: 10
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 9008780582d3efe4fb4acfc2a510a77d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -152,7 +152,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 406934331
-  m_SortingLayer: 7
+  m_SortingLayer: 10
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 2503081a9efc56941bec1cb4634e13a5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -245,10 +245,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitLayer:
     serializedVersion: 2
-    m_Bits: 1792
+    m_Bits: 3840
   obstaclesLayer:
     serializedVersion: 2
     m_Bits: 1536
+  evWallLayer:
+    serializedVersion: 2
+    m_Bits: 512
   dustEffect: {fileID: 7346847624060808981, guid: 6558de38b49873a47809f4e4ff737a24,
     type: 3}
   actionEv: {fileID: 2781715852767932091}
@@ -318,7 +321,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 406934331
-  m_SortingLayer: 7
+  m_SortingLayer: 10
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300200, guid: d27ec5593abed98428fc25d718224cb2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

@@ -45,7 +45,7 @@ public class FeedInOut : MonoBehaviour
         };
 
         //Patternの遷移動作を入れます
-        st = sts[UITest.Instance.Pattern];
+        st = sts[ScreenTransition.Instance.Pattern];
     }
 
     private void Update()
@@ -126,7 +126,7 @@ public class FeedInOut : MonoBehaviour
         {
             pos.y = goalRectY;
             //全てのtileが終了していれば、state変更フラグを立てます
-            UITest.Instance.FinishScene();
+            ScreenTransition.Instance.FinishScene();
         }
 
         rt.anchoredPosition = pos;
@@ -161,7 +161,7 @@ public class FeedInOut : MonoBehaviour
         {
             pos.y = goalRectY;
             //全てのtileが終了していれば、state変更フラグを立てます
-            UITest.Instance.FinishScene();
+            ScreenTransition.Instance.FinishScene();
         }
         rt.anchoredPosition = pos;
     }
@@ -204,7 +204,7 @@ public class FeedInOut : MonoBehaviour
         if (!Flag)
         {
             //全てのtileが終了していれば、state変更フラグを立てます
-            UITest.Instance.FinishScene();
+            ScreenTransition.Instance.FinishScene();
         }
 
         rt.anchoredPosition = pos;

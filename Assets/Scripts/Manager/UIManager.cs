@@ -5,11 +5,6 @@ using UnityEngine;
 public class UIManager : MonoBehaviour
 {
     /// <summary>
-    /// 説明キャンバス
-    /// </summary>
-    [SerializeField] GameObject desCanvas;
-
-    /// <summary>
     /// PlayerInventryパネル
     /// MaxY: 135  MinY:-105
     /// </summary>
@@ -43,7 +38,6 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        desCanvas.SetActive(false);
         aud = catHand.GetComponent<AudioSource>();
         rectP = GameObject.Find("KeyPanel").GetComponent<RectTransform>();
     }
@@ -51,7 +45,7 @@ public class UIManager : MonoBehaviour
     private void Update()
     {
         //クリックしたら音が鳴り遷移開始
-        if (!GameManager.Instance.GameStart && Input.GetMouseButtonDown(0) && UITest.Instance.TouchClick)
+        if (!GameManager.Instance.GameStart && Input.GetMouseButtonDown(0) && ScreenTransition.Instance.TouchClick)
         {
             //遷移準備
             SetCatHand();
@@ -88,7 +82,7 @@ public class UIManager : MonoBehaviour
         aud.Play();
 
         //ステージのクリックイベントがすべて終わったら遷移を開始します
-        UITest.Instance.TimeST(0);
+        ScreenTransition.Instance.TimeST(0);
     }
 
     /// <summary>
