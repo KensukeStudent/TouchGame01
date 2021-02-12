@@ -23,11 +23,6 @@ public class testl : MonoBehaviour
             else break;
 
         } while (true);
-
-        for (int i = 0; i < list.Count; i++)
-        {
-            Debug.Log(list[i].name);
-        }
     }
 
 

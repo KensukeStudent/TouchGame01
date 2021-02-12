@@ -1,12 +1,14 @@
 ﻿using TMPro;
 using UnityEngine;
 
-public class test : MonoBehaviour
+/// <summary>
+/// ヒントUIクラス
+/// </summary>
+public class HintUI : MonoBehaviour
 {
+    RectTransform rt;
 
-    [SerializeField] RectTransform rt;
-
-    bool a = false;
+    bool anim = true;
 
     /// <summary>
     /// アニメーションフラグ
@@ -18,6 +20,8 @@ public class test : MonoBehaviour
 
     private void Start()
     {
+        rt = GetComponent<RectTransform>();
+
         max = rt.anchoredPosition;
         min = -rt.anchoredPosition;
     }
@@ -32,7 +36,7 @@ public class test : MonoBehaviour
     /// </summary>
     void HintAnim()//マウスカーソルがあてられた時と離れた時に処理します
     {
-        if (!a && flag)
+        if (anim && flag)
         {
             var pos = rt.anchoredPosition;
             if (pos.x > min.x)
@@ -43,12 +47,12 @@ public class test : MonoBehaviour
                 if (pos.x <= min.x)
                 {
                     pos = min;
-                    a = true;//----->フラグはマウスカーソルが離れたら呼びます
+                    anim = false;//----->フラグはマウスカーソルが離れたら呼びます
                 }
             }
             rt.anchoredPosition = pos;
         }
-        else if (a && !flag)
+        else if (!anim && !flag)
         {
             var pos = rt.anchoredPosition;
             if (pos.x < max.x)
@@ -59,7 +63,7 @@ public class test : MonoBehaviour
                 if (pos.x >= max.x)
                 {
                     pos = max;
-                    a = false;//----->フラグはマウスカーソルが離れたら呼びます
+                    anim = true;//----->フラグはマウスカーソルが離れたら呼びます
                 }
             }
             rt.anchoredPosition = pos;
@@ -72,8 +76,8 @@ public class test : MonoBehaviour
     public void SetFlag(string hint)
     {
         flag = true;
-        a = false;
-        var text = GameObject.Find("FloorEvText").GetComponent<TMP_Text>();
+        anim = true;
+        var text = transform.GetChild(0).GetComponent<TMP_Text>();
         text.text = hint;
     }
 
@@ -82,7 +86,7 @@ public class test : MonoBehaviour
     /// </summary>
     public void ReturnFlag()
     {
-        a = true;
+        anim = false;
         flag = false;
     }
 }

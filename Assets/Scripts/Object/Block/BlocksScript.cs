@@ -19,10 +19,6 @@ public class BlocksScript : MonoBehaviour
     /// このブロック役割をプレイヤーに知らせます
     /// </summary>
     string role = "";
-    /// <summary>
-    /// ブロック名
-    /// </summary>
-    string name = "";
 
     /// <summary>
     /// 次のフロアの足場を展開

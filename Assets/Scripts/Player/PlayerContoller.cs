@@ -293,17 +293,17 @@ public class PlayerContoller : MonoBehaviour
     /// <param name="hit"></param>
     void HintObj(RaycastHit2D hit)
     {
-        //hintObjがない、ヒットしている、間に障害物がない
-        if (hintObj == null && hit && SameLayer(hit, "Hint") && !CheckObstacles(hit, obstaclesLayer))
+        //hintObjがない、ヒットしている
+        if (hintObj == null && hit && SameLayer(hit, "Hint"))
         {
             hintObj = hit.transform.gameObject;
             var hint = hintObj.GetComponent<HintCat>();
             hint?.SetHint();//レイがhintLayer上を通ってしまった時は通過してしまいます
         }
-        else if(hintObj && (!hit || hit && CheckObstacles(hit, obstaclesLayer)))
+        else if(hintObj && !hit)
         {
-            var a = GameObject.Find("Canvas").GetComponent<test>();
-            a.ReturnFlag();
+            var hU = GameObject.Find("HintCat").GetComponent<HintUI>();
+            hU.ReturnFlag();
             hintObj = null;
         }
     }

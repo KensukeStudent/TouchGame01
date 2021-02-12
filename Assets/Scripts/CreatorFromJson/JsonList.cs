@@ -18,7 +18,18 @@ public class DokuroList
     public List<DokuroEnemy> dokuros = new List<DokuroEnemy>();
 }
 
+/// <summary>
+/// Jumpフロア情報を格納
+/// </summary>
 public class JumpFloorList
 {
     public List<JumpingFloor> floors = new List<JumpingFloor>();
+}
+
+/// <summary>
+/// Hint情報を格納
+/// </summary>
+public  class HintList
+{
+    public List<Hint> hints = new List<Hint>();
 }

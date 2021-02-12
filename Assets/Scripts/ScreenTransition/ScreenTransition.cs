@@ -64,11 +64,6 @@ public class ScreenTransition : MonoBehaviour
     List<FeedInOut> tileList = new List<FeedInOut>();
 
     /// <summary>
-    /// シーンを遷移オート
-    /// </summary>
-    bool autoFlag = false;
-
-    /// <summary>
     /// 遷移のパターン
     /// </summary>
     public int Pattern { private set; get; } = 0;

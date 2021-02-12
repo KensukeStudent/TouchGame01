@@ -1,7 +1,6 @@
 ﻿[System.Serializable]
-public class JumpingFloor
+public class JumpingFloor:ID
 {
-    public string id;
     public JumpFloor[] floor;
 }
 

@@ -18,6 +18,8 @@ public class StageCreator : MonoBehaviour
     /// </summary>
     readonly Vector2 createInitPos = new Vector2(-9.0f, 5.0f);
 
+    #region 生成するオブジェクト
+
     //----------WALL----------//
     [Header("Wall")]
     /// <summary>
@@ -71,6 +73,8 @@ public class StageCreator : MonoBehaviour
     [Header("Decoration")]
     [SerializeField] GameObject[] decos;
 
+    #endregion
+
     /// <summary>
     /// 各ステージフロア作成
     /// </summary>
@@ -78,12 +82,12 @@ public class StageCreator : MonoBehaviour
     /// <param name="pos">生成位置</param>
     /// <param name="floor">生成元の親オブジェクト</param>
     /// <param name="floorNum">現在のフロア数</param>
-    delegate void TileMap(string tileNum, Vector2 pos, GameObject floor,int floorNum);
+    delegate void TileMap(string tileNum, Vector2 pos, GameObject floor, int floorNum);
     TileMap[] tileList;
     TileMap tile;
     readonly string[] pathName = { "Wall", "PlayerGoal", "Enemy", "Jump", "Move", "EventItem", "EventBlock", "BackGround", "Decoration" };
     /// <summary>
-    /// イベントボックス生成カウント数
+    /// 生成カウント
     /// </summary>
     int counter = 0;
 
@@ -124,10 +128,18 @@ public class StageCreator : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// ステージ番号
+    /// </summary>
+    string stageID = "";
+
     private void Awake()
     {
         //ステージ番号のステージを作成します
         fileNum = GameManager.Instance.StageNo;
+
+        //現在のステージ番号を指定します
+        stageID = string.Format("stage{0}", fileNum + 1);
 
         ji = new JsonInfo();
 
@@ -148,6 +160,8 @@ public class StageCreator : MonoBehaviour
         CreateStage();
     }
 
+    #region マップ生成読み込み
+
     /// <summary>
     /// ステージの作成
     /// </summary>
@@ -165,7 +179,7 @@ public class StageCreator : MonoBehaviour
             //このステージの横縦長さ * ステージのx(横のフロア)とy(縦のフロア)の何番目か + 作成する初期位置
             vec.x = stageVec[fileNum].x * stageVecX + createInitPos.x;
             vec.y = (-stageVec[fileNum].y) * stageVecY + createInitPos.y;
-            
+
 
             //ステージを格納する空のオブジェクトを作成(フロアごとに分けてここに入れます)
             var obj = Resources.Load<GameObject>("StageEmpty");
@@ -184,7 +198,7 @@ public class StageCreator : MonoBehaviour
     /// <summary>
     /// CSVファイルの読み込み
     /// </summary>
-    void CSVRead(string stageTagName, int num, GameObject floor,Vector2 createPos,int floorNum)
+    void CSVRead(string stageTagName, int num, GameObject floor, Vector2 createPos, int floorNum)
     {
         //csvファイルの検索
         var csvFile = Resources.Load(stageTagName) as TextAsset;
@@ -198,7 +212,7 @@ public class StageCreator : MonoBehaviour
     /// <summary>
     /// ファイルの内の","で文字を区切ります
     /// </summary>
-    void StringMozi(StringReader reader, int num, GameObject floor,Vector2 createPos, int floorNum)
+    void StringMozi(StringReader reader, int num, GameObject floor, Vector2 createPos, int floorNum)
     {
         var pos = createPos;
         tile = tileList[num];
@@ -223,12 +237,16 @@ public class StageCreator : MonoBehaviour
         counter = 0;
     }
 
+    #endregion
+
+    #region マップのオブジェクト生成
+
     /// <summary>
     /// 壁
     /// </summary>
     void SwicthWALL(string tileNum, Vector2 pos, GameObject floor, int floorNum)
     {
-        string[] wallNo = { "22", "23", "24", "280", "536", "535", "534", "278", "28", "29", "279", "284" ,"285"};
+        string[] wallNo = { "22", "23", "24", "280", "536", "535", "534", "278", "28", "29", "279", "284", "285" };
         //読み込んだ文字数値がwallNo配列にあるかを解析し、配列番号のオブジェクトを
         //現在のフロアに生成します。
         if (!OnMozi(wallNo, tileNum, 0)) InstantObj(walls[SetNumber(wallNo, tileNum)], pos, floor);
@@ -261,6 +279,69 @@ public class StageCreator : MonoBehaviour
     }
 
     /// <summary>
+    /// ジャンプ
+    /// </summary>
+    /// <param name="tileNum"></param>
+    /// <param name="pos"></param>
+    void SwitchJump(string tileNum, Vector2 pos, GameObject floor, int floorNum)
+    {
+        string[] jObjNo = { "769", "2" };
+
+        #region ジャンプ詳細
+        //case : 769 回転
+        //case :  2  一部
+        #endregion
+
+        if (!OnMozi(jObjNo, tileNum, 0)) InstantObj(jumpObj[SetNumber(jObjNo, tileNum)], pos, floor);
+    }
+
+    /// <summary>
+    /// イベント関連
+    /// </summary>
+    void SwitchEventItem(string tileNum, Vector2 pos, GameObject floor, int floorNum)
+    {
+        #region 鍵詳細
+        //青鍵
+        //case "0":
+        //緑鍵
+        //case "1":;
+        //赤鍵
+        //case "2":
+        //黄鍵
+        //case "3":
+        #endregion
+
+        string[] kNo = { "0", "1", "2", "3", };
+        if (!OnMozi(kNo, tileNum, 0)) InstantObj(key[SetNumber(kNo, tileNum)], pos, floor);
+    }
+
+    /// <summary>
+    /// 　背景
+    /// </summary>
+    void SwitchBack(string tileNum, Vector2 pos, GameObject floor, int floorNum)
+    {
+        string[] grassNo = {"0","768", "769", "770","1024", "1025", "1026",
+                          "1280", "1281", "1282","1536", "1537","1792","1793" };
+
+        if (!OnMozi(grassNo, tileNum, 0)) InstantObj(grasses[SetNumber(grassNo, tileNum)], pos, floor);
+    }
+
+    /// <summary>
+    /// デコレーション
+    /// </summary>
+    void SwitchDecoration(string tileNum, Vector2 pos, GameObject floor, int floorNum)
+    {
+        string[] decoNo = { "293", "294", "799", "800", "1055", "1056",
+                          "5146", "5147", "5148", "5149", "5402" };
+
+        if (!OnMozi(decoNo, tileNum, 0)) InstantObj(decos[SetNumber(decoNo, tileNum)], pos, floor);
+    }
+
+    #endregion
+
+    #region Json読み込み生成
+
+    /// <summary>
     /// 敵
     /// </summary>
     /// <param name="tileNum"></param>
@@ -275,7 +356,8 @@ public class StageCreator : MonoBehaviour
             case "0":
                 var e = InstantObj(enemy[0], pos, floor);
                 var d = e.GetComponent<DokuroShot>();
-                ji.SetDokuro("stage1", d, floorNum, counter);
+                //情報を入れます
+                ji.SetDokuro(stageID, d, counter, floorNum);
                 counter++;
                 break;
             //どくろMove
@@ -283,23 +365,6 @@ public class StageCreator : MonoBehaviour
 
                 break;
         }
-    }
-
-    /// <summary>
-    /// ジャンプ
-    /// </summary>
-    /// <param name="tileNum"></param>
-    /// <param name="pos"></param>
-    void SwitchJump(string tileNum, Vector2 pos, GameObject floor, int floorNum)
-    {                    
-        string[] jObjNo = { "769", "2" };
-
-        #region ジャンプ詳細
-        //case : 769 回転
-        //case :  2  一部
-        #endregion
-
-        if (!OnMozi(jObjNo, tileNum, 0)) InstantObj(jumpObj[SetNumber(jObjNo, tileNum)], pos, floor);
     }
 
     /// <summary>
@@ -338,7 +403,7 @@ public class StageCreator : MonoBehaviour
         if (OnMozi(bNo, tileNum, 0)) return;
         //---0～3が鍵ブロック---
         //ブロック名をイベントにします
-        else if (OnMozi(bNo, tileNum, 4)) blockName = nameArray[0];      
+        else if (OnMozi(bNo, tileNum, 4)) blockName = nameArray[0];
         //---4～5がゴールブロック---
         //ブロック名をゴールにします
         else blockName = nameArray[1];
@@ -348,8 +413,8 @@ public class StageCreator : MonoBehaviour
         var bs = b.GetComponent<BlocksScript>();
 
         //ブロックに説明を入れます
-        ji.SetBlock("stage1", blockName, counter, bs, floorNum);
-        
+        ji.SetBlock(stageID, blockName, bs, counter, floorNum);
+
         //生成カウントを増やします
         counter++;
 
@@ -369,36 +434,16 @@ public class StageCreator : MonoBehaviour
         {
             //敵(全ての敵を倒す条件を指定)
             case "4":
-                
+
                 g.GoalKind(goalKind.enemy);
                 break;
 
             //鍵(指定の鍵を入手)
             case "5":
-                
+
                 g.GoalKind(goalKind.key);
                 break;
         }
-    }
-
-    /// <summary>
-    /// イベント関連
-    /// </summary>
-    void SwitchEventItem(string tileNum, Vector2 pos, GameObject floor, int floorNum)
-    {
-        #region 鍵詳細
-        //青鍵
-        //case "0":
-        //緑鍵
-        //case "1":;
-        //赤鍵
-        //case "2":
-        //黄鍵
-        //case "3":
-        #endregion
-
-        string[] kNo = { "0", "1", "2", "3", };
-        if (!OnMozi(kNo, tileNum, 0)) InstantObj(key[SetNumber(kNo, tileNum)], pos, floor);
     }
 
     /// <summary>
@@ -429,26 +474,32 @@ public class StageCreator : MonoBehaviour
             case "1":
             case "2":
             case "3":
-                
+
                 //猫矢印の配置
-              var arrow = InstantObj(catArrow[SetNumber(direNo, tileNum)], pos, floor);
-               
+                var arrow = InstantObj(catArrow[SetNumber(direNo, tileNum)], pos, floor);
+
                 //矢印に名前とどの向きかを入れます
                 arrow.name = name[0] + Direct(direNo, tileNum);
+
+                var hc = arrow.GetComponent<HintCat>();
+
+                //情報を入れます
+                ji.SetHint(stageID, hc, floorNum);
+
                 break;
 
             case "8":
             case "9":
             case "10":
             case "11":
-                
+
                 //移動オブジェクトの配置
                 var jump = InstantObj(moveObj, pos, floor);
-                
+
                 //ジャンプ台に名前とどの向きかを入れます
                 jump.name = name[1] + Direct(direNo, tileNum);
                 var jumpObj = jump.GetComponent<FloorMoveObj>();
-                
+
                 //生成されるジャンプオブジェクトに値をセットします
                 ji.SetFloorVec("stage1", jumpObj, counter, floorNum);
 
@@ -457,40 +508,22 @@ public class StageCreator : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 　背景
-    /// </summary>
-    void SwitchBack(string tileNum, Vector2 pos, GameObject floor, int floorNum)
-    {
-        string[] grassNo = {"0","768", "769", "770","1024", "1025", "1026",
-                          "1280", "1281", "1282","1536", "1537","1792","1793" };
+    #endregion
 
-        if (!OnMozi(grassNo, tileNum, 0)) InstantObj(grasses[SetNumber(grassNo, tileNum)], pos, floor);
-    }
-
-    /// <summary>
-    /// デコレーション
-    /// </summary>
-    void SwitchDecoration(string tileNum, Vector2 pos, GameObject floor, int floorNum)
-    {
-        string[] decoNo = { "293", "294", "799", "800", "1055", "1056", 
-                          "5146", "5147", "5148", "5149", "5402" };
-
-        if (!OnMozi(decoNo, tileNum, 0)) InstantObj(decos[SetNumber(decoNo, tileNum)], pos, floor);
-    }
+    #region 簡略化するための関数
 
     /// <summary>
     /// 方向を判別する
     /// </summary>
     /// <returns></returns>
-    string Direct(string[] array,string num)
+    string Direct(string[] array, string num)
     {
         //上左下右の4つの方向を取り出すため % 4の余りを求めます
         //例え : 4番目("8") % 4 = 0番目　--> "U"(上向き)
-        
-        var no = SetNumber(array,num) % 4;
+
+        var no = SetNumber(array, num) % 4;
         string[] direction = { "U", "L", "D", "R" };
-        
+
         return direction[no];
     }
 
@@ -536,4 +569,6 @@ public class StageCreator : MonoBehaviour
         go.transform.SetParent(floor.transform);
         return go;
     }
+
+    #endregion
 }

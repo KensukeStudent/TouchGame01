@@ -8,15 +8,15 @@ public class HintCat : MonoBehaviour
     /// <summary>
     /// ヒントテキスト
     /// </summary>
-    string hint = "あああああああああああ";
+    string hint = "この先、てきがたくさんいるきがするにゃ！";
 
     /// <summary>
     /// テキストの値に自分のhintを入れ、hintアニメーションのフラグを立てます
     /// </summary>
     public void SetHint()
     {
-        var a = GameObject.Find("Canvas").GetComponent<test>();
-        a.SetFlag(hint);
+        var hU = GameObject.Find("HintCat").GetComponent<HintUI>();
+        hU.SetFlag(hint);
     }
 
     /// <summary>

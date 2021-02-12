@@ -1,14 +1,13 @@
 ﻿[System.Serializable]
 //ブロックの説明
-public class Block
+public class Block:ID
 {
-    /// <summary>
-    /// ステージid
-    /// </summary>
-    public string id;
     public BlockFloor[] floor;
 }
 
+/// <summary>
+/// フロア内のブロック
+/// </summary>
 [System.Serializable]
 public class BlockFloor
 {

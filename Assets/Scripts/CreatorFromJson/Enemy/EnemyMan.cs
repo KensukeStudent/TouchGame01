@@ -9,9 +9,9 @@ public class EnemyMan
     /// <summary>
     /// どくろ(弾)
     /// </summary>
-    public static void DokuroShot(DokuroShot dokuro, DokuroList list, int listNum, int floorNum, int num)
+    public static void DokuroShot(DokuroShot dokuro, DokuroEnemy list,int floorNum, int num)
     {
-        var d = list.dokuros[listNum].floor[floorNum];
+        var d = list.floor[floorNum];
         var s = d.shot[0];
         var count = num;
         var name = s.name;

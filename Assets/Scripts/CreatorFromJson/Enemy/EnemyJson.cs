@@ -1,11 +1,7 @@
 ﻿[System.Serializable]
 //どくろ(敵)
-public class DokuroEnemy
+public class DokuroEnemy:ID
 {
-    /// <summary>
-    /// ステージId
-    /// </summary>
-    public string id;
     public DokuroFloor[] floor;
 }
 
@@ -26,6 +22,9 @@ public class DokuroFloor
     public D_Move[] move;
 }
 
+/// <summary>
+/// 弾どくろ
+/// </summary>
 [System.Serializable]
 public class D_Shot
 {
@@ -44,6 +43,10 @@ public class D_Shot
     /// </summary>
     public float[] shotTime;
 }
+
+/// <summary>
+/// 移動どくろ
+/// </summary>
 [System.Serializable]
 public class D_Move
 {
