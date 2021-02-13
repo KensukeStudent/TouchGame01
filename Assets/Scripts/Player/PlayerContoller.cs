@@ -413,6 +413,9 @@ public class PlayerContoller : MonoBehaviour
         //Goalアニメーションが終わったら遷移を開始します
         const float goalLag = 1.2f;
         ScreenTransition.Instance.TimeST(goalLag);
+
+        //ゲーム開始フラグを切ります
+        GameManager.Instance.SetGame(false);
     }
 
     private void OnTriggerStay2D(Collider2D col)

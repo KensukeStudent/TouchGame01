@@ -285,11 +285,12 @@ public class StageCreator : MonoBehaviour
     /// <param name="pos"></param>
     void SwitchJump(string tileNum, Vector2 pos, GameObject floor, int floorNum)
     {
-        string[] jObjNo = { "769", "2" };
+        string[] jObjNo = { "769", "2" ,"1282"};
 
         #region ジャンプ詳細
         //case : 769 回転
         //case :  2  一部
+        //case : 1282 一度のみアイテム付きジャンプ台
         #endregion
 
         if (!OnMozi(jObjNo, tileNum, 0)) InstantObj(jumpObj[SetNumber(jObjNo, tileNum)], pos, floor);

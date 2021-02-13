@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using UnityEngine.UI;
 using UnityEngine;
 
 /// <summary>
@@ -138,7 +137,7 @@ public class ScrollSelect : MonoBehaviour
             //ステージ表示するための情報の箱を取得
             var sc = sRt.GetComponent<StageContent>();
             //このステージに情報を入れます
-            sm.InitStageInfo(sc, i);
+            sm.SetStageValue(sc, i);
 
             //後入れでリストの中にStageContentをしまっていきます
             linkList.AddLast(sRt);
@@ -177,9 +176,12 @@ public class ScrollSelect : MonoBehaviour
             //位置をmaxInstant分右に移動させます
             var pos = stage.anchoredPosition.x + rCanvas.sizeDelta.x * maxInstant;
             stage.anchoredPosition = new Vector2(pos, 0);
+            
+            //(maxInstant + updateCounter)番目のリストを参照します
+            //表示する中身を変更します
+            ContentUpdate(stage, maxInstant + updateCounter);
 
             updateCounter++;
-            //(maxInstant + currentNo)番目のリストを参照します
 
             //余分に処理してしまったものを非表示にします
             SetActiveR(stage.gameObject);
@@ -203,7 +205,9 @@ public class ScrollSelect : MonoBehaviour
 
             updateCounter--;
 
-            //currentNo番目のリストを参照します
+            //updateCounter番目のリストを参照します
+            //表示する中身を変更します
+            ContentUpdate(stage, updateCounter);
 
             //余分に処理してしまったものを非表示にします
             SetActiveL(stage.gameObject);
@@ -227,6 +231,19 @@ public class ScrollSelect : MonoBehaviour
         //stageCount - maxInstant = currentNoが使いまわします数以上の値ならtrueにして戻します
         if (updateCounter >= stageCount - maxInstant) obj.SetActive(true);
     }
+
+    /// <summary>
+    /// 表示するステージの中身を更新します
+    /// </summary>
+    /// <param name="stage">変更するステージ</param>
+    private void ContentUpdate(RectTransform stage,int listNum)
+    {
+        var sc = stage.GetComponent<StageContent>();
+        var sm = GameObject.Find("StageManager").GetComponent<StageManager>();
+        //表示するステージを後進します
+        sm.SetStageValue(sc, listNum);
+    }
+
     #endregion
 
     #region ボタンスクロール

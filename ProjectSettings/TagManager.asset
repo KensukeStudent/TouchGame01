@@ -54,14 +54,14 @@ TagManager:
   - name: Back
     uniqueID: 1780777867
     locked: 0
-  - name: Deco
-    uniqueID: 3830082695
-    locked: 0
   - name: Jump
     uniqueID: 4181320631
     locked: 0
   - name: Wall
     uniqueID: 3433351645
+    locked: 0
+  - name: Deco
+    uniqueID: 3830082695
     locked: 0
   - name: Item
     uniqueID: 3663354743

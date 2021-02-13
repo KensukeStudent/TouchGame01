@@ -23,7 +23,7 @@ public class StageContent : MonoBehaviour
     /// ステージの達成度
     /// 0か1かでクリアしたかを判別
     /// </summary>
-    int[] clearFlag = new int[3];
+    int[] scoresFlag = new int[3];
     /// <summary>
     /// ハンコのスプライト画像
     /// </summary>
@@ -39,7 +39,7 @@ public class StageContent : MonoBehaviour
     /// <param name="sName">ステージ名</param>
     /// <param name="flag">クリアフラグ</param>
     /// <param name="back">ステージ背景</param>
-    public void SetContent(string sName,int[] flag,Sprite back,bool clear)
+    public void SetContent(string sName,int[] scoresflag, Sprite back,bool clear)
     {
         backGround = GetComponent<Image>();
 
@@ -48,10 +48,11 @@ public class StageContent : MonoBehaviour
         //ステージ背景
         backGround.sprite = back;
         //フラグを入れます
-        clearFlag = flag;
+        scoresFlag = scoresflag;
         //ステージハンコに画像を入れます
         for (int i = 0; i < scores.Length; i++) 
-            scores[i].sprite = hanko[clearFlag[i]];
+            scores[i].sprite = hanko[scoresFlag[i]];
+        //クリアフラグを入れます
         stageClear = clear;
     }
 }
