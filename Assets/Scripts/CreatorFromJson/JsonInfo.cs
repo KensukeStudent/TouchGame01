@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using LitJson;
-using UnityEngine;
-
-/// <summary>
+﻿/// <summary>
 /// Jsonから読み出しを行うクラス
 /// </summary>
 public class JsonInfo
@@ -16,34 +10,12 @@ public class JsonInfo
 
     public JsonInfo()
     {
-        Load("Block", ref blockList);
-        Load("EnemyState", ref dokuroList);
-        Load("JumpFloor", ref floorList);
-        Load("Hint", ref hintList);
-    }
+        var load = new SaveLoad();
 
-    /// <summary>
-    /// ステージごとのJsonを読み込み
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="fileName"></param>
-    /// <param name="data"></param>
-    void Load<T>(string fileName, ref T data) where T : class
-    {
-        try
-        {
-            using (StreamReader sr = new StreamReader(Application.dataPath + "/Resources/Json/"+ fileName + ".json"))
-            {
-                //ファイルの読み込み
-                string json = sr.ReadToEnd();
-                //読み込んだデータをオブジェクト化します
-                data = JsonMapper.ToObject<T>(json);
-            }
-        }
-        catch (Exception e)
-        {
-            Debug.LogError("データがありません。");
-        }
+        load.Load(load.BlockPath, ref blockList);
+        load.Load(load.DokuroPath, ref dokuroList);
+        load.Load(load.FloorPath, ref floorList);
+        load.Load(load.HintPath, ref hintList);
     }
 
     /// <summary>

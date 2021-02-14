@@ -10,12 +10,12 @@ public class StageManager : MonoBehaviour
     /// 現在の全ステージ数
     /// </summary>
     const int stageCount = 4;
-    
+
     /// <summary>
     /// 各ステージ背景
     /// </summary>
     Sprite[] backGroundMan = new Sprite[stageCount];
-    
+
     /// <summary>
     /// 各ステージの達成度
     /// </summary>
@@ -33,15 +33,51 @@ public class StageManager : MonoBehaviour
     private void Awake()
     {
         //各ステージ初期値を設定します ----->SaveDataから参照
-        InitStageSet();
+        InitData();
 
-        var save = new SaveData(this);
+        DontDestroyOnLoad(this);
     }
 
     /// <summary>
-    /// ステージの初期値をセットします
+    /// ゲーム開始時のデータの動き
     /// </summary>
-    void InitStageSet()
+    void InitData()
+    {
+        var load = new SaveLoad();
+
+        var data = new StageData();
+
+        //セーブデータがあるなら
+        if (load.Load(load.SavePath,ref data))
+        {
+            //ロードします
+            SetBack();
+            //セーブデータを参照します
+            SetData(data);
+        }
+        else
+        {
+            //無ければ初期データを作りセーブします
+            SetBack();
+            InitStageSet();
+            load.Save(this);
+        }
+    }
+
+    /// <summary>
+    /// データをロードします
+    /// </summary>
+    public void SetData(StageData data)
+    {
+        scoreMan = data.ScoreData;
+        scoreAnimMan = data.AnimData;
+        stageClearMan = data.ClearData;
+    }
+
+    /// <summary>
+    /// 背景を取得します
+    /// </summary>
+    void SetBack()
     {
         //ステージ背景のパス
         const string backPath = "StageBack/StageBack_";
@@ -52,12 +88,24 @@ public class StageManager : MonoBehaviour
             var sprite = Resources.Load<Sprite>(backPath + b);
             backGroundMan[b] = sprite;
         }
+    }
+
+    /// <summary>
+    /// ステージの初期値をセットします
+    /// </summary>
+    void InitStageSet()
+    {
+        //ここから下はセーブデータがなければ初めに作成
 
         //初期値未クリア値を宣言
         int[] initClear = { 0, 0, 0 };
+        bool[] animFlag = { false, false, false };
 
         //クリア管理に設定します
         for (int c = 0; c < scoreMan.Length; c++) scoreMan[c] = initClear;//saveData
+
+        //アニメーションフラグを管理します
+        for (int a = 0; a < scoreAnimMan.Length; a++) scoreAnimMan[a] = animFlag;//saveData
 
         //ステージクリアを初期値で設定します
         for (int s = 0; s < stageClearMan.Length; s++) stageClearMan[s] = false;//saveData

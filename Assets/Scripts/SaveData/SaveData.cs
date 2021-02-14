@@ -3,18 +3,32 @@ using System;
 using System.IO;
 using UnityEngine;
 
-public class SaveData : MonoBehaviour
+public class SaveLoad : MonoBehaviour
 {
+    #region FilePath
+    public string SavePath { get; } = "SaveData/save.json";
+    public string BlockPath { get; } = "Json/Block.json";
+    public string DokuroPath { get; } = "Json/EnemyState.json";
+    public string FloorPath { get; } = "Json/JumpFloor.json";
+    public string HintPath { get; } = "Json/Hint.json";
+    #endregion
+
     /// <summary>
     /// コンストラクター
     /// </summary>
+    public SaveLoad() { }
+
+    /// <summary>
+    /// コンストラクター(Save付き)
+    /// </summary>
     /// <param name="sm"></param>
-    public SaveData(StageManager sm)
+    public SaveLoad(StageManager sm)
     {
         if (Save(sm))
         {
             //save時の演出
             Debug.Log("セーブ完了");
+            return;
         }
     } 
 
@@ -24,23 +38,24 @@ public class SaveData : MonoBehaviour
     /// <param name="fileName">ファイル名</param>
     /// <param name="data">StageManagerクラス</param>
     /// <returns></returns>
-    bool Save(StageManager sm)
+    public bool Save(StageManager sm)
     {
         bool ret = false;
 
         //セーブ情報を入れます
         var data = new StageData(sm);
 
-        //データをJson化させます
-        string str = JsonMapper.ToJson(data);
-
-        const string dataPath = "save.json";
+        string dataPath = Application.dataPath + "/Resources/" + SavePath;
 
         try
         {
             //ファイルに書き込みします
             using (StreamWriter sw = new StreamWriter(dataPath))
             {
+                //データをJson化させます
+                string str = JsonMapper.ToJson(data);
+
+                //書き込み
                 sw.Write(str);
             }
             ret = true; //成功
@@ -56,6 +71,35 @@ public class SaveData : MonoBehaviour
 
         return ret;
     }
+
+    /// <summary>
+    /// ステージごとのJsonを読み込み
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="fileName"></param>
+    /// <param name="data"></param>
+    public bool Load<T>(string file,ref T data) where T : class
+    {
+        bool ret = false;
+
+        try
+        {
+            using (StreamReader sr = new StreamReader(Application.dataPath + "/Resources/" + file))
+            {
+                //ファイルの読み込み
+                string json = sr.ReadToEnd();
+                //読み込んだデータをオブジェクト化します
+                data = JsonMapper.ToObject<T>(json);
+                ret = true;
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("データがありません。");
+        }
+
+        return ret;
+    }   
 }
 
 /// <summary>
@@ -66,18 +110,23 @@ public class StageData
     /// <summary>
     /// 各ステージの達成度
     /// </summary>
-    public int[][] scoreData;
+    public int[][] ScoreData { private set; get; }
     /// <summary>
     /// 各ステージ達成時のアニメーション
     /// </summary>
-    public bool[][] animData;
+    public bool[][] AnimData { private set; get; }
     /// <summary>
     /// 各ステージのクリア
     /// </summary>
-    public bool[] clearData;
+    public bool[] ClearData { private set; get; }
 
     /// <summary>
     /// コンストラクター
+    /// </summary>
+    public StageData() { }
+
+    /// <summary>
+    /// コンストラクター(セーブ)
     /// </summary>
     /// <param name="sm">参照先のデータ</param>
     public StageData(StageManager sm)
@@ -90,9 +139,9 @@ public class StageData
     /// </summary>
     public void SetValue(StageManager sm)
     {
-        scoreData = sm.scoreMan;
-        animData = sm.scoreAnimMan;
-        clearData = sm.stageClearMan;
+        ScoreData = sm.scoreMan;
+        AnimData = sm.scoreAnimMan;
+        ClearData = sm.stageClearMan;
     }
 }
 
