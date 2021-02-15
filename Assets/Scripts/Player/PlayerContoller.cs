@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using UnityEngine;
 #pragma warning disable 649
 
@@ -17,6 +15,14 @@ public class PlayerContoller : MonoBehaviour
 {
     State currentState = State.nomal;
     const float moveSpeed = 10.0f;
+    /// <summary>
+    /// 敵を倒せるモードである
+    /// </summary>
+    public static bool AttackMode { private set; get; } = false;
+    /// <summary>
+    /// ジャンプ移動した手数
+    /// </summary>
+    int jumpCount = 0;
 
     /// <summary>
     /// 当たるべきレイヤーを指定します
@@ -43,10 +49,12 @@ public class PlayerContoller : MonoBehaviour
     /// ジャンプオブジェクトに当たっている
     /// </summary>
     GameObject hitJumpObj;
+    /// <summary>
+    /// ヒントオブジェクトに当たっている
+    /// </summary>
     GameObject hintObj;
-    [SerializeField] GameObject dustEffect;
 
-    public static bool AttackMode { private set; get; } = false;
+    [SerializeField] GameObject dustEffect;
 
     Animator anim;
 
@@ -206,6 +214,12 @@ public class PlayerContoller : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
+            //ジャンプ手数を1増やします
+            jumpCount++;
+            //テキストを同期させます
+
+
+
             //ヒットした物を入れます
             moveObj = hit.transform.gameObject;
 
@@ -406,6 +420,10 @@ public class PlayerContoller : MonoBehaviour
         currentState = State.goal;
 
         Destroy(col.gameObject);
+
+        //ステージの状態を更新します
+        var sm = GameObject.Find("StageManager").GetComponent<StageManager>();
+        sm.StageUpdate(GameManager.Instance.StageNo, jumpCount);
 
         //sceneステートを変更します
         ScreenTransition.Instance.ChangeState(SceneState.gameOverMode);

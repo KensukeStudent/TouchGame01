@@ -65,12 +65,13 @@ public class ScrollSelect : MonoBehaviour
     {
         rt = GetComponent<RectTransform>();
         var sm = GameObject.Find("StageManager").GetComponent<StageManager>();
-        
+        var scm = GameObject.Find("StageContentManager").GetComponent<StageContentManager>();
+
         //contentサイズの指定
         InitSizeContent();
         
         //stageSelectサイズの指定
-        InstantStage(sm);
+        InstantStage(sm, scm);
        
         //ボタンのスクロール位置の記憶
         InitScrollPos();
@@ -113,7 +114,7 @@ public class ScrollSelect : MonoBehaviour
     /// <summary>
     /// ステージを生成分、生成します
     /// </summary>
-    void InstantStage(StageManager sm)
+    void InstantStage(StageManager sm, StageContentManager scm)
     {
         for (int i = 0; i < maxInstant; i++)
         {
@@ -138,6 +139,9 @@ public class ScrollSelect : MonoBehaviour
             var sc = sRt.GetComponent<StageContent>();
             //このステージに情報を入れます
             sm.SetStageValue(sc, i);
+
+            //このステージをStageContentリストに加えます
+            scm.AddSC(sc);
 
             //後入れでリストの中にStageContentをしまっていきます
             linkList.AddLast(sRt);

@@ -95,7 +95,7 @@ public class SaveLoad : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.LogError("データがありません。");
+            Debug.Log("データを新しく作成します");
         }
 
         return ret;
@@ -114,12 +114,15 @@ public class StageData
     /// <summary>
     /// 各ステージ達成時のアニメーション
     /// </summary>
-    public bool[][] AnimData { private set; get; }
+    public bool[][] AnimData_S { private set; get; }
     /// <summary>
     /// 各ステージのクリア
     /// </summary>
     public bool[] ClearData { private set; get; }
-
+    /// <summary>
+    /// 各ステージのアニメーション
+    /// </summary>
+    public bool[] AnimData_C { private set; get; }
     /// <summary>
     /// コンストラクター
     /// </summary>
@@ -139,9 +142,10 @@ public class StageData
     /// </summary>
     public void SetValue(StageManager sm)
     {
-        ScoreData = sm.scoreMan;
-        AnimData = sm.scoreAnimMan;
-        ClearData = sm.stageClearMan;
+        ScoreData = sm.ScoreMan;
+        AnimData_S = sm.ScoreAnimMan;
+        ClearData = sm.StageClearMan;
+        AnimData_C = sm.ClearAnimMan;
     }
 }
 

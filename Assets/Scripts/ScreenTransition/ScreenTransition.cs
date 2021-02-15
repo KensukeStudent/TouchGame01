@@ -521,8 +521,19 @@ public class ScreenTransition : MonoBehaviour
         {
             //ステージをクリアした際に呼ばれます
             case SceneState.stageSelect:
+                //位置をセレクトしたステージ画面にします
+
+
                 //やりこみ要素でクリアしたものがあれば処理開始 ----> 別のスクリプトから呼び出します
-                //終わり次第ステート変更します
+                var smc = GameObject.Find("StageContentManager").GetComponent<StageContentManager>();
+                smc.AnimGO();
+
+                //アニメーションが終了後セーブします
+                var sm = GameObject.Find("StageManager").GetComponent<StageManager>();
+                var save = new SaveLoad(sm);
+
+                //終わり次第ステージを選択、クリック可能にします
+
 
                 break;
 

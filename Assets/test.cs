@@ -20,32 +20,28 @@ public class test : MonoBehaviour
 
     private void Start()
     {
-        Instant(scoreData, 0);
+        //Instant(scoreData, 0);
 
-        Instant(animData, true);
+        //Instant(animData, true);
 
 
-        int[][] a = scoreData;
-        bool[][] b = animData;
+        //int[][] a = scoreData;
+        //bool[][] b = animData;
 
-        List(a);
-        List(b);
+        //List(a);
+        //List(b);
 
-        //for (int i = 0; i < scoreData.Length; i++)
-        //{
-        //    for (int j = 0; j < scoreData[i].Length; j++)
-        //    {
-        //        Debug.Log(a[i][j]);
-        //    }
-        //}
+        StartCoroutine(Time());
+    }
 
-        //for (int i = 0; i < animData.Length; i++)
-        //{
-        //    for (int j = 0; j < animData[i].Length; j++)
-        //    {
-        //        Debug.Log(b[i][j]);
-        //    }
-        //}
+    IEnumerator Time()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            yield return new WaitForSeconds(3f);
+            Debug.Log("経過");
+        }
+        Debug.Log("おわり");
     }
 
     void Instant<T>(T[][] s,T d) where T : struct

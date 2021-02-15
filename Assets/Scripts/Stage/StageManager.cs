@@ -12,23 +12,39 @@ public class StageManager : MonoBehaviour
     const int stageCount = 4;
 
     /// <summary>
+    /// 各ステージの手数
+    /// </summary>
+    readonly int[,] jumpCount = new int[stageCount, 3]
+    {
+        { 100, 100, 100 },
+        { 0, 0, 0 },
+        { 0, 0, 0 },
+        { 0, 0, 0 }
+    };
+
+    /// <summary>
     /// 各ステージ背景
     /// </summary>
-    Sprite[] backGroundMan = new Sprite[stageCount];
+    public Sprite[] BackGroundMan { private set; get; } = new Sprite[stageCount];
 
     /// <summary>
     /// 各ステージの達成度
     /// </summary>
-    public int[][] scoreMan { private set; get; } = new int[stageCount][];//saveData記憶
+    public int[][] ScoreMan { private set; get; } = new int[stageCount][];//saveData記憶
     /// <summary>
     /// 各ステージ達成時のアニメーション
     /// </summary>
-    public bool[][] scoreAnimMan { private set; get; } = new bool[stageCount][];//saveData記憶(上が1(クリア)でanimがfalseなら再生します)
+    public bool[][] ScoreAnimMan { private set; get; } = new bool[stageCount][];//saveData記憶(上が1(クリア)でanimがfalseなら再生します)
 
     /// <summary>
     /// 各ステージのクリア
     /// </summary>
-    public bool[] stageClearMan { private set; get; } = new bool[stageCount];//saveData記憶
+    public bool[] StageClearMan { private set; get; } = new bool[stageCount];//saveData記憶
+
+    /// <summary>
+    /// 各ステージのクリアアニメーション
+    /// </summary>
+    public bool[] ClearAnimMan { private set; get; } = new bool[stageCount];
 
     private void Awake()
     {
@@ -38,6 +54,7 @@ public class StageManager : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
+    #region データ管理
     /// <summary>
     /// ゲーム開始時のデータの動き
     /// </summary>
@@ -69,9 +86,10 @@ public class StageManager : MonoBehaviour
     /// </summary>
     public void SetData(StageData data)
     {
-        scoreMan = data.ScoreData;
-        scoreAnimMan = data.AnimData;
-        stageClearMan = data.ClearData;
+        ScoreMan = data.ScoreData;
+        ScoreAnimMan = data.AnimData_S;
+        StageClearMan = data.ClearData;
+        ClearAnimMan = data.AnimData_C;
     }
 
     /// <summary>
@@ -82,11 +100,11 @@ public class StageManager : MonoBehaviour
         //ステージ背景のパス
         const string backPath = "StageBack/StageBack_";
 
-        for (int b = 0; b < backGroundMan.Length; b++)
+        for (int b = 0; b < BackGroundMan.Length; b++)
         {
             //パスから背景画像を取得し入れます
             var sprite = Resources.Load<Sprite>(backPath + b);
-            backGroundMan[b] = sprite;
+            BackGroundMan[b] = sprite;
         }
     }
 
@@ -99,17 +117,59 @@ public class StageManager : MonoBehaviour
 
         //初期値未クリア値を宣言
         int[] initClear = { 0, 0, 0 };
-        bool[] animFlag = { false, false, false };
+        bool[] flag = { false, false, false };
 
         //クリア管理に設定します
-        for (int c = 0; c < scoreMan.Length; c++) scoreMan[c] = initClear;//saveData
+        for (int c = 0; c < ScoreMan.Length; c++) ScoreMan[c] = initClear;//saveData
 
         //アニメーションフラグを管理します
-        for (int a = 0; a < scoreAnimMan.Length; a++) scoreAnimMan[a] = animFlag;//saveData
+        for (int a = 0; a < ScoreAnimMan.Length; a++) ScoreAnimMan[a] = flag;//saveData
 
         //ステージクリアを初期値で設定します
-        for (int s = 0; s < stageClearMan.Length; s++) stageClearMan[s] = false;//saveData
+        for (int s = 0; s < StageClearMan.Length; s++)
+        {
+            StageClearMan[s] = false;//saveData
+            ClearAnimMan[s] = false;//saveData
+        }
     }
+
+    /// <summary>
+    /// ステージの進行度を更新します
+    /// </summary>
+    public void StageUpdate(int stage, int jumpSum)
+    {
+        //指定のjumpCount以下ならscoreを更新します
+        for (int i = 0; i < jumpCount.GetLength(1); i++)
+        {
+            if (jumpSum <= jumpCount[stage, i]) ScoreMan[stage][i] = 1;
+        }
+
+        StageClearMan[stage] = true;
+    }
+
+    /// <summary>
+    /// アニメーションを再生したフラグを切ります
+    /// </summary>
+    /// <param name="stageNo">現在のStage番号</param>
+    /// <param name="anim_S">anim -> stageAnim</param>
+    /// <param name="anim_C">anim -> clearAnim</param>
+    public void SetAnimFlag_S(int stageNo,bool[] anim_S)
+    {
+        ScoreAnimMan[stageNo] = anim_S;
+    }
+
+    /// <summary>
+    /// アニメーションを再生したフラグを切ります
+    /// </summary>
+    /// <param name="stageNo">現在のStage番号</param>
+    /// <param name="anim_S">anim -> stageAnim</param>
+    /// <param name="anim_C">anim -> clearAnim</param>
+    public void SetAnimFlag_C(int stageNo, bool anim_C)
+    {
+        ClearAnimMan[stageNo] = anim_C;
+    }
+
+    #endregion
 
     /// <summary>
     /// 各ステージに情報を生成時に入れます
@@ -119,7 +179,7 @@ public class StageManager : MonoBehaviour
         //Stage名を数字の値にします
         var stageNo = "Stage" + (num + 1);
         //ステージ名、そのステージのスコア、背景、クリア済みかの情報を入れます
-        sc.SetContent(stageNo, scoreMan[num], backGroundMan[num], stageClearMan[num]);
+        sc.SetContent(stageNo, this);
 
         //Buttonスクリプトを持っている子要素にアクセスします
         var b = sc.transform.Find("Button").GetComponent<Button>();
