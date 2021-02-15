@@ -169,6 +169,20 @@ public class StageManager : MonoBehaviour
         ClearAnimMan[stageNo] = anim_C;
     }
 
+    /// <summary>
+    /// ステージのアニメーションが終わった後に処理します
+    /// </summary>
+    public void StageAnimFinish()
+    {
+        //アニメーションが終了後セーブします
+        var sm = GameObject.Find("StageManager").GetComponent<StageManager>();
+        var save = new SaveLoad(sm);
+
+        ////終わり次第ステージを選択、クリック可能にします----->アニメシーンのラグを作成
+        var scroll = GameObject.Find("Content").GetComponent<ScrollSelect>();
+        scroll.SetSelect();
+    }
+
     #endregion
 
     /// <summary>
@@ -195,6 +209,8 @@ public class StageManager : MonoBehaviour
         GameManager.Instance.StageSet(stageNo);
 
         //スクールやスクロールボタンフラグを消して操作できなくします
+        var scroll = GameObject.Find("Content").GetComponent<ScrollSelect>();
+        scroll.SetSelect();
 
         //シーン遷移を開始します
         ScreenTransition.Instance.TimeST(0);

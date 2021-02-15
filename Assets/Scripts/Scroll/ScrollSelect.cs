@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
 /// <summary>
@@ -61,11 +62,24 @@ public class ScrollSelect : MonoBehaviour
     /// </summary>
     List<float> sPos = new List<float>();
 
+    /// <summary>
+    /// ステージ選択されたら動作させ無くします
+    /// </summary>
+    static bool selectGO = false;
+
+    /// <summary>
+    /// 透明な画像
+    /// </summary>
+    [SerializeField] Image empty;
+
     private void Start()
     {
         rt = GetComponent<RectTransform>();
         var sm = GameObject.Find("StageManager").GetComponent<StageManager>();
         var scm = GameObject.Find("StageContentManager").GetComponent<StageContentManager>();
+
+        //空の画像UIImageを取得
+        empty = GameObject.Find("Empty").GetComponent<Image>();
 
         //contentサイズの指定
         InitSizeContent();
@@ -75,10 +89,16 @@ public class ScrollSelect : MonoBehaviour
        
         //ボタンのスクロール位置の記憶
         InitScrollPos();
+
+        //初期位置を指定します
+        InitScrollNo();
     }
 
     private void Update()
     {
+        //ステージが選択されたら処理しません
+        if (selectGO) return;
+
         //scrollNoを更新します
         ScrollNoUpdate();
 
@@ -156,6 +176,18 @@ public class ScrollSelect : MonoBehaviour
         for (int i = 0; i < stageCount; i++)
             sPos.Add(rCanvas.sizeDelta.x * i);
     }
+
+    /// <summary>
+    /// 初期ポジションを指定します
+    /// </summary>
+    void InitScrollNo()
+    {
+        //現在のステージ番号
+        var nowStage = GameManager.Instance.StageNo + 1;
+
+        scrollNo = nowStage;
+    }
+
     #endregion
 
     #region ステージの更新
@@ -244,7 +276,7 @@ public class ScrollSelect : MonoBehaviour
     {
         var sc = stage.GetComponent<StageContent>();
         var sm = GameObject.Find("StageManager").GetComponent<StageManager>();
-        //表示するステージを後進します
+        //表示するステージを更新します
         sm.SetStageValue(sc, listNum);
     }
 
@@ -388,4 +420,16 @@ public class ScrollSelect : MonoBehaviour
     }
 
     #endregion
+
+    /// <summary>
+    /// ステージ選択後動作させなくさせます
+    /// </summary>
+    public void SetSelect()
+    {
+        //selectGOの状態を逆にします
+        selectGO = !selectGO;
+
+        //画面に透明な画像を貼りクリックできなくさせます
+        empty.enabled = selectGO;
+    }
 }

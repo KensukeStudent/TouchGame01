@@ -32,9 +32,23 @@ public class test : MonoBehaviour
         //List(b);
 
         StartCoroutine(Time());
+
+        Debug.Log(this.enabled);
     }
 
     IEnumerator Time()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            yield return new WaitForSeconds(3f);
+            Debug.Log("経過");
+        }
+        Debug.Log("おわり");
+
+        StartCoroutine(Time2());
+    }
+
+    IEnumerator Time2()
     {
         for (int i = 0; i < 3; i++)
         {

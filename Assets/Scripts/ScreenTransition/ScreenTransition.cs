@@ -521,39 +521,44 @@ public class ScreenTransition : MonoBehaviour
         {
             //ステージをクリアした際に呼ばれます
             case SceneState.stageSelect:
-                //位置をセレクトしたステージ画面にします
 
+                #region ステージクリア後にやること
+                //やりこみ要素でクリアしたものがあれば処理開始
+                //              ↓
+                //アニメーションが終了後セーブします
+                //              ↓
+                //終わり次第ステージを選択、クリック可能にします
+                #endregion
 
-                //やりこみ要素でクリアしたものがあれば処理開始 ----> 別のスクリプトから呼び出します
+                //やりこみ要素でクリアしたものがあれば処理開始
                 var smc = GameObject.Find("StageContentManager").GetComponent<StageContentManager>();
                 smc.AnimGO();
-
-                //アニメーションが終了後セーブします
-                var sm = GameObject.Find("StageManager").GetComponent<StageManager>();
-                var save = new SaveLoad(sm);
-
-                //終わり次第ステージを選択、クリック可能にします
-
 
                 break;
 
             case SceneState.selectEnd:
+
                 //オートで遷移を呼びます
                 TimeST(tLag);
+                
                 break;
 
             case SceneState.touch:
+                
                 //クリック可能フラグを立てます
                 TouchClick = true;
+                
                 break;
 
             case SceneState.touchEnd:
+                
                 //Stageフロアを隠していたUIを非表示にします
                 var hideUI = GameObject.Find("StageBacCanvas");
                 hideUI.SetActive(false);
 
                 //オートで遷移を呼びます
                 TimeST(tLag);
+                
                 break;
 
             case SceneState.gameMode:
@@ -564,12 +569,14 @@ public class ScreenTransition : MonoBehaviour
                 break;
 
             case SceneState.reState:
+                
                 //オートで遷移を呼びます
                 TimeST(tLag);
 
                 //Scene遷移
                 const string stage = "StageSelect";
                 ChangeScene(stage);
+                
                 break;
         }
     }

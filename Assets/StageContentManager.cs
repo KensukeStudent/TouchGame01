@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -31,13 +30,7 @@ public class StageContentManager : MonoBehaviour
 
         //※セーブ前に必ずここを処理します
 
-        //ハンコ->比較してflag = 1でanimがfalseなら再生します
-        StartCoroutine(sc.AnimLag_Hanko(sm.ScoreAnimMan[stageNo], sm, stageNo));
-
-        //ステージクリア-> flagがfalseならアニメーションを再生します
-        StartCoroutine(sc.AnimLag_Clear(sm.ClearAnimMan[stageNo], sm, stageNo));
-
-        //このステージのアニメーションフラグを更新します
-
+        //ハンコとクリアのアニメーションを再生します
+        sc.SetAnim(stageNo, sm.ScoreAnimMan[stageNo], sm.ClearAnimMan[stageNo], sm);
     }
 }

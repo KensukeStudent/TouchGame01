@@ -51,12 +51,12 @@ public class StageContent : MonoBehaviour
     /// <param name="sName">ステージ名</param>
     /// <param name="flag">クリアフラグ</param>
     /// <param name="back">ステージ背景</param>
-    public void SetContent(string sName,StageManager sm)
+    public void SetContent(string sName, StageManager sm)
     {
         backGround = GetComponent<Image>();
 
         var stageNo = int.Parse(Regex.Match(sName, "[0-9]+").Groups[0].Value) - 1;
-
+        Debug.Log(stageNo);
         //ステージ名を入れます
         stageName.text = sName;
         //ステージ背景
@@ -69,7 +69,8 @@ public class StageContent : MonoBehaviour
         {
             //アニメーションが再生されているなら
             //画像を入れます
-            if(sm.ScoreAnimMan[stageNo][i]) scores[i].sprite = hanko[scoresFlag[i]];
+            if (sm.ScoreAnimMan[stageNo][i]) scores[i].sprite = hanko[scoresFlag[i]];
+            else scores[i].sprite = hanko[0];
         }
 
         //アニメーションが再生されているなら
@@ -78,10 +79,21 @@ public class StageContent : MonoBehaviour
     }
 
     /// <summary>
-    /// アニメーション再生のタイムラグを設定します
+    /// ステージクリア後のアニメーションを再生します
     /// </summary>
-    /// <returns></returns>
-    public IEnumerator AnimLag_Hanko(bool[] anim_S,StageManager sm,int stageNo)
+    /// <param name="stageNo">現在のステージ番号</param>
+    /// <param name="anim_S">ScoreAnim</param>
+    /// <param name="anim_C">ClearAnim</param>
+    public void SetAnim(int stageNo, bool[] anim_S, bool anim_C, StageManager sm)
+    {
+        StartCoroutine(AnimLag_Hanko(stageNo, anim_S, anim_C, sm));
+    }
+
+    /// <summary>
+    /// Hankoアニメシーンをタイムラグありで再生します
+    /// </summary>
+    /// ※flag = 1でanimがfalseなら再生します
+    IEnumerator AnimLag_Hanko(int stageNo, bool[] anim_S, bool anim_C, StageManager sm)
     {
         bool[] flag = anim_S;
 
@@ -105,13 +117,18 @@ public class StageContent : MonoBehaviour
 
         //smのscoreにフラグを入れます
         sm.SetAnimFlag_S(stageNo, flag);
+
+
+        //Hankoアニメーション終了後Clearアニメシーンを再生します
+        StartCoroutine(AnimLag_Clear(stageNo, anim_C, sm));
+
     }
 
     /// <summary>
-    /// アニメーション再生のタイムラグを設定します
+    /// Clearアニメシーンを再生します
     /// </summary>
-    /// <returns></returns>
-    public IEnumerator AnimLag_Clear(bool anim_C, StageManager sm, int stageNo)
+    //flagがfalseならアニメーションを再生します
+    IEnumerator AnimLag_Clear(int stageNo, bool anim_C, StageManager sm)
     {
         bool flag = anim_C;
 
@@ -132,5 +149,9 @@ public class StageContent : MonoBehaviour
 
         //smのclearにflagを入れます
         sm.SetAnimFlag_C(stageNo,flag);
+
+        //全てのアニメーション終了後
+        //セーブ,画面操作可能にします
+        sm.StageAnimFinish();
     }
 }
