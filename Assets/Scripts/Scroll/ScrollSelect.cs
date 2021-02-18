@@ -79,7 +79,10 @@ public class ScrollSelect : MonoBehaviour
         var scm = GameObject.Find("StageContentManager").GetComponent<StageContentManager>();
 
         //空の画像UIImageを取得
-        empty = GameObject.Find("Empty").GetComponent<Image>();
+        empty = GameObject.Find("ClickStopBack").GetComponent<Image>();
+
+        //画像表示はselectGOに依存します
+        empty.enabled = selectGO;
 
         //contentサイズの指定
         InitSizeContent();
@@ -147,6 +150,9 @@ public class ScrollSelect : MonoBehaviour
 
             //親指定
             sRt.transform.SetParent(transform);
+
+            //スケールを初期化します
+            sRt.localScale = new Vector3(1, 1, 1);
 
             //画面の中央に生成します
             var sPos = sRt.anchoredPosition;

@@ -142,6 +142,7 @@ public class StageCreator : MonoBehaviour
         stageID = string.Format("stage{0}", fileNum + 1);
 
         ji = new JsonInfo();
+        ji.MapJson();
 
         tileList = new TileMap[]
         {

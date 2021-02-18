@@ -11,6 +11,7 @@ public class SaveLoad : MonoBehaviour
     public string DokuroPath { get; } = "Json/EnemyState.json";
     public string FloorPath { get; } = "Json/JumpFloor.json";
     public string HintPath { get; } = "Json/Hint.json";
+    public string ScenarioPath { get; } = "Scenario/Story.json";
     #endregion
 
     /// <summary>

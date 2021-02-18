@@ -3,12 +3,26 @@
 /// </summary>
 public class JsonInfo
 {
+    #region マップ生成用Json
     public BlockList blockList;
     public DokuroList dokuroList;
     public JumpFloorList floorList;
     public HintList hintList;
+    #endregion
 
-    public JsonInfo()
+    #region シナリオ用Json
+    public ScenarioList scenarioList;
+    #endregion
+
+    /// <summary>
+    /// マップ生成コンストラクター
+    /// </summary>
+    public JsonInfo() { }
+
+    /// <summary>
+    /// マップ生成読み出し用
+    /// </summary>
+    public void MapJson()
     {
         var load = new SaveLoad();
 
@@ -16,6 +30,29 @@ public class JsonInfo
         load.Load(load.DokuroPath, ref dokuroList);
         load.Load(load.FloorPath, ref floorList);
         load.Load(load.HintPath, ref hintList);
+    }
+
+    /// <summary>
+    /// シナリオを読み出し用
+    /// </summary>
+    public void ScenarioJson()
+    {
+        var load = new SaveLoad();
+        load.Load(load.ScenarioPath, ref scenarioList);
+    }
+
+    /// <summary>
+    /// シナリオに台本を渡すクラス
+    /// </summary>
+    /// <param name="tm"></param>
+    /// <param name="storyId"></param>
+    public void SetScenario(ScenarioReader sr,string storyId)
+    {
+        //格納されたリストを取得
+        var s = ID.GetDataNo(scenarioList.stories, storyId).scenario;
+
+        //srのリストにシナリオを入れます
+        sr.SetArray(s);
     }
 
     /// <summary>

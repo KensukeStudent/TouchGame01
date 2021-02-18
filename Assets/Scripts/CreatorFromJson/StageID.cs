@@ -15,10 +15,10 @@ public class ID
     /// <typeparam name="T">IDクラスを継承しているJsonのクラスT</typeparam>
     /// <param name="stageId">現在のstage番号</param>
     /// <param name="data">Jsonクラス</param>
-    public static T GetDataNo<T>(List<T> data, string stageId) where T : ID
+    public static T GetDataNo<T>(List<T> data, string dataId) where T : ID
     {
         //ステージIDのリスト配列番号を取得
-        var dataNo = data.Find(dt => dt.id == stageId);
+        var dataNo = data.Find(dt => dt.id == dataId);
 
         if (dataNo == null)
         {

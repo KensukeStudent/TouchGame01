@@ -1,6 +1,15 @@
 ﻿using System.Collections.Generic;
 
 /// <summary>
+/// シナリオを格納
+/// </summary>
+[System.Serializable]
+public class ScenarioList
+{
+    public List<Scenario> stories = new List<Scenario>();
+}
+
+/// <summary>
 /// ブロックの説明を格納
 /// </summary>
 [System.Serializable]

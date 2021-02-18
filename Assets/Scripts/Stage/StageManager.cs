@@ -14,12 +14,12 @@ public class StageManager : MonoBehaviour
     /// <summary>
     /// 各ステージの手数
     /// </summary>
-    readonly int[,] jumpCount = new int[stageCount, 3]
+    readonly int[,] jumpCount = new int[stageCount, 3] //全部がクリアしたらバグる---->ScoreManがすべてクリア状態になる(ことがあった)
     {
-        { 100, 100, 100 },
-        { 0, 0, 0 },
-        { 0, 0, 0 },
-        { 0, 0, 0 }
+        { 50, 35, 28 },
+        { 50, 35, 28 },
+        { 50, 35, 28 },
+        { 50, 35, 28 }
     };
 
     /// <summary>
@@ -52,9 +52,12 @@ public class StageManager : MonoBehaviour
         InitData();
 
         DontDestroyOnLoad(this);
+
+        //StageUpdate(0, 25);
     }
 
-    #region データ管理
+    #region データ管理・更新
+    
     /// <summary>
     /// ゲーム開始時のデータの動き
     /// </summary>
@@ -139,13 +142,65 @@ public class StageManager : MonoBehaviour
     public void StageUpdate(int stage, int jumpSum)
     {
         //指定のjumpCount以下ならscoreを更新します
+
+        int score0 = ScoreMan[stage][0];
+        int score1 = ScoreMan[stage][1];
+        int score2 = ScoreMan[stage][2];
+
+        int[] scores = { score0, score1, score2 };
+
         for (int i = 0; i < jumpCount.GetLength(1); i++)
         {
-            if (jumpSum <= jumpCount[stage, i]) ScoreMan[stage][i] = 1;
+            if (jumpSum <= jumpCount[stage, i] && !ScoreAnimMan[stage][i])
+            {
+                scores[i] = 1;
+            }
         }
 
-        StageClearMan[stage] = true;
+        ScoreMan[stage] = scores;
+
+        if (!StageClearMan[stage]) StageClearMan[stage] = true;
     }
+   
+    #endregion
+
+    #region ステージに情報の割り当て
+
+    /// <summary>
+    /// 各ステージに情報を生成時に入れます
+    /// </summary>
+    public void SetStageValue(StageContent sc, int num)
+    {
+        //Stage名を数字の値にします
+        var stageNo = "Stage" + (num + 1);
+        //ステージ名、そのステージのスコア、背景、クリア済みかの情報を入れます
+        sc.SetContent(stageNo, this);
+
+        //Buttonスクリプトを持っている子要素にアクセスします
+        var b = sc.transform.Find("Button").GetComponent<Button>();
+
+        b.onClick.RemoveAllListeners();//ボタンに何回も関数を入れないようにするため削除処理を入れます
+        b.onClick.AddListener(() => StageScene(num));
+    }
+
+    /// <summary>
+    /// 各ステージの要素をButtonに割り当てます
+    /// </summary>
+    void StageScene(int stageNo)
+    {
+        //生成するステージを指定します
+        GameManager.Instance.StageSet(stageNo);
+
+        //スクールやスクロールボタンフラグを消して操作できなくします
+        var scroll = GameObject.Find("Content").GetComponent<ScrollSelect>();
+        scroll.SetSelect();
+        //シーン遷移を開始します
+        ScreenTransition.Instance.TimeST(0);
+    }
+
+    #endregion
+
+    #region クリアアニメーション管理
 
     /// <summary>
     /// アニメーションを再生したフラグを切ります
@@ -153,7 +208,7 @@ public class StageManager : MonoBehaviour
     /// <param name="stageNo">現在のStage番号</param>
     /// <param name="anim_S">anim -> stageAnim</param>
     /// <param name="anim_C">anim -> clearAnim</param>
-    public void SetAnimFlag_S(int stageNo,bool[] anim_S)
+    public void SetAnimFlag_S(int stageNo, bool[] anim_S)
     {
         ScoreAnimMan[stageNo] = anim_S;
     }
@@ -184,35 +239,4 @@ public class StageManager : MonoBehaviour
     }
 
     #endregion
-
-    /// <summary>
-    /// 各ステージに情報を生成時に入れます
-    /// </summary>
-    public void SetStageValue(StageContent sc, int num)
-    {
-        //Stage名を数字の値にします
-        var stageNo = "Stage" + (num + 1);
-        //ステージ名、そのステージのスコア、背景、クリア済みかの情報を入れます
-        sc.SetContent(stageNo, this);
-
-        //Buttonスクリプトを持っている子要素にアクセスします
-        var b = sc.transform.Find("Button").GetComponent<Button>();
-        b.onClick.AddListener(() => StageScene(num));
-    }
-
-    /// <summary>
-    /// 各ステージの要素をButtonに割り当てます
-    /// </summary>
-    void StageScene(int stageNo)
-    {
-        //生成するステージを指定します
-        GameManager.Instance.StageSet(stageNo);
-
-        //スクールやスクロールボタンフラグを消して操作できなくします
-        var scroll = GameObject.Find("Content").GetComponent<ScrollSelect>();
-        scroll.SetSelect();
-
-        //シーン遷移を開始します
-        ScreenTransition.Instance.TimeST(0);
-    }
 }

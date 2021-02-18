@@ -55,8 +55,9 @@ public class StageContent : MonoBehaviour
     {
         backGround = GetComponent<Image>();
 
+        //ステージ番号を数値化します
         var stageNo = int.Parse(Regex.Match(sName, "[0-9]+").Groups[0].Value) - 1;
-        Debug.Log(stageNo);
+
         //ステージ名を入れます
         stageName.text = sName;
         //ステージ背景
@@ -95,7 +96,11 @@ public class StageContent : MonoBehaviour
     /// ※flag = 1でanimがfalseなら再生します
     IEnumerator AnimLag_Hanko(int stageNo, bool[] anim_S, bool anim_C, StageManager sm)
     {
-        bool[] flag = anim_S;
+        bool flaf0 = anim_S[0];
+        bool flaf1 = anim_S[1];
+        bool flaf2 = anim_S[2];
+
+        bool[] flag = { flaf0, flaf1, flaf2 };
 
         //ステージハンコに画像を入れます
         for (int i = 0; i < scores.Length; i++)
@@ -105,7 +110,8 @@ public class StageContent : MonoBehaviour
             {
                 flag[i] = true;
                 //アニメーション再生
-
+                var hankoAnim = GameObject.Find("AnimCatMan").GetComponent<CreateAnimCats>();
+                hankoAnim.InstantCats(scores[i].transform);
 
                 //インターバルをつけます
                 yield return new WaitForSeconds(1);
