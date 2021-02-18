@@ -96,7 +96,7 @@ public class EnemyRotate : MonoBehaviour
         //現在位置から中心軸までの距離を求める
         Vector2 relativePos = transform.position - pivot.transform.position;
         var rad = Mathf.Atan2(relativePos.y, relativePos.x);
-        //アングルに求めた角度を代入する
+        //アングルに求めた弧を代入する
         angle = rad;
         relativePos.y = Mathf.Sin(angle) * radius;
         relativePos.x = Mathf.Cos(angle) * radius;

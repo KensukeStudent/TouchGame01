@@ -677,6 +677,7 @@ MonoBehaviour:
   seAud: {fileID: 564455503}
   bgmClip:
   - {fileID: 8300000, guid: 4b9f31b49be49eb4093bb8d580aed3f3, type: 3}
+  - {fileID: 8300000, guid: 9225ecf9e9d79df47a62dea540498b82, type: 3}
   seClip:
   - {fileID: 8300000, guid: 1be8158cefccbe64db8ed93690057913, type: 3}
   nextClick: {fileID: 1993013439}

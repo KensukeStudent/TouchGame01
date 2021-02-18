@@ -111,7 +111,10 @@ public class StageContent : MonoBehaviour
                 flag[i] = true;
                 //アニメーション再生
                 var hankoAnim = GameObject.Find("AnimCatMan").GetComponent<CreateAnimCats>();
+                //円型に広がるように猫をアニメーションさせます
                 hankoAnim.InstantCats(scores[i].transform);
+                var aud = GetComponent<AudioSource>();
+                aud.Play();
 
                 //インターバルをつけます
                 yield return new WaitForSeconds(1);

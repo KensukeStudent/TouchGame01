@@ -51,13 +51,14 @@ public class AnimCat : MonoBehaviour
         image = GetComponent<Image>();
 
         //どの方向へ移動するかを決めます
-        MoveDirection();
+        //MoveDirection();
     }
 
     private void Update()
     {
         //ハンコのアニメーション
-        HankoAnim();
+        //HankoAnim();
+        AroundMove();
     }
 
     /// <summary>
@@ -93,10 +94,14 @@ public class AnimCat : MonoBehaviour
     /// <param name="p">position</param> 
     public void SetInit(float a, float r,Vector2 p)
     {
+        //回転
         angle = a;
         radius = r;
+        //位置
         pos = p;
     }
+
+    float r = 10;
 
     /// <summary>
     /// 周回の仕方
@@ -105,16 +110,22 @@ public class AnimCat : MonoBehaviour
     /// <param name="radius"></param>
     void AroundMove()
     {
-        var rad = angle * Time.timeSinceLevelLoad;
+        //角度方向に生成された初期位置からプラスして回転させていきます
+        var rad = (angle * Mathf.Deg2Rad) + Time.timeSinceLevelLoad;
 
         //x軸y軸に移動先を与えます
+        //度数法から弧度法に変換します
         var relativePos = new Vector2(
-            Mathf.Cos(rad) * radius, //周回する半径を拡大していかせます
-            Mathf.Sin(rad) * radius);
+            Mathf.Cos(rad) * r, //周回する半径を拡大していかせます
+            Mathf.Sin(rad) * r);
 
         //位置を代入
         rt.anchoredPosition = relativePos;
+
+       if(r < radius)  r += Time.deltaTime * 10;
     }
+
+    #region 一方向に飛びます
 
     /// <summary>
     /// 目的座標に応じて移動速度の符号を変更します
@@ -179,4 +190,6 @@ public class AnimCat : MonoBehaviour
             posY = pos.y;
         }
     }
+
+    #endregion
 }

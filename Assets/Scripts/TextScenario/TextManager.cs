@@ -197,7 +197,7 @@ public class TextManager : MonoBehaviour
 
             //特殊コード
             case "@":
-                
+
                 //次の文字を取得します
                 var sc0 = scenario.Substring(counter + 1, 1);
                 
@@ -301,6 +301,8 @@ public class TextManager : MonoBehaviour
 
         //特殊コード分、プラスします
         counter += 4;
+
+        FinishCount();
     }
 
     #endregion
@@ -312,7 +314,7 @@ public class TextManager : MonoBehaviour
     /// </summary>
     void FinishCount()
     {
-        if (counter == scenario.Length)
+        if (counter >= scenario.Length)
         {
             //テキスト表示を止めます
             stop = 1;
