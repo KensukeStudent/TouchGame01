@@ -92,16 +92,14 @@ public class AnimCat : MonoBehaviour
     /// <param name="a">angle</param>
     /// <param name="r">radius</param>
     /// <param name="p">position</param> 
-    public void SetInit(float a, float r,Vector2 p)
+    public void SetInit(float a, float rd,Vector2 p)
     {
         //回転
         angle = a;
-        radius = r;
+        radius = rd;
         //位置
         pos = p;
     }
-
-    float r = 10;
 
     /// <summary>
     /// 周回の仕方
@@ -111,20 +109,45 @@ public class AnimCat : MonoBehaviour
     void AroundMove()
     {
         //角度方向に生成された初期位置からプラスして回転させていきます
-        var rad = (angle * Mathf.Deg2Rad) + Time.timeSinceLevelLoad;
+        var rad = (angle * Mathf.Deg2Rad) + Time.timeSinceLevelLoad * 2;
 
         //x軸y軸に移動先を与えます
         //度数法から弧度法に変換します
         var relativePos = new Vector2(
-            Mathf.Cos(rad) * r, //周回する半径を拡大していかせます
-            Mathf.Sin(rad) * r);
+            Mathf.Cos(rad) * radius, 
+            Mathf.Sin(rad) * radius);
 
         //位置を代入
         rt.anchoredPosition = relativePos;
-
-       if(r < radius)  r += Time.deltaTime * 10;
     }
 
+    #region 半径を徐々に大きくしていき、周回します
+
+    //float r = radius / 4;
+
+    /// <summary>
+    /// 周回の仕方
+    /// </summary>
+    /// <param name="rad"></param>
+    /// <param name="radius"></param>
+    //void AroundMove()
+    //{
+    //    //角度方向に生成された初期位置からプラスして回転させていきます
+    //    var rad = (angle * Mathf.Deg2Rad) + Time.timeSinceLevelLoad * 2;
+
+    //    //x軸y軸に移動先を与えます
+    //    //度数法から弧度法に変換します
+    //    var relativePos = new Vector2(
+    //        Mathf.Cos(rad) * r, //周回する半径を拡大していかせます
+    //        Mathf.Sin(rad) * r);
+
+    //    //位置を代入
+    //    rt.anchoredPosition = relativePos;
+
+    //    if (r < radius) r += Time.deltaTime * r;
+    //}
+
+    #endregion
     #region 一方向に飛びます
 
     /// <summary>
