@@ -379,12 +379,13 @@ public class TextManager : MonoBehaviour
 
         //位置を指定します
         var pos = rt.anchoredPosition;
-        
+        var size = rt.sizeDelta;
+
         //初期位置にプラスします
         //(フォントサイズ + マージン) * (行目番目の)文字の長さ
-        pos.x += (fontSize + margin) * lineLength;
+        pos.x += (fontSize + margin) * lineLength + size.x;
         //フォントサイズ * (列番目の)長さ
-        pos.y -= fontSize * line;
+        pos.y -= fontSize * line + size.y / 2.3f;
 
         rt.anchoredPosition = pos;
     }

@@ -51,14 +51,14 @@ public class AnimCat : MonoBehaviour
         image = GetComponent<Image>();
 
         //どの方向へ移動するかを決めます
-        //MoveDirection();
+        MoveDirection();
     }
 
     private void Update()
     {
         //ハンコのアニメーション
-        //HankoAnim();
-        AroundMove();
+        HankoAnim();
+        //AroundMove();
     }
 
     /// <summary>

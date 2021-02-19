@@ -304,22 +304,39 @@ PrefabInstance:
     - target: {fileID: 9068692583821280137, guid: 811105d17c5c0e040b9d5ccca914fd61,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 0
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 9068692583821280137, guid: 811105d17c5c0e040b9d5ccca914fd61,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 0
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 9068692583821280137, guid: 811105d17c5c0e040b9d5ccca914fd61,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 0
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 9068692583821280137, guid: 811105d17c5c0e040b9d5ccca914fd61,
         type: 3}
       propertyPath: m_textInfo.pageCount
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9068692583821280137, guid: 811105d17c5c0e040b9d5ccca914fd61,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 2b9fd7dbb92d33f43842e457d98cf022,
+        type: 2}
+    - target: {fileID: 9068692583821280137, guid: 811105d17c5c0e040b9d5ccca914fd61,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 21788529180713354, guid: 2b9fd7dbb92d33f43842e457d98cf022,
+        type: 2}
+    - target: {fileID: 9068692583821280137, guid: 811105d17c5c0e040b9d5ccca914fd61,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: 26
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 811105d17c5c0e040b9d5ccca914fd61, type: 3}
@@ -546,6 +563,23 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: StageBacCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 629179292961624369, guid: 9e8e0a0dd3689e249a9b81e2ef0e92e9,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 2b9fd7dbb92d33f43842e457d98cf022,
+        type: 2}
+    - target: {fileID: 629179292961624369, guid: 9e8e0a0dd3689e249a9b81e2ef0e92e9,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 21788529180713354, guid: 2b9fd7dbb92d33f43842e457d98cf022,
+        type: 2}
+    - target: {fileID: 629179292961624369, guid: 9e8e0a0dd3689e249a9b81e2ef0e92e9,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9e8e0a0dd3689e249a9b81e2ef0e92e9, type: 3}

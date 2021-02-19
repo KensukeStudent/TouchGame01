@@ -85,7 +85,7 @@ public class SaveLoad : MonoBehaviour
 
         try
         {
-            using (StreamReader sr = new StreamReader(Application.dataPath + "/Resources/" + file))
+            using (var sr = new StreamReader(Application.dataPath + "/Resources/" + file))
             {
                 //ファイルの読み込み
                 string json = sr.ReadToEnd();
