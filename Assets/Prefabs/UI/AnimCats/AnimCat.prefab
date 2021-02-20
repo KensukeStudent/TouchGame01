@@ -57,8 +57,7 @@ MonoBehaviour:
   - {fileID: 21300006, guid: b36bccc2588f03b48b73e26b42a86133, type: 3}
   - {fileID: 21300008, guid: b36bccc2588f03b48b73e26b42a86133, type: 3}
   - {fileID: 21300012, guid: b36bccc2588f03b48b73e26b42a86133, type: 3}
-  scoreEffect: {fileID: 8101672935069556131, guid: 4b9e0eccdfdca434abc6142af61a2db8,
-    type: 3}
+  effect: {fileID: 8101672935069556131, guid: 4b9e0eccdfdca434abc6142af61a2db8, type: 3}
 --- !u!222 &72618376
 CanvasRenderer:
   m_ObjectHideFlags: 0

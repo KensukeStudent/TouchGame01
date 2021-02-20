@@ -98,9 +98,9 @@ public class ScreenTransition : MonoBehaviour
         //使う関数を格納します
         calcList = new Calc[]
         {
-            UpDown,
-            Center,
-            RightAndLeft
+            UpDown,//幕が閉じるアニメーション
+            Center,//幕が開くアニメーション
+            RightAndLeft//左右から猫の手アニメーション
         };
     }
 
@@ -127,6 +127,7 @@ public class ScreenTransition : MonoBehaviour
 
     /// <summary>
     /// 上と下に画面の半分分の大きさを生成
+    /// 上のは下へ、下のは上へ画面の真ん中まで移動遷移アニメーションします
     /// </summary>
     void UpDown(int wCounter, int hCounter, float tileSizeW, float tileSizeH)
     {
@@ -199,6 +200,7 @@ public class ScreenTransition : MonoBehaviour
 
     /// <summary>
     /// 中心にタイルを貼ります
+    /// 上と下に分裂し幕が開いたような遷移アニメーションをします
     /// </summary>
     void Center(int wCounter, int hCounter, float tileSizeW, float tileSizeH)
     {

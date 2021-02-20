@@ -36,14 +36,18 @@ public class Enemy : MonoBehaviour
     public bool Defeat { private set; get; }
 
     /// <summary>
-    /// 親敵の時に子敵を格納します
+    /// 親の時に子の敵を格納します
     /// </summary>
+    /// 名前にPがついていれば親の敵
     List<GameObject> dMan = new List<GameObject>();
     /// <summary>
     /// 管理する親が存在
     /// </summary>
     protected Enemy MyP { private set; get; }
 
+    /// <summary>
+    /// 死亡フラグ
+    /// </summary>
     public bool Die { private set; get; } = false;
 
     /// <summary>
@@ -54,11 +58,19 @@ public class Enemy : MonoBehaviour
         //この敵がイベント敵なら処理します
         if(CurrentKind == EnemyKind.ev)
         {
+            //イベントの敵が倒されたら開くゴールオブジェクトをFindします
             var goalName = "Goal_" + Regex.Match(name, @"\d+").ToString();
             var goal = GameObject.Find(goalName).GetComponent<GoalBlock>();
+
+            //この敵が倒されたフラグを入れます
             goal.EnemyGoal(gameObject);
         }
         Instantiate(explosion, transform.position, Quaternion.identity);
+
+        //自分を管理しているフロアから自分を削除します
+        var floor = transform.root.GetComponent<Floor>();
+        floor.RemoveObj(gameObject);
+
         Destroy(gameObject);
     }
 
@@ -67,11 +79,13 @@ public class Enemy : MonoBehaviour
     /// </summary>
     protected void HaveParent()
     {
+        //親に子の敵(この敵)が倒されたフラグを入れます
         MyP.dMan.Remove(gameObject);
     }
 
     /// <summary>
-    /// 敵ごとに別の処理
+    /// 親に格納されている子が倒されたときに処理します
+    /// <code>この処理はそれぞれの敵によって違います</code>
     /// </summary>
     protected virtual void EventParent()
     {
@@ -118,6 +132,7 @@ public class Enemy : MonoBehaviour
         //Dokuro1---->名前+event番号
         foreach (var c in enem)
         {
+            //部屋の番号を取得します
             var rootC = c.transform.root;
             //親が同じ且つ指定の名前
             if (rootC.name == root.name && c.name == cName)

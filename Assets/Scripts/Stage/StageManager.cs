@@ -203,21 +203,19 @@ public class StageManager : MonoBehaviour
     #region クリアアニメーション管理
 
     /// <summary>
-    /// アニメーションを再生したフラグを切ります
+    /// アニメーションを再生したフラグを立てます
     /// </summary>
     /// <param name="stageNo">現在のStage番号</param>
     /// <param name="anim_S">anim -> stageAnim</param>
-    /// <param name="anim_C">anim -> clearAnim</param>
     public void SetAnimFlag_S(int stageNo, bool[] anim_S)
     {
         ScoreAnimMan[stageNo] = anim_S;
     }
 
     /// <summary>
-    /// アニメーションを再生したフラグを切ります
+    /// アニメーションを再生したフラグを立てます
     /// </summary>
     /// <param name="stageNo">現在のStage番号</param>
-    /// <param name="anim_S">anim -> stageAnim</param>
     /// <param name="anim_C">anim -> clearAnim</param>
     public void SetAnimFlag_C(int stageNo, bool anim_C)
     {

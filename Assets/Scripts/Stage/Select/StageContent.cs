@@ -34,26 +34,18 @@ public class StageContent : MonoBehaviour
     /// このステージをクリアした
     /// </summary>
     bool stageClear = false;
-
     /// <summary>
-    /// ハンコとクリアのアニメーション
+    /// クリアアニメを再生する際の親オブジェクト
     /// </summary>
-    Animator anim;
-
-    private void Start()
-    {
-        anim = GetComponent<Animator>();
-    }
+    [SerializeField] RectTransform clearRt;
 
     /// <summary>
     /// このステージの中身をセットします
     /// </summary>
     /// <param name="sName">ステージ名</param>
-    /// <param name="flag">クリアフラグ</param>
-    /// <param name="back">ステージ背景</param>
     public void SetContent(string sName, StageManager sm)
     {
-        backGround = GetComponent<Image>();
+        backGround = transform.Find("BackGround").GetComponent<Image>();
 
         //ステージ番号を数値化します
         var stageNo = int.Parse(Regex.Match(sName, "[0-9]+").Groups[0].Value) - 1;
@@ -70,13 +62,24 @@ public class StageContent : MonoBehaviour
         {
             //アニメーションが再生されているなら
             //画像を入れます
-            if (sm.ScoreAnimMan[stageNo][i]) scores[i].sprite = hanko[scoresFlag[i]];
-            else scores[i].sprite = hanko[0];
+            if (sm.ScoreAnimMan[stageNo][i]) 
+                scores[i].sprite = hanko[scoresFlag[i]];
+            else
+                scores[i].sprite = hanko[0];
         }
 
+        //クリア時に表示する猫クラスを取得します
+        var cat = transform.Find("ClearAnim").GetComponent<ClearAnimMan>();
+
         //アニメーションが再生されているなら
-        //クリアフラグを入れます
-       　if (sm.ClearAnimMan[stageNo]) stageClear = sm.StageClearMan[stageNo];   
+        if (sm.ClearAnimMan[stageNo])
+        {
+            //クリアフラグを入れます
+            stageClear = sm.StageClearMan[stageNo];
+        }
+
+        //クリア時のオブジェクトの状態をセットします
+        cat.SetObject(sm.ClearAnimMan[stageNo]);
     }
 
     /// <summary>
@@ -87,6 +90,7 @@ public class StageContent : MonoBehaviour
     /// <param name="anim_C">ClearAnim</param>
     public void SetAnim(int stageNo, bool[] anim_S, bool anim_C, StageManager sm)
     {
+        //Hankoアニメーションから開始します
         StartCoroutine(AnimLag_Hanko(stageNo, anim_S, anim_C, sm));
     }
 
@@ -112,7 +116,7 @@ public class StageContent : MonoBehaviour
                 //アニメーション再生
                 var hankoAnim = GameObject.Find("AnimCatMan").GetComponent<CreateAnimCats>();
                 //円型に広がるように猫をアニメーションさせます
-                hankoAnim.InstantCats(scores[i].transform);
+                hankoAnim.InstantCats(scores[i].transform,AnimState.hanko);
                 var aud = GetComponent<AudioSource>();
                 aud.Play();
 
@@ -130,7 +134,6 @@ public class StageContent : MonoBehaviour
 
         //Hankoアニメーション終了後Clearアニメシーンを再生します
         StartCoroutine(AnimLag_Clear(stageNo, anim_C, sm));
-
     }
 
     /// <summary>
@@ -141,23 +144,21 @@ public class StageContent : MonoBehaviour
     {
         bool flag = anim_C;
 
-        //アニメーションが再生中のインターバル
-        if (!anim)
+        //クリアアニメーションが流れていないなら
+        if (!flag)
         {
             flag = true;
 
-            //アニメーション再生
-
+            //クリアアニメーション用の猫を処理します
+            var catClear = transform.Find("ClearAnim").GetComponent<ClearAnimMan>();
+            catClear.AnimSetObj();
 
             //インターバルをつけます
             yield return new WaitForSeconds(1);
+
+            //smのclearにflagを入れます
+            sm.SetAnimFlag_C(stageNo, flag);
         }
-
-        //画像を入れます
-
-
-        //smのclearにflagを入れます
-        sm.SetAnimFlag_C(stageNo,flag);
 
         //全てのアニメーション終了後
         //セーブ,画面操作可能にします

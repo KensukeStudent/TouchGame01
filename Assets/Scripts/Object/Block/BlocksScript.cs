@@ -15,6 +15,7 @@ public class BlocksScript : MonoBehaviour
     TMP_Text nameText;
     TMP_Text senText;
 
+    string roleName = "";
     /// <summary>
     /// このブロック役割をプレイヤーに知らせます
     /// </summary>
@@ -48,15 +49,18 @@ public class BlocksScript : MonoBehaviour
     /// 初期値で別ファイルで書いた説明を入れます
     /// </summary>
     /// <param name="description">ブロック説明</param>
-    /// <param name="parent">指定親オブジェクト</param>
     public void SetBlock(string description,string bName,string setFloor)
     {
         var name = Regex.Match(description, @"^@(.+){").Groups[1].Value;
-        var role = Regex.Match(description, @"{(.+)}").Groups[1].Value;
+        var role = Regex.Match(description, @"{(.+)}",RegexOptions.Singleline).Groups[1].Value;
 
+        //ブロック名
+        roleName = name;
+        //プレイヤに知らせるこのオブジェクトの破壊条件
         this.role = role;
-        this.name = name;
-        gameObject.name = bName;
+        
+        //gameObjectの名前
+        this.name = bName;
 
         if (string.IsNullOrEmpty(setFloor)) return;
         //指定の親オブジェクト下から
@@ -81,7 +85,7 @@ public class BlocksScript : MonoBehaviour
     public void SetText()
     {
         back.SetActive(true);
-        nameText.text = name;
+        nameText.text = roleName;
         senText.text = role;
     }
 
@@ -111,8 +115,7 @@ public class BlocksScript : MonoBehaviour
     /// <summary>
     /// 自分の名前についているイベント番号を取得
     /// </summary>
-    /// <param name="name"></param>
-    /// <returns></returns>
+    /// <param name="name">自分の名前</param>
     protected string EventNumber(string name)
     {
         return _= Regex.Match(name, @"\d+").ToString();

@@ -192,6 +192,7 @@ public class Dokuro : Enemy
     protected override void EventParent()
     {
         if (!MyP) return;
+
         HaveParent();
         var d = MyP.GetComponent<Dokuro>();
         d.ShotTime++;

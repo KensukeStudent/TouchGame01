@@ -40,4 +40,12 @@ public class Floor : MonoBehaviour
             else FloorObj[i].SetActive(false);
         }
     }
+
+    /// <summary>
+    /// 格納しているオブジェクトを削除します
+    /// </summary>
+    public void RemoveObj(GameObject obj)
+    {
+        FloorObj.Remove(obj);
+    }
 }

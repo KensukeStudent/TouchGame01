@@ -2,10 +2,24 @@
 using UnityEngine.UI;
 
 /// <summary>
+/// アニメーション一覧
+/// </summary>
+public enum AnimState
+{
+    hanko,//ハンコアニメーション
+    clear //クリアアニメーション
+}
+
+/// <summary>
 /// アニメーションをする猫クラス
 /// </summary>
 public class AnimCat : MonoBehaviour
 {
+    /// <summary>
+    /// アニメーションのステート
+    /// </summary>
+    public AnimState State { private set; get; }
+
     /// <summary>
     /// 自分のRect
     /// </summary>
@@ -32,7 +46,13 @@ public class AnimCat : MonoBehaviour
     /// </summary>
     float moveSpeedY = 350;
 
+    /// <summary>
+    /// x軸が指定の座標まで移動しました
+    /// </summary>
     bool stopX = false;
+    /// <summary>
+    /// y軸が指定の座標まで移動しました
+    /// </summary>
     bool stopY = false;
 
     /// <summary>
@@ -44,6 +64,10 @@ public class AnimCat : MonoBehaviour
     /// 自分のImage
     /// </summary>
     Image image;
+    /// <summary>
+    /// イラスト
+    /// </summary>
+    Sprite sprite;
 
     private void Start()
     {
@@ -51,55 +75,66 @@ public class AnimCat : MonoBehaviour
         image = GetComponent<Image>();
 
         //どの方向へ移動するかを決めます
-        MoveDirection();
+        switch (State)
+        {
+            case AnimState.hanko:
+                MoveDirection();
+                break;
+           
+            case AnimState.clear:
+        
+                break;
+        }
     }
 
     private void Update()
     {
-        //ハンコのアニメーション
-        HankoAnim();
-        //AroundMove();
+        switch (State)
+        {
+            //ハンコのアニメーション
+            case AnimState.hanko:
+
+                HankoAnim();
+
+                break;
+
+            //周回アニメーション
+            case AnimState.clear:
+
+                AroundMove();
+
+                break;
+        }
     }
 
     /// <summary>
-    /// HankoAnimation
+    /// ステートclear時の初期化
     /// </summary>
-    void HankoAnim()
+    public void SetClearInit(AnimState aS, Vector2 p, float a, float rd, Sprite s)
     {
-        //指定の座標まで移動します
-        if (!stopX || !stopY)
-        {
-            Move();
-        }
-        else  //X,Yが両方止まったなら
-        {
-            //colorのaを下げます
-            var color = image.color;
-            color.a -= Time.deltaTime * timeT;
-            image.color = color;
+        SetHankoInit(aS, p);
 
-            if (color.a <= 0)
-            {
-                //透過されたら削除します
-                Destroy(gameObject);
-            }
-        }
+        //回転
+        angle = a;
+        radius = rd;
+        sprite = s;
     }
 
     /// <summary>
     /// 角度と半径を入れます
     /// </summary>
-    /// <param name="a">angle</param>
-    /// <param name="r">radius</param>
-    /// <param name="p">position</param> 
-    public void SetInit(float a, float rd,Vector2 p)
+    /// <param name="aS">アニメーション名</param>
+    /// <param name="p">position</param>
+    public void SetHankoInit(AnimState aS, Vector2 p)
     {
-        //回転
-        angle = a;
-        radius = rd;
+        //どのアニメーションを動かすか
+        State = aS;
+
         //位置
         pos = p;
     }
+
+    #region 半径を徐々に大きくしていき、周回します
 
     /// <summary>
     /// 周回の仕方
@@ -109,19 +144,30 @@ public class AnimCat : MonoBehaviour
     void AroundMove()
     {
         //角度方向に生成された初期位置からプラスして回転させていきます
+        //度数法から弧度法に変換します
         var rad = (angle * Mathf.Deg2Rad) + Time.timeSinceLevelLoad * 2;
 
         //x軸y軸に移動先を与えます
-        //度数法から弧度法に変換します
         var relativePos = new Vector2(
             Mathf.Cos(rad) * radius, 
             Mathf.Sin(rad) * radius);
 
         //位置を代入
         rt.anchoredPosition = relativePos;
-    }
 
-    #region 半径を徐々に大きくしていき、周回します
+        //画像が入っていないなら下の処理をします
+        if (image.sprite == sprite) return;
+
+        //角度計算
+        //ラジアンを角度に直して360で割り、余りを求めることで
+        //360を超えた数値を0～360に変換します
+        var a = (rad * Mathf.Rad2Deg) % 360;
+
+        if (a > 315 && a < 360)
+        {
+            image.sprite = sprite;
+        }
+    }
 
     //float r = radius / 4;
 
@@ -148,7 +194,33 @@ public class AnimCat : MonoBehaviour
     //}
 
     #endregion
+
     #region 一方向に飛びます
+
+    /// <summary>
+    /// HankoAnimation
+    /// </summary>
+    void HankoAnim()
+    {
+        //指定の座標まで移動します
+        if (!stopX || !stopY)
+        {
+            Move();
+        }
+        else  //X,Yが両方止まったなら
+        {
+            //colorのaを下げます
+            var color = image.color;
+            color.a -= Time.deltaTime * timeT;
+            image.color = color;
+
+            if (color.a <= 0)
+            {
+                //透過されたら削除します
+                Destroy(gameObject);
+            }
+        }
+    }
 
     /// <summary>
     /// 目的座標に応じて移動速度の符号を変更します
