@@ -14,9 +14,12 @@ public class DokuroMove : Enemy
     /// </summary>
     const float chaseRadius = 3.5f;
     /// <summary>
-    /// ゲームが始まった時の位置
+    /// ゲームが始まった時の位置記録
     /// </summary>
     Vector2 initPos;
+    /// <summary>
+    /// 初期位置からreturnRadius分離れたら初期位置に戻ります
+    /// </summary>
     const float returnRadius = 3f;
     /// <summary>
     /// 初期位置を一定距離離れた時に生成するエフェクト
@@ -26,11 +29,16 @@ public class DokuroMove : Enemy
 
     Animator anim;
     Rigidbody2D rb2D;
+    /// <summary>
+    /// 障害物オブジェクト
+    /// </summary>
     [SerializeField] LayerMask obstaclesLayer;
 
  
-    void Start()
+    protected override void Start()
     {
+        base.Start();
+
         DefeatThisEnemy(true);
         player = GameObject.FindWithTag("Player");
         anim = GetComponent<Animator>();
@@ -41,7 +49,9 @@ public class DokuroMove : Enemy
  
     void Update()
     {
+        //プレイヤーの座標を取得
         var playerPos = player.transform.position;
+        //プレイヤーとこの敵との距離を取得
         Distance(playerPos);
     }
 

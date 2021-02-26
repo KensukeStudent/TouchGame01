@@ -50,6 +50,27 @@ public class Enemy : MonoBehaviour
     /// </summary>
     public bool Die { private set; get; } = false;
 
+    AudioSource aud;
+
+    #region サウンド効果音表
+    // 0 破壊エフェクトSE
+    //
+    #endregion
+    [SerializeField] AudioClip[] clip;
+
+    protected virtual void Start()
+    {
+        aud = GetComponent<AudioSource>();
+    }
+
+    /// <summary>
+    /// SEを鳴らします
+    /// </summary>
+    protected void PlaySE(int clipNo, float vol = 1.0f)
+    {
+        aud.PlayOneShot(clip[clipNo], vol);
+    }
+
     /// <summary>
     ///破壊されたときに呼ばれる関数 
     /// </summary>
@@ -65,7 +86,12 @@ public class Enemy : MonoBehaviour
             //この敵が倒されたフラグを入れます
             goal.EnemyGoal(gameObject);
         }
-        Instantiate(explosion, transform.position, Quaternion.identity);
+
+        //破壊エフェクトを作成
+        var effect = Instantiate(explosion, transform.position, Quaternion.identity);
+        //破壊エフェクトからサウンドを鳴らします
+        var seE = effect.GetComponent<ExplosionEffect>();
+        seE.PlaySE(clip[0], 0.5f);
 
         //自分を管理しているフロアから自分を削除します
         var floor = transform.root.GetComponent<Floor>();

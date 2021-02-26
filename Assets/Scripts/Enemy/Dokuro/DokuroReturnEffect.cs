@@ -1,23 +1,27 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// どくろ(移動)初期位置に戻る時に出すエフェクト
+/// </summary>
 public class DokuroReturnEffect : ExplosionEffect
 {
     public GameObject dokuroInstantEffect { set; get; }
     float timer = 0;
 
-    override protected void Start()
+    void Start()
     {
-        addTime = 2;
-        DestoryEffectTime(addTime);
+        const float addTime = 2;
+        //削除時間を指定
+        DesTime = DestoryEffectTime(addTime);
     }
 
-    override protected void Update()
+    void Update()
     {
         ActiveEffect();
     }
 
     /// <summary>
-    /// エフェクトをアクティブにする
+    /// どくろ召喚エフェクトをアクティブにする
     /// </summary>
     void ActiveEffect()
     {

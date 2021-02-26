@@ -51,7 +51,7 @@ public class SaveLoad : MonoBehaviour
         try
         {
             //ファイルに書き込みします
-            using (StreamWriter sw = new StreamWriter(dataPath))
+            using (var sw = new StreamWriter(dataPath))
             {
                 //データをJson化させます
                 string str = JsonMapper.ToJson(data);
@@ -81,16 +81,19 @@ public class SaveLoad : MonoBehaviour
     /// <param name="data"></param>
     public bool Load<T>(string file,ref T data) where T : class
     {
+        //読み込み成功したらtrueを返します
         bool ret = false;
 
         try
         {
+            //指定のfileから読み込みます
             using (var sr = new StreamReader(Application.dataPath + "/Resources/" + file))
             {
-                //ファイルの読み込み
+                //ファイルの読み込みました
                 string json = sr.ReadToEnd();
                 //読み込んだデータをオブジェクト化します
                 data = JsonMapper.ToObject<T>(json);
+                //オブジェクト化成功
                 ret = true;
             }
         }

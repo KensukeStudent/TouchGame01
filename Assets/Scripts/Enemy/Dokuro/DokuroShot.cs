@@ -33,8 +33,10 @@ public class DokuroShot : Enemy
 
     Animator anim;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
+
         DefeatThisEnemy(true);
 
         anim = GetComponent<Animator>();
@@ -51,6 +53,7 @@ public class DokuroShot : Enemy
     void ShotInstant()
     {
         timer += Time.deltaTime;
+        //インターバルモード
         if (intervalMode)
         {
             //弾を生成してから3秒間のインターバルを設ける
@@ -65,9 +68,13 @@ public class DokuroShot : Enemy
         {
             if (timer > ShotTime)
             {
+                //指定方向に弾をだします
                 ShotFlag();
                 anim.SetBool("Shot", true);
+                //発射後インターバルを設けます
                 intervalMode = true;
+                //SEを鳴らします
+                PlaySE(1, 0.4f);
             }
         }
     }
@@ -101,8 +108,10 @@ public class DokuroShot : Enemy
         //名前+state名
         this.name = name + d.state[count];
 
+        //この敵がev(イベント)であれば処理ます
         if (!d.state[count].Contains("ev")) return;
 
+        //イベント番号を取得
         var evName = Regex.Match(d.state[count], @"(.+)\d+").Groups[1].Value;
 
         switch (evName)
@@ -111,6 +120,8 @@ public class DokuroShot : Enemy
             case "evP":
                 //セットする子の敵を入れます
                 if (evName == "evP") SetChildEnemy();
+
+                //ステートevに変更します
                 SetEnemyKind(EnemyKind.ev);
                 break;
         }
@@ -128,7 +139,7 @@ public class DokuroShot : Enemy
     }
 
     /// <summary>
-    /// 親を持っている場合親の弾発射時間増やします
+    /// 親を持っている場合、親の弾発射時間増やします
     /// </summary>
     protected override void EventParent()
     {

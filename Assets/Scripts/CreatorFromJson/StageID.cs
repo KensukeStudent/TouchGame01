@@ -13,7 +13,7 @@ public class ID
     /// StageIdから指定のJsonListに格納された要素を見つけます
     /// </summary>
     /// <typeparam name="T">IDクラスを継承しているJsonのクラスT</typeparam>
-    /// <param name="stageId">現在のstage番号</param>
+    /// <param name="dataId">現在のstage番号</param>
     /// <param name="data">Jsonクラス</param>
     public static T GetDataNo<T>(List<T> data, string dataId) where T : ID
     {

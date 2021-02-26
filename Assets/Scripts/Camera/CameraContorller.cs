@@ -13,11 +13,11 @@ public class CameraContorller : MonoBehaviour
     /// <summary>
     /// カメラの上限
     /// </summary>
-    public Vector2 MaxC { private set; get; } = new Vector2(0,0);
+    public Vector2 MaxC { private set; get; } = new Vector2(0, 0);
     /// <summary>
     /// カメラの下限
     /// </summary>
-    public Vector2 MinC { private set; get; } = new Vector2(0,0);
+    public Vector2 MinC { private set; get; } = new Vector2(0, 0);
 
     /// <summary>
     /// 移動する方向を指定
@@ -32,15 +32,41 @@ public class CameraContorller : MonoBehaviour
     /// </summary>
     const float moveSpeed = 30f;
 
+    AudioSource aud;
+    [SerializeField] AudioClip clip;
+
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+
+        //初期座標を入れます
+        SetInit();
+
+        aud = GetComponent<AudioSource>();
     }
 
     private void Update()
     {
         if (autoMove) CamMove();
         else CamToPlayer();
+    }
+
+    /// <summary>
+    /// 初期値に最大最小のXYを入れます
+    /// </summary>
+    void SetInit()
+    {
+        //最大最小の初期位置テーブル
+        Vector2[] vecMax = { new Vector2(0.5f, 0.5f),new Vector2(38.5f, 0.5f) };
+        Vector2[] vecMin = { new Vector2(0.5f, 0.5f), new Vector2(38.5f, 0.5f) };
+
+        //現在のステージ番号を取得
+        //var fileNo = GameManager.Instance.StageNo;
+        var fileNo = 1;
+
+        //座標を入れます
+        MaxC = vecMax[fileNo];
+        MinC = vecMin[fileNo];
     }
 
     /// <summary>
@@ -125,5 +151,7 @@ public class CameraContorller : MonoBehaviour
         MinC = min;
         //オート移動開始
         autoMove = true;
+        //移動サウンドを鳴らします
+        aud.PlayOneShot(clip);
     }
 }

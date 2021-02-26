@@ -72,10 +72,25 @@ public class PlayerContoller : MonoBehaviour
     /// </summary>
     PlayerInventory pi;
 
+    AudioSource aud;
+    #region サウンド表
+    //0 ----> jump
+    //1 ----> eat
+    //2 ----> itemGet
+    //3 ----> damage
+    //4 ----> gameOver
+    #endregion
+    [SerializeField] AudioClip[] clip;
+
     private void Start()
     {
+        //アイテム管理クラス
         pi = new PlayerInventory();
         anim = GetComponent<Animator>();
+
+        aud = GetComponent<AudioSource>();
+
+        //初期位置
         moveObj = GameObject.FindGameObjectWithTag("InitPos");
         transform.SetParent(moveObj.transform);
     }
@@ -84,7 +99,10 @@ public class PlayerContoller : MonoBehaviour
     {
         if (currentState == State.goal) return;
 
+        //マウス座標を取得しながらアクションを処理していきます
         Ray();
+
+        //移動モードの時に処理します
         if (move) CheckMoveDistance();
     }
 
@@ -108,7 +126,7 @@ public class PlayerContoller : MonoBehaviour
 
         //ヒット先がイベントの壁ならこちらを処理します
         //※ただし現在ジャンプオブジェクト先にマウス座標はいない
-        if (!CheckObstacles(hit, evWallLayer) && touch && Input.GetMouseButtonDown(0) && !hitJumpObj)
+        if (!CheckObstacles(hit, evWallLayer) && touch && Input.GetMouseButtonDown(0) && SameLayer(hit,"EventWall"))
         {
             //クリックして鍵があれば、ブロックを破壊する
             pi.UseKindKey(hit.transform.name, hit.transform.gameObject);
@@ -219,10 +237,13 @@ public class PlayerContoller : MonoBehaviour
             //テキストを同期させます
 
 
+            //SEを鳴らします
+            PlaySE(0);
 
             //ヒットした物を入れます
             moveObj = hit.transform.gameObject;
 
+            //parentを解除します
             transform.SetParent(null);
 
             //角度設定
@@ -233,6 +254,8 @@ public class PlayerContoller : MonoBehaviour
 
             //ジャンプエフェクトを入れます
             Instantiate(dustEffect, transform.position, transform.localRotation);
+            
+            //現在移動中
             move = true;
 
             //クリック先のJumpObjを捨てます
@@ -254,6 +277,8 @@ public class PlayerContoller : MonoBehaviour
         do
         {
             var parent = c.transform.parent;
+            //一番上のfloorを管理している親(0や1)の名前であればbreakします
+            //それまで角度を取得しつづけます
             if (!OnlyNum(parent.name))
             {
                 var q = parent.localEulerAngles.z;
@@ -333,6 +358,14 @@ public class PlayerContoller : MonoBehaviour
 
     #endregion
 
+    /// <summary>
+    /// 効果音を鳴らします
+    /// </summary>
+    void PlaySE(int clipNo,float vol = 1.0f)
+    {
+        aud.PlayOneShot(clip[clipNo], vol);
+    }
+
     #region 当たり判定
 
     private void OnTriggerEnter2D(Collider2D col)
@@ -359,10 +392,13 @@ public class PlayerContoller : MonoBehaviour
     /// </summary>
     void HitEnemy(Collider2D col)
     {
+        //攻撃モードの時に敵を破壊できます
         if (AttackMode)
         {
+            //攻撃アニメーション
             anim.SetTrigger("Attack");
 
+            //当たった敵に死亡フラグを立てます
             var enemy = col.GetComponent<Enemy>();
             enemy.SetDie();
 
@@ -380,6 +416,7 @@ public class PlayerContoller : MonoBehaviour
     void HitEnemyShot()
     {
         Debug.Log("ダメージを受ける");
+        PlaySE(3);
     }
 
     /// <summary>
@@ -387,10 +424,15 @@ public class PlayerContoller : MonoBehaviour
     /// </summary>
     void NowAttackMode(Collider2D col)
     {
+        //攻撃モードになります
         AttackMode = true;
+        //取得したアイテムを削除します
         Destroy(col.gameObject);
+        //攻撃モードの色に変えます
         var sprite = GetComponent<SpriteRenderer>();
         sprite.color = new Color(1, 0.6f, 0, 1);
+        //SEを鳴らします
+        PlaySE(1);
     }
 
     /// <summary>
@@ -400,8 +442,11 @@ public class PlayerContoller : MonoBehaviour
     {
         //鍵の種類に応じてカウントを所字数を上げます
         pi.GetKindKey(col.gameObject.name);
-        //サウンドを鳴らします
 
+        //サウンドを鳴らします
+        PlaySE(2);
+
+        //取得した鍵を削除します
         Destroy(col.gameObject);
     }
 
@@ -419,17 +464,19 @@ public class PlayerContoller : MonoBehaviour
         //ステートを変更します
         currentState = State.goal;
 
+        //取得したゴールオブジェクトを削除します
         Destroy(col.gameObject);
 
         //ステージの状態を更新します
         var sm = GameObject.Find("StageManager").GetComponent<StageManager>();
+        //ジャンプした数を評価します(----> 各ステージのスコアに反映されます)
         sm.StageUpdate(GameManager.Instance.StageNo, jumpCount);
 
         //sceneステートを変更します
         ScreenTransition.Instance.ChangeState(SceneState.gameOverMode);
 
         //Goalアニメーションが終わったら遷移を開始します
-        const float goalLag = 1.2f;
+        const float goalLag = 1.2f;//---> 1.2f 秒後に遷移開始
         ScreenTransition.Instance.TimeST(goalLag);
 
         //ゲーム開始フラグを切ります

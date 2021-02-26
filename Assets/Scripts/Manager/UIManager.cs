@@ -45,14 +45,15 @@ public class UIManager : MonoBehaviour
     private void Update()
     {
         //クリックしたら音が鳴り遷移開始
-        if (!GameManager.Instance.GameStart && Input.GetMouseButtonDown(0) && ScreenTransition.Instance.TouchClick)
-        {
-            //遷移準備
-            SetCatHand();
-        }
+        //if (!GameManager.Instance.GameStart && Input.GetMouseButtonDown(0) && ScreenTransition.Instance.TouchClick)
+        //{
+        //    //遷移準備
+        //    SetCatHand();
+        //}
 
         //もしゲームスタートならUI鍵取得数を上下出来ます
-        if (GameManager.Instance.GameStart) PanelMove();
+        //if (GameManager.Instance.GameStart) 
+            PanelMove();
     }
 
     /// <summary>

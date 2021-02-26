@@ -16,7 +16,7 @@ public class FloorManager : MonoBehaviour
     /// <summary>
     /// そのステージでのPlayerが生成されたフロア番号
     /// </summary>
-    int playerFloor = 0;
+    public int PlayerFloor { private set; get; } = 0;
 
     void Start()
     {
@@ -35,16 +35,19 @@ public class FloorManager : MonoBehaviour
         //現在のフロア分取得
         var floorObj = GameObject.FindGameObjectsWithTag("Floor");
         //ステージの高さ
-        var stageH = c.FloorCount % c.StageX + 1;//配列の要素を必ず1開けるため +1 します
+        var stageH = c.FloorCount / c.StageX;
         //各フロア管理スクリプト取得
         Floors = new Floor[stageH,c.StageX];
 
-        for (int i = 0; i < Floors.GetLength(0); i++)
+        //二次元のFloorsにステージにあるフロアを管理してもらいます。
+        for (int i = 0; i < floorObj.Length; i++)
         {
-            for (int j = 0; j < Floors.GetLength(1); j++)
-            {
-                Floors[i,j] = floorObj[j].GetComponent<Floor>();
-            }   
+            //縦の番地
+            var h = i / c.StageX;
+            //横の番地
+            var w = i % c.StageX;
+
+            Floors[h, w] = floorObj[i].GetComponent<Floor>();
         }
 
         //各フロアへ取得したオブジェクトを割り当てます
@@ -89,7 +92,7 @@ public class FloorManager : MonoBehaviour
                 //Floors[i,j]のFloorObjにある要素分回します
                 for (int k = 0; k < Floors[i, j].FloorObj.Count; k++)
                 {
-                    if (playerFloor != j)
+                    if (PlayerFloor != j)
                         Floors[i, j].FloorObj[k].SetActive(false);
                 }
     }
@@ -100,6 +103,6 @@ public class FloorManager : MonoBehaviour
     /// <param name="fn">文字型の数字</param>
     public void SetPlayerFloor(string fn)
     {
-        playerFloor = int.Parse(fn);
+        PlayerFloor = int.Parse(fn);
     }
 }

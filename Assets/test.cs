@@ -17,9 +17,14 @@ public class test : MonoBehaviour
     /// </summary>
     public bool[] clearData = new bool[3];
 
+    AudioSource aud;
+
+    [SerializeField]AudioClip[] clip;
 
     private void Start()
     {
+        aud = GetComponent<AudioSource>();
+
         //Instant(scoreData, 0);
 
         //Instant(animData, true);
@@ -42,6 +47,7 @@ public class test : MonoBehaviour
         {
             yield return new WaitForSeconds(3f);
             Debug.Log("経過");
+            PlaySE(i);
         }
         Debug.Log("おわり");
 
@@ -56,6 +62,13 @@ public class test : MonoBehaviour
             Debug.Log("経過");
         }
         Debug.Log("おわり");
+    }    
+    /// <summary>
+         /// SEを鳴らします
+         /// </summary>
+    protected void PlaySE(int clipNo, float vol = 1.0f)
+    {
+        aud.PlayOneShot(clip[clipNo], vol);
     }
 
     void Instant<T>(T[][] s,T d) where T : struct

@@ -19,6 +19,6 @@ public class JumpObj : MonoBehaviour
     public void RemoveNowRay()
     {
         var sprite = GetComponent<SpriteRenderer>();
-        sprite.color = new Color(0, 0, 0, 0.3f);
+        sprite.color = Color.black;
     }
 }

@@ -68,6 +68,7 @@ public class MouseController : MonoBehaviour
 
         //子のスケールに値を入れます
         childSize.y = 1 / size.y;
+        childSize.z = 1;
         mousePad.transform.localScale = childSize;
     }
 

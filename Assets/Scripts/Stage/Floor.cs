@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 各フロア内のオブジェクトを管理するクラス
+/// 各フロアが、そのフロア内のオブジェクトを管理するクラス
 /// </summary>
 public class Floor : MonoBehaviour
 {
@@ -25,7 +25,7 @@ public class Floor : MonoBehaviour
     {
         for (int i = 0; i < FloorObj.Count; i++)
         {
-            FloorObj[i]?.SetActive(true);
+            FloorObj[i].SetActive(true);
         }
     }
 
@@ -36,8 +36,7 @@ public class Floor : MonoBehaviour
     {
         for (int i = FloorObj.Count - 1; i > -1; i--)
         {
-            if (FloorObj[i] == null) FloorObj.Remove(FloorObj[i]);
-            else FloorObj[i].SetActive(false);
+            FloorObj[i].SetActive(false);
         }
     }
 

@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-//ナンバーに応じてenemyかkeyを指定する->マップ生成ツール
-
 /// <summary>
 /// ゴールの種類
 /// </summary>
@@ -38,8 +36,10 @@ public class GoalBlock : BlocksScript
         base.Awake();
     }
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
+        //ゴール条件のオブジェクトを取得します。
         GoalCondition();
     }
 
@@ -58,18 +58,23 @@ public class GoalBlock : BlocksScript
                     
                 foreach (var enemy in enemies)
                 {
+                    //敵を管理しているフロア番号を取得
                     var rootE = enemy.transform.root;
 
+                    //番号が同じであれば
                     if(root == rootE)
                     {
                         var eS = enemy.GetComponent<Enemy>();
-                        //イベントのナンバーが同じ
-                        if (eS.CurrentKind == EnemyKind.ev && EventNumber(eS.name) == EventNumber(name)) EvEnemy.Add(enemy);
+                        // 敵もイベント属性 且つ イベントのナンバーが同じ
+                        if (eS.CurrentKind == EnemyKind.ev && EventNumber(eS.name) == EventNumber(name)) 
+                            //イベントの敵を格納します
+                            EvEnemy.Add(enemy);
                     }
                 }
                 break;
            
             case goalKind.key:
+                //破壊することのできる鍵を取得します
                 EvKey = GameObject.FindGameObjectWithTag("EventKey");
                 break;
         }
@@ -89,7 +94,9 @@ public class GoalBlock : BlocksScript
     /// </summary>
     public void EnemyGoal(GameObject g)
     {
+        //格納している敵をリストから消します
         EvEnemy.Remove(g);
+
         //最後の敵だったらゴールブロックを破壊
         if (currentCondition == goalKind.enemy && EvEnemy.Count == 0)
             Destroy();

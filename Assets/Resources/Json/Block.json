@@ -4,7 +4,7 @@
       "id": "stage1",
       "floor": [
         {
-          "name": ["Blue"],
+          "name": [ "Blue" ],
           "jumpFloor": [
             "R"
           ],
@@ -13,12 +13,74 @@
           ]
         },
         {
-          "name": ["Goal_1"],
+          "name": [ "Goal_1" ],
           "jumpFloor": [
             "R"
           ],
           "goal": [
             "@ゴールブロック{あるてきをたおせば\nはかいできるにゃ！}"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stage2",
+      "floor": [
+        {
+          "name": [],
+          "jumpFloor": [
+
+          ],
+          "ev": [
+
+          ]
+        },
+        {
+          "name": [],
+          "jumpFloor": [
+
+          ],
+          "ev": [
+
+          ]
+        },
+        {
+          "name": ["Goal_1"],
+          "jumpFloor": [
+            "R"
+          ],
+          "ev": [
+            "@ゴールブロック{ここをこわせば...\nいいにおいするにゃ～。}"
+          ],
+          "goal": [
+            "@ゴールブロック{ここをこわせば...\nいいにおいするにゃ～。}"
+          ]
+        },
+        {
+          "name": [],
+          "jumpFloor": [
+
+          ],
+          "ev": [
+
+          ]
+        },
+        {
+          "name": [],
+          "jumpFloor": [
+
+          ],
+          "ev": [
+
+          ]
+        },
+        {
+          "name": [],
+          "jumpFloor": [
+
+          ],
+          "ev": [
+
           ]
         }
       ]

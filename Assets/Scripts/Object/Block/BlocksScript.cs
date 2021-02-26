@@ -24,7 +24,7 @@ public class BlocksScript : MonoBehaviour
     /// <summary>
     /// 次のフロアの足場を展開
     /// </summary>
-    bool floorSet = false;
+    string floorSet = "";
 
     /// <summary>
     /// 次の面に移動できる足場
@@ -35,6 +35,9 @@ public class BlocksScript : MonoBehaviour
     /// </summary>
     GameObject catArrow;
 
+    AudioSource aud;
+    [SerializeField]AudioClip clip;
+
     protected virtual void Awake()
     {
         //順を追って探します
@@ -43,6 +46,13 @@ public class BlocksScript : MonoBehaviour
         senText = back.transform.Find("Text").GetComponent<TMP_Text>();
         var image = back.transform.Find("Image").gameObject;
         nameText = image.transform.Find("Name").GetComponent<TMP_Text>();
+    }
+
+    protected virtual void Start()
+    {
+        aud = GetComponent<AudioSource>();
+        //フロア移動の足場を取得します
+        GetFloor();
     }
 
     /// <summary>
@@ -62,12 +72,23 @@ public class BlocksScript : MonoBehaviour
         //gameObjectの名前
         this.name = bName;
 
+        //ブロックが破壊された後、フロア移動の床を表示する場合処理します
         if (string.IsNullOrEmpty(setFloor)) return;
+        //移動するフロア床名を入れます
+        floorSet = setFloor;
+    }
+
+    /// <summary>
+    /// 展開するフロア移動の足場を取得します
+    /// </summary>
+    void GetFloor()
+    {
+        if (string.IsNullOrEmpty(floorSet)) return;
         //指定の親オブジェクト下から
 
         //パスの指定
-        var pathJ = string.Format("Jump_{0}", setFloor);
-        var pathA = string.Format("Arrow_{0}", setFloor);
+        var pathJ = string.Format("Jump_{0}", floorSet);
+        var pathA = string.Format("Arrow_{0}", floorSet);
         var root = transform.root;
         //オブジェクトの検索
         var floorJump = root.transform.Find(pathJ);
@@ -76,7 +97,8 @@ public class BlocksScript : MonoBehaviour
         meatObj = floorJump.gameObject;
         catArrow = floorArrow.gameObject;
 
-        floorSet = true;
+        meatObj.SetActive(false);
+        catArrow.SetActive(false);
     }
 
     /// <summary>
@@ -106,10 +128,28 @@ public class BlocksScript : MonoBehaviour
         catArrow.SetActive(true);
     }
 
+    /// <summary>
+    /// 破壊します
+    /// </summary>
     public void Destroy()
     {
-        if (floorSet) ActiveFloor();
-        Destroy(gameObject);
+        //次のフロアを出すブロックなら処理します
+        if (!string.IsNullOrEmpty(floorSet)) ActiveFloor();
+
+        //SEを鳴らします
+        aud.PlayOneShot(clip);
+
+        //当たり判定を切ります
+        GetComponent<BoxCollider2D>().enabled = false;
+
+        //スプライトを切ります
+        GetComponent<SpriteRenderer>().enabled = false;
+
+        //レイヤーを変更します
+        gameObject.layer = LayerMask.NameToLayer("Default");
+
+        //SEが流れ終わってから破壊します
+        Destroy(gameObject, clip.length);
     }
 
     /// <summary>

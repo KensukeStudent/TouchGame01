@@ -5,41 +5,30 @@
 /// </summary>
 public class ExplosionEffect : MonoBehaviour
 {
-    /// <summary>
-    /// 破壊時間
-    /// </summary>
-    protected float DesTime;
+    protected float DesTime { set; get; } = 0;
+
     Animation animt;
+    AudioSource aud;
+
     /// <summary>
-    /// エフェクトを破棄する合計時間に加算する時間(基本は1秒)
-    /// </summary>
-    protected float addTime = 1;
-
-    virtual protected void Start()
+    /// エフェクトのSEを鳴らします
+    /// </summary
+    public void PlaySE(AudioClip clip,float vol = 1.0f)
     {
-        DestoryEffectTime(addTime);
-        DestoryObj(DesTime);
-    }
+        aud = GetComponent<AudioSource>();
+        aud.PlayOneShot(clip, vol);
 
-    virtual protected void Update()
-    {
-        
+        //破壊時間を指定
+        var desTime = DestoryEffectTime(1.0f, clip.length);
+        Destroy(gameObject, desTime);
     }
 
     /// <summary>
     /// 破棄する時間を取得
     /// </summary>
-    protected void DestoryEffectTime(float addTime)
+    public float DestoryEffectTime(float addTime = 1.0f , float effectTime = 0.0f)
     {
         animt = GetComponent<Animation>();
-        DesTime = animt.clip.length * addTime;
-    }
-
-    /// <summary>
-    /// 時間でオブジェクトを破壊します
-    /// </summary>
-    protected void DestoryObj(float desTime)
-    {
-        Destroy(gameObject, desTime);
+        return _ = animt.clip.length * addTime + effectTime;
     }
 }

@@ -83,9 +83,9 @@ public class TextManager : MonoBehaviour
     int stop = 0;
 
     /// <summary>
-    /// 20字ごとに改行します
+    /// 15字ごとに改行します
     /// </summary>
-    const int lineCount = 20;
+    const int lineCount = 15;
     /// <summary>
     /// 行数
     /// </summary>
@@ -369,7 +369,7 @@ public class TextManager : MonoBehaviour
         //マージン
         const float margin = 3.8f;
         //fontサイズ
-        const float fontSize = 36.0f;
+        const float fontSize = 50.0f;
 
         //rectを取得
         var rt = nextClick.transform as RectTransform;

@@ -109,11 +109,11 @@ public class JsonInfo
     /// <summary>
     /// 生成されたヒントオブジェクト値を代入
     /// </summary>
-    public void SetHint(string stageId,HintCat hC,int floorNum)
+    public void SetHint(string stageId, HintCat hC, int num, int floorNum)
     {
         //ヒントクラスを定義
         var h = ID.GetDataNo(hintList.hints, stageId).floor[floorNum];
         //値を代入
-        hC.SetInit(h.detail);
+        hC.SetInit(h.detail[num]);
     }
 }

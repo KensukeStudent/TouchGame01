@@ -9,5 +9,5 @@ public class Hint:ID
 /// </summary>
 public class HintFloor
 {
-    public string detail;
+    public string[] detail;
 }

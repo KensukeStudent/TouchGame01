@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// 子オブジェクトにプレイヤーがいる時にカメラを指定方向に移動させるクラス
@@ -47,6 +45,7 @@ public class FloorMoveObj : MonoBehaviour
     public void CamSetVec()
     {
         var cam = GameObject.Find("Main Camera").GetComponent<CameraContorller>();
+        //指定の方向に移動します
         SetDirectVec(cam);
     }
 
@@ -85,7 +84,9 @@ public class FloorMoveObj : MonoBehaviour
                 break;
         }
 
+        //フロアのオブジェクトの表示非表示をセットします
         SetFloorObj(dire);
+        //カメラが動ける最小、最大をセットします
         cam.SetDirectVec(dire, max[num], min[num]);
     }
 
@@ -97,33 +98,86 @@ public class FloorMoveObj : MonoBehaviour
         var floor = GameObject.Find("FloorManager").GetComponent<FloorManager>();
         var c = GameObject.Find("StageCreator").GetComponent<StageCreator>();
 
-        var nowFloor = int.Parse(transform.root.name);
+        //現在のフロア(プレイヤーのいるフロア)を取得します
+        var nowFloor = floor.PlayerFloor;
     
-        //位置を求めます
-        var stageH = nowFloor / c.FloorCount;
+        //縦の位置を求めます
+        //   現在のフロア番号  / 横のフロア数
+        var stageH = nowFloor / c.StageX;
+
+        //横の位置を求めます
+        //   現在のフロア番号 % 横のフロア数
+        var stageW = nowFloor % c.StageX;
+
         //移動時どのステージフロアにいるかを求める
         switch (dire)
         {
             case "R":
-                floor.Floors[stageH, nowFloor + 1].ActiveFloor();//右のフロアを表示
-                floor.Floors[stageH, nowFloor].InActiveFloor();//左のフロアを非表示(今いたフロア)
+                floor.Floors[stageH, stageW + 1].ActiveFloor();//右のフロアを表示
+
+                floor.Floors[stageH, stageW].InActiveFloor();//左のフロアを非表示(今いたフロア)
                 break;
 
             case "U":
-                floor.Floors[stageH + 1, nowFloor].ActiveFloor();//上のフロアを表示
-                floor.Floors[stageH, nowFloor].InActiveFloor();//下のフロアを非表示(今いたフロア)
+                floor.Floors[stageH - 1, stageW].ActiveFloor();//上のフロアを表示
+
+                floor.Floors[stageH, stageW].InActiveFloor();//下のフロアを非表示(今いたフロア)
                 break;
 
             case "L"://左か下
-                floor.Floors[stageH, nowFloor].ActiveFloor();//左のフロアを表示
-                floor.Floors[stageH, nowFloor].InActiveFloor();//右のフロアを非表示(今いたフロア)
+                floor.Floors[stageH, stageW - 1].ActiveFloor();//左のフロアを表示
+                
+                floor.Floors[stageH, stageW].InActiveFloor();//右のフロアを非表示(今いたフロア)
                 break;
 
             case "D":
-                floor.Floors[stageH - 1, nowFloor].ActiveFloor();//下のフロアを表示
-                floor.Floors[stageH, nowFloor].InActiveFloor();//上のフロアを非表示(今いたフロア)
+                floor.Floors[stageH + 1, stageW].ActiveFloor();//下のフロアを表示
+                
+                floor.Floors[stageH, stageW].InActiveFloor();//上のフロアを非表示(今いたフロア)
                 break;
         }
+
+        //移動先のフロアを計算します
+        var fn = GetFloorNo(dire, stageH, stageW, c);
+        //プレイヤーの現在地点フロア番号をいれます
+        floor.SetPlayerFloor(fn.ToString());
+    }
+
+    /// <summary>
+    /// 移動先のフロア番号を取得します
+    /// </summary>
+    int GetFloorNo(string dire,int stageH,int nowFloor, StageCreator c)
+    {
+        int no = 0;
+
+        #region 計算式
+        //例 = ((現在の縦の番号 +(縦の移動先の符号) 1 ) * 横のフロア数 ) + (現在のフロア番号 +(横の移動先の符号) 1) 
+        //例 = (stageH + 1) * c.StageX + nowFloor + 1;
+        #endregion
+
+        switch (dire)
+        {
+            //右に移動
+            case "R":
+                no = stageH * c.StageX + nowFloor + 1;
+                break;
+
+            //上に移動
+            case "U":
+                no = (stageH - 1) * c.StageX + nowFloor;
+                break;
+
+            //左に移動
+            case "L":
+                no = stageH * c.StageX + nowFloor - 1;
+                break;
+
+            //下に移動
+            case "D":
+                no = (stageH + 1) * c.StageX + nowFloor;
+                break;
+        }
+        return no;
     }
 
     /// <summary>

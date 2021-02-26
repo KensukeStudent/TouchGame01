@@ -30,8 +30,14 @@ public class DShot : MonoBehaviour
     {
         if (col.gameObject.CompareTag("Obstacles"))
         {
+            //エフェクトを作成
+            var effect = Instantiate(destroyEffect, transform.position, Quaternion.identity);
+            var efE = effect.GetComponent<ExplosionEffect>();
+            //エフェクトを指定時間で削除します
+            var desTime = efE.DestoryEffectTime();
+            Destroy(effect, desTime);
+
             Destroy(gameObject);
-            Instantiate(destroyEffect, transform.position, Quaternion.identity);
         }
     }
 }

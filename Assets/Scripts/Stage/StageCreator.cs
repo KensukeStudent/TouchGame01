@@ -1,7 +1,42 @@
 ﻿using System;
 using System.IO;
+using System.Collections.Generic;
 using UnityEngine;
 #pragma warning disable 649
+
+#region 生成タイルクラス
+
+/// <summary>
+/// 壁のタイルを格納するクラス
+/// </summary>
+[Serializable]
+public class WallsClass
+{
+    public string id;
+    public GameObject[] walls;
+}
+
+/// <summary>
+/// 背景のタイルを格納するタイル
+/// </summary>
+[Serializable]
+public class BackGroundClass
+{
+    public string id;
+    public GameObject[] backs;
+}
+
+/// <summary>
+/// 装飾タイルを格納するクラス
+/// </summary>
+[Serializable]
+public class DecorationClass
+{
+    public string id;
+    public GameObject[] decos;
+}
+
+#endregion
 
 /// <summary>
 /// ステージ作成クラス
@@ -16,16 +51,36 @@ public class StageCreator : MonoBehaviour
     /// <summary>
     /// 生成する初期位置
     /// </summary>
-    readonly Vector2 createInitPos = new Vector2(-9.0f, 5.0f);
+    readonly Vector2 createInitPos = new Vector2(-8.5f, 5.5f);
 
     #region 生成するオブジェクト
+
+    #region ステージごとに変わるタイル
 
     //----------WALL----------//
     [Header("Wall")]
     /// <summary>
     /// 壁
     /// </summary>
-    [SerializeField] GameObject[] walls;
+    [SerializeField] WallsClass[] wc;
+
+    //----------BackGround----------//
+    [Header("BackGround")]
+    /// <summary>
+    /// 背景
+    /// </summary>
+    [SerializeField] BackGroundClass[] bc;
+
+    //----------Decoration----------//
+    [Header("Decoration")]
+    /// <summary>
+    /// 装飾
+    /// </summary>
+    [SerializeField] DecorationClass[] dc;
+
+    #endregion
+
+    #region 全ステージ共通のタイル
 
     //----------PLAYER ENEMY GOAL----------//
     [Header("Player/Goal")]
@@ -65,13 +120,7 @@ public class StageCreator : MonoBehaviour
     [SerializeField] GameObject moveObj;
     [SerializeField] GameObject[] catArrow;
 
-    //----------BackGround----------//
-    [Header("BackGround")]
-    [SerializeField] GameObject[] grasses;
-
-    //----------Decoration----------//
-    [Header("Decoration")]
-    [SerializeField] GameObject[] decos;
+    #endregion
 
     #endregion
 
@@ -90,7 +139,10 @@ public class StageCreator : MonoBehaviour
     /// 生成カウント
     /// </summary>
     int counter = 0;
-
+    /// <summary>
+    /// 矢印用カウンタ―
+    /// </summary>
+    int arrowCounter = 0;
     /// <summary>
     /// ステージ番号
     /// ステージ選択時にセットします
@@ -99,7 +151,7 @@ public class StageCreator : MonoBehaviour
     /// <summary>
     /// ステージ内のフロア数
     /// </summary>
-    readonly int[] floorCount = { 3 };
+    readonly int[] floorCount = { 3, 6 };
     /// <summary>
     /// 現在のステージのフロア数を返します
     /// </summary>
@@ -114,12 +166,12 @@ public class StageCreator : MonoBehaviour
     /// <summary>
     /// 各ステージのX,Y長さ
     /// </summary>
-    readonly Vector2[] stageVec = { new Vector2(19 - 1, 11 + 1) };
+    readonly Vector2[] stageVec = { new Vector2(19 - 1, 11 + 1), new Vector2(20 - 1, 11) };
 
     /// <summary>
     /// 横のステージのフロア数
     /// </summary>
-    readonly int[] stageX = { 3 };
+    readonly int[] stageX = { 3, 3 };
     public int StageX
     {
         get
@@ -136,7 +188,8 @@ public class StageCreator : MonoBehaviour
     private void Awake()
     {
         //ステージ番号のステージを作成します
-        fileNum = GameManager.Instance.StageNo;
+        //fileNum = GameManager.Instance.StageNo;
+        fileNum = 1;
 
         //現在のステージ番号を指定します
         stageID = string.Format("stage{0}", fileNum + 1);
@@ -190,7 +243,7 @@ public class StageCreator : MonoBehaviour
             for (int i = 0; i < tileList.Length; i++)
             {
                 var stageNo = fileNum + 1;
-                var filePath = string.Format("Stage{0}/{1}/{2}", stageNo, stageNo + sNum, pathName[i]);
+                var filePath = string.Format("Stage/Stage{0}/{1}/{2}", stageNo, sNum + 1, pathName[i]);
                 CSVRead(filePath, i, floor, vec, sNum);
             }
         }
@@ -235,7 +288,9 @@ public class StageCreator : MonoBehaviour
             pos.x = createPos.x;
             pos.y -= 1;
         }
+        //生成カウントの初期化
         counter = 0;
+        arrowCounter = 0;
     }
 
     #endregion
@@ -247,10 +302,66 @@ public class StageCreator : MonoBehaviour
     /// </summary>
     void SwicthWALL(string tileNum, Vector2 pos, GameObject floor, int floorNum)
     {
-        string[] wallNo = { "22", "23", "24", "280", "536", "535", "534", "278", "28", "29", "279", "284", "285" };
+        //ステージごとの壁を生成します
+        string[][] wallNo = new string[2][]
+        {
+            new string[]{"22", "23", "24", "28", "29", "278", "279", "280", "284", "285", "534", "535", "536"},
+
+            new string[]{"1031","1032","1033","1034","1286","1287","1288","1289","1542","1543","1544","1545"}
+        };
+
         //読み込んだ文字数値がwallNo配列にあるかを解析し、配列番号のオブジェクトを
         //現在のフロアに生成します。
-        if (!OnMozi(wallNo, tileNum, 0)) InstantObj(walls[SetNumber(wallNo, tileNum)], pos, floor);
+        if (!OnMozi(wallNo[fileNum], tileNum, 0))
+        {
+            //wc[ステージ番号][wallNoの番号]のオブジェクトを生成
+            InstantObj(wc[fileNum].walls[SetNumber(wallNo[fileNum], tileNum)], pos, floor);
+        }
+    }
+
+    /// <summary>
+    /// 　背景
+    /// </summary>
+    void SwitchBack(string tileNum, Vector2 pos, GameObject floor, int floorNum)
+    {
+        //ステージごとの背景を生成します
+        string[][] backNo = new string[2][]
+        {
+            new string[]{"0","768", "769", "770","1024", "1025", "1026",
+                          "1280", "1281", "1282","1536", "1537","1792","1793"},
+
+            new string[]{"0"},
+        };
+
+        //読み込んだ文字数値がbackNo配列にあるかを解析し、配列番号のオブジェクトを
+        //現在のフロアに生成します。
+        if (!OnMozi(backNo[fileNum], tileNum, 0))
+        {
+            //bc[ステージ番号][backNoの番号]のオブジェクトを生成
+            InstantObj(bc[fileNum].backs[SetNumber(backNo[fileNum], tileNum)], pos, floor);
+        }
+    }
+
+    /// <summary>
+    /// デコレーション
+    /// </summary>
+    void SwitchDecoration(string tileNum, Vector2 pos, GameObject floor, int floorNum)
+    {
+        string[][] decoNo = new string[2][]
+        {
+            new string[]{"293", "294", "799", "800", "1055", "1056",
+                          "5146", "5147", "5148", "5149", "5402" },
+        
+            new string[]{ }
+        };
+
+        //読み込んだ文字数値がdecoNo配列にあるかを解析し、配列番号のオブジェクトを
+        //現在のフロアに生成します。
+        if (!OnMozi(decoNo[fileNum], tileNum, 0))
+        {
+            //dc[ステージ番号][decoNoの番号]のオブジェクトを生成
+            InstantObj(dc[fileNum].decos[SetNumber(decoNo[fileNum], tileNum)], pos, floor);
+        }
     }
 
     /// <summary>
@@ -294,7 +405,12 @@ public class StageCreator : MonoBehaviour
         //case : 1282 一度のみアイテム付きジャンプ台
         #endregion
 
-        if (!OnMozi(jObjNo, tileNum, 0)) InstantObj(jumpObj[SetNumber(jObjNo, tileNum)], pos, floor);
+        //読み込んだ文字数値がjObjNo配列にあるかを解析し、配列番号のオブジェクトを
+        //現在のフロアに生成します。
+        if (!OnMozi(jObjNo, tileNum, 0))
+        {
+            InstantObj(jumpObj[SetNumber(jObjNo, tileNum)], pos, floor);
+        }
     }
 
     /// <summary>
@@ -314,29 +430,13 @@ public class StageCreator : MonoBehaviour
         #endregion
 
         string[] kNo = { "0", "1", "2", "3", };
-        if (!OnMozi(kNo, tileNum, 0)) InstantObj(key[SetNumber(kNo, tileNum)], pos, floor);
-    }
 
-    /// <summary>
-    /// 　背景
-    /// </summary>
-    void SwitchBack(string tileNum, Vector2 pos, GameObject floor, int floorNum)
-    {
-        string[] grassNo = {"0","768", "769", "770","1024", "1025", "1026",
-                          "1280", "1281", "1282","1536", "1537","1792","1793" };
-
-        if (!OnMozi(grassNo, tileNum, 0)) InstantObj(grasses[SetNumber(grassNo, tileNum)], pos, floor);
-    }
-
-    /// <summary>
-    /// デコレーション
-    /// </summary>
-    void SwitchDecoration(string tileNum, Vector2 pos, GameObject floor, int floorNum)
-    {
-        string[] decoNo = { "293", "294", "799", "800", "1055", "1056",
-                          "5146", "5147", "5148", "5149", "5402" };
-
-        if (!OnMozi(decoNo, tileNum, 0)) InstantObj(decos[SetNumber(decoNo, tileNum)], pos, floor);
+        //読み込んだ文字数値がkNo配列にあるかを解析し、配列番号のオブジェクトを
+        //現在のフロアに生成します。
+        if (!OnMozi(kNo, tileNum, 0))
+        {
+            InstantObj(key[SetNumber(kNo, tileNum)], pos, floor);
+        }
     }
 
     #endregion
@@ -405,10 +505,17 @@ public class StageCreator : MonoBehaviour
         if (OnMozi(bNo, tileNum, 0)) return;
         //---0～3が鍵ブロック---
         //ブロック名をイベントにします
-        else if (OnMozi(bNo, tileNum, 4)) blockName = nameArray[0];
+        else if (OnMozi(bNo, tileNum, 4))
+        {
+            blockName = nameArray[0];
+        }
         //---4～5がゴールブロック---
         //ブロック名をゴールにします
-        else blockName = nameArray[1];
+        else
+        {
+            blockName = nameArray[1];
+        }
+            
 
         //ブロックを作成します
         b = InstantObj(block[SetNumber(bNo, tileNum)], pos, floor);
@@ -434,16 +541,14 @@ public class StageCreator : MonoBehaviour
 
         switch (num)
         {
-            //敵(全ての敵を倒す条件を指定)
             case "4":
-
+                //敵(全ての敵を倒す条件を指定)
                 g.GoalKind(goalKind.enemy);
                 break;
 
-            //鍵(指定の鍵を入手)
             case "5":
-
-                g.GoalKind(goalKind.key);
+                //鍵(指定の鍵を入手)
+                g.GoalKind(goalKind.key);               
                 break;
         }
     }
@@ -455,13 +560,13 @@ public class StageCreator : MonoBehaviour
     {
         #region 移動向き詳細
         //上
-        //case "0" "10"
+        //case "0" "8"
         //左
-        //case "1" "11"
+        //case "1" "9"
         //下
-        //case "2" "12"
+        //case "2" "10"
         //右
-        //case "4" "13"
+        //case "4" "11"
         #endregion
 
         //向きの番号
@@ -486,8 +591,8 @@ public class StageCreator : MonoBehaviour
                 var hc = arrow.GetComponent<HintCat>();
 
                 //情報を入れます
-                ji.SetHint(stageID, hc, floorNum);
-
+                ji.SetHint(stageID, hc, arrowCounter, floorNum);
+                arrowCounter++;
                 break;
 
             case "8":
@@ -503,7 +608,7 @@ public class StageCreator : MonoBehaviour
                 var jumpObj = jump.GetComponent<FloorMoveObj>();
 
                 //生成されるジャンプオブジェクトに値をセットします
-                ji.SetFloorVec("stage1", jumpObj, counter, floorNum);
+                ji.SetFloorVec(stageID, jumpObj, counter, floorNum);
 
                 counter++;
                 break;
@@ -559,8 +664,6 @@ public class StageCreator : MonoBehaviour
     /// <summary>
     /// オブジェクトの作成
     /// </summary>
-    /// <param name="array">文字配列</param>
-    /// <param name="num">文字番</param>
     /// <param name="obj">作成するオブジェクト</param>
     /// <param name="pos">生成ポジション</param>
     GameObject InstantObj(GameObject obj, Vector2 pos, GameObject floor)
