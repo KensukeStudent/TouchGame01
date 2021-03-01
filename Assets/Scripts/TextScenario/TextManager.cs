@@ -5,18 +5,25 @@ using UnityEngine.SceneManagement;
 using System.Text.RegularExpressions;
 using System.Collections;
 
-#region 文字数について
-
-//一列の文字数は20文字とします。
-//行はいくらでも大丈夫です(限度はもちろんありです！。)
-
-#endregion
+/// <summary>
+/// 場所に応じて出力の仕方を変更します
+/// </summary>
+public enum MoziState
+{
+    scenario,//シナリオ
+    game     //ゲーム内のイベント
+}
 
 /// <summary>
 /// テキストを出力するクラス
 /// </summary>
 public class TextManager : MonoBehaviour
 {
+    /// <summary>
+    /// 出力種類
+    /// </summary>
+    [SerializeField] MoziState moziState;
+
     /// <summary>
     /// シナリオ読み込みクラス
     /// </summary>
@@ -80,12 +87,12 @@ public class TextManager : MonoBehaviour
     /// <summary>
     /// 文字の出力に指示します
     /// </summary>
-    int stop = 0;
+    int stop = 1;
 
     /// <summary>
-    /// 15字ごとに改行します
+    /// 20字か25字ごとに改行します
     /// </summary>
-    const int lineCount = 15;
+    int lineCount = 20;
     /// <summary>
     /// 行数
     /// </summary>
@@ -97,15 +104,108 @@ public class TextManager : MonoBehaviour
 
     private void Start()
     {
-        sr = new ScenarioReader();
+        switch (moziState)
+        {
+            //シナリオ
+            case MoziState.scenario:
+
+                //テキスト出力する文字を保存
+                sr = new ScenarioReader();
+                //改行を20文字にセットします
+                lineCount = 20;
+                //scenarioIdのシナリオデータを読み込みます
+                sr.SinarioModeInit();
+                //初期化
+                Init();
+                break;
+            
+            //ゲーム内イベント
+            case MoziState.game:
+
+                //改行を25文字にセットします
+                lineCount = 25;
+
+                break;
+        }
+
         animC = nextClick.GetComponent<Animator>();
-        Init();
+    }
+
+    private void OnDisable()
+    {
+        Time.timeScale = 1;
     }
 
     private void Update()
     {
+        //文字出力します
         MainUpdate();
     }
+
+    #region ゲーム内イベント用
+
+    /// <summary>
+    /// イベントのテキストをストックします
+    /// イベントのオブジェクトによって呼ばれます
+    /// </summary>
+    public void SetEvText(string[] evText)
+    {
+        //srがなければ作成します
+        if (sr == null)
+        {
+            sr = new ScenarioReader();
+        }
+
+        gameObject.SetActive(true);
+        //呼び出す時にこれから出力するテキストをストックします
+        sr.SetArray(evText);
+
+        //徐々に表示するフレーム(枠の透明度が1になったらstop = 0にします)
+
+    }
+    
+    /// <summary>
+    /// 透明化
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator TransparentCO()
+    {
+        var image = GetComponent<Image>();
+        //同時に透明度を変更させる画像の取得
+        Image[] cats = new Image[2];
+
+        //検索するパス
+        string[] catsPath = { "RightCat", "LeftCat" };
+
+        for (int i = 0; i < 2; i++)
+        {
+            cats[i] = transform.Find(catsPath[i]).GetComponent<Image>();
+        }
+
+        var alpha = image.color;
+        alpha.a = 0.0f;
+
+        for (int i = 0; i < 100; i++)
+        {
+            alpha.a += 0.025f;
+
+            yield return new WaitForSecondsRealtime(0.01f);
+
+            image.color = alpha;
+
+            for (int c = 0; c < cats.Length; c++)
+            {
+                cats[c].color = alpha;
+            }
+        }
+
+        //初期化
+        Init();
+    }
+
+    #endregion
+
+    #region 文字の処理
 
     /// <summary>
     /// 全ての処理をします
@@ -119,7 +219,7 @@ public class TextManager : MonoBehaviour
         //stopが1なら処理を止めます
         if (stop == 1) return;
 
-        time += Time.deltaTime;
+        time += Time.unscaledDeltaTime;
 
         if (time < nextTime) return;
 
@@ -166,6 +266,8 @@ public class TextManager : MonoBehaviour
             lineLength = 0;
         }
     }
+
+    #endregion
 
     #region 特殊コード処理
 
@@ -263,7 +365,7 @@ public class TextManager : MonoBehaviour
     /// <param name="scene"></param>
     IEnumerator ChangeScene(string scene)
     {
-        yield return new WaitForSeconds(seClip[0].length);
+        yield return new WaitForSecondsRealtime(seClip[0].length);
         SceneManager.LoadScene(scene);
     }
 
@@ -367,7 +469,8 @@ public class TextManager : MonoBehaviour
     void SetMarkPos()
     {
         //マージン
-        const float margin = 3.8f;
+        const float marginX = 3.8f;
+        const float marginY = 50.0f;
         //fontサイズ
         const float fontSize = 50.0f;
 
@@ -383,9 +486,9 @@ public class TextManager : MonoBehaviour
 
         //初期位置にプラスします
         //(フォントサイズ + マージン) * (行目番目の)文字の長さ
-        pos.x += (fontSize + margin) * lineLength + size.x;
+        pos.x += (fontSize + marginX) * lineLength + size.x;
         //フォントサイズ * (列番目の)長さ
-        pos.y -= fontSize * line + size.y / 2.3f;
+        pos.y -= (fontSize + marginY) * line + size.y / 2.3f;
 
         rt.anchoredPosition = pos;
     }

@@ -11,7 +11,7 @@ enum State
 /// <summary>
 /// プレイヤーを制御するクラス
 /// </summary>
-public class PlayerContoller : MonoBehaviour
+public class PlayerContoller : MonoBehaviour, IAudio
 {
     State currentState = State.nomal;
     const float moveSpeed = 10.0f;
@@ -67,6 +67,17 @@ public class PlayerContoller : MonoBehaviour
     /// </summary>
     bool touch;
 
+    /// <summary>
+    /// 爆弾を所持しているときに表示します
+    /// 表示中は攻撃不可
+    /// </summary>
+    [SerializeField] GameObject bakudan;
+    /// <summary>
+    /// 爆弾を投げる時に生成します(マウス方向に投げます)
+    /// 壁か敵に当たったら爆破します
+    /// ダメージを受けたら自分も即死
+    /// </summary>
+    [SerializeField] GameObject throwB;
     /// <summary>
     /// プレイヤー状態管理
     /// </summary>
@@ -129,7 +140,7 @@ public class PlayerContoller : MonoBehaviour
         if (!CheckObstacles(hit, evWallLayer) && touch && Input.GetMouseButtonDown(0) && SameLayer(hit,"EventWall"))
         {
             //クリックして鍵があれば、ブロックを破壊する
-            pi.UseKindKey(hit.transform.name, hit.transform.gameObject);
+            pi.UseKindKey(hit.transform.gameObject);
         }
 
         //移動開始
@@ -361,7 +372,7 @@ public class PlayerContoller : MonoBehaviour
     /// <summary>
     /// 効果音を鳴らします
     /// </summary>
-    void PlaySE(int clipNo,float vol = 1.0f)
+    public void PlaySE(int clipNo, float vol = 1.0f)
     {
         aud.PlayOneShot(clip[clipNo], vol);
     }
@@ -376,12 +387,8 @@ public class PlayerContoller : MonoBehaviour
         //敵弾に当たったら処理
         if (col.gameObject.CompareTag("EnemyShot")) HitEnemyShot();
 
-        //敵を倒せるようになります
-        if (col.gameObject.CompareTag("ItemAttack")) NowAttackMode(col);
-
-        //鍵を取得　
-        //ステージ内の特定の場所へいけるようになります
-        if (col.gameObject.CompareTag("Key")) HaveKey(col);
+        //アイテムを取得し解析します
+        if (col.CompareTag("Item")) GetItemSwitch(col);
 
         //ゴールのアイテムをとったらゲームクリア
         if (col.gameObject.CompareTag("Goal")) GoalClear(col);
@@ -417,6 +424,44 @@ public class PlayerContoller : MonoBehaviour
     {
         Debug.Log("ダメージを受ける");
         PlaySE(3);
+    }
+
+    /// <summary>
+    /// あるアイテムに触れたら処理します
+    /// </summary>
+    void GetItemSwitch(Collider2D col)
+    {
+        //解析したアイテム名
+        switch (ItemName(col.name))
+        {
+            //攻撃
+            case "Food":
+                //敵を倒せるようになります
+                NowAttackMode(col);
+                break;
+            
+            //鍵
+            case "Key":
+                //鍵を取得　
+                //ステージ内の特定の場所へいけるようになります
+                HaveKey(col);
+                break;
+            
+            //道具
+            case "Bakudan":
+                //爆弾に触れた時に処理します
+                Bakudan(col);
+                break;
+        }
+    }
+
+    /// <summary>
+    /// 名前を解析します
+    /// </summary>
+    /// <param name="name">アイテム名</param>
+    string ItemName(string name)
+    {
+        return _ = Regex.Match(name, @"(.+)_").Groups[1].Value;
     }
 
     /// <summary>
@@ -483,6 +528,92 @@ public class PlayerContoller : MonoBehaviour
         GameManager.Instance.SetGame(false);
     }
 
+    /// <summary>
+    /// 爆弾がイベントものかどうかで処理を分けます
+    /// </summary>
+    /// <param name="name">爆弾名</param>
+    void Bakudan(Collider2D col)
+    {
+        //爆弾の状態
+        //nomalかev
+        var condition = Regex.Match(col.name, @"_(.+)").Groups[1].Value;
+
+        switch (condition)
+        {
+            //通常の爆弾
+            case "Nomal":
+                //bakudanを表示
+                //投げること可能
+                TakeBakudan(col.gameObject);
+                break;
+
+            //イベント式の爆弾
+            case "Ev":
+                //イベント開始
+                BakudanEvent(col);
+                break;
+        }
+    }
+
+    /// <summary>
+    /// 爆弾を取得したときの処理
+    /// </summary>
+    void TakeBakudan(GameObject b)
+    {
+        //bakudanをプレイヤーの頭の上に表示します
+        bakudan.SetActive(true);
+        //爆弾を削除します
+        Destroy(b);
+    }
+
+    /// <summary>
+    /// 爆弾イベントの時一回限り呼ばれます
+    /// </summary>
+    void BakudanEvent(Collider2D col)
+    {
+        #region 処理流れ
+
+        //黒いeventnの爆弾を取る
+        //爆弾を頭の上に表示
+
+        //イベントパート
+        //fontの変更
+        //----> 「なんにゃー、このくだもの？？」(ネコのセリフ)
+
+        //テキストの方でWaitを書けます(animationの時間分)
+        // 爆弾の色を徐々に元の色に戻していきます
+
+        //----> 「にゃ！にゃ！？　ばくだんにゃーーー！！！」
+
+        //解説
+        //---> fontを変更
+        //----> 「ジャンプ位置でない所で右クリックすることで投げることができます」
+        //----> 「敵を倒すこともできるので快感を味わってみてください。
+        //        ただし、自分もまき壊れることもあるのでお気をつけて。」
+        //----> 「爆弾は何度も生成されるので、何回でも使うことができます」
+
+        #endregion
+
+        //取得したときの処理
+        TakeBakudan(col.gameObject);
+
+        //タイムスケールで時間を止めます
+        Time.timeScale = 0;
+
+        //表示用テキストCanvas
+        var cavas = GameObject.Find("DescriptionCanvas");
+        //親から表示用テキストを取得
+        var tm = cavas.transform.Find("NovelFrame").GetComponent<TextManager>();
+        //Ev爆弾のノベルパートを取得
+        var b = col.GetComponent<Bakudan>();
+
+        //読み込むテキストを表示用UIの方に格納します
+        tm.SetEvText(b.EvBakudan());
+
+        //NovelFrameを徐々に表示します
+        tm.StartCoroutine(tm.TransparentCO());
+    }
+
     private void OnTriggerStay2D(Collider2D col)
     {
         //特定の鍵を持っている場合、それに応じたブロックを破壊できます
@@ -508,5 +639,6 @@ public class PlayerContoller : MonoBehaviour
             bS.InActive();
         }
     }
+
     #endregion
 }

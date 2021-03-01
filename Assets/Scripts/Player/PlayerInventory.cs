@@ -40,14 +40,14 @@ public class PlayerInventory : MonoBehaviour
     /// 鍵の種類に応じて取得値を減らします
     /// </summary>
     /// <param name="blockName"></param>
-    public void UseKindKey(string blockName,GameObject block)
+    public void UseKindKey(GameObject block)
     {
         //現在鍵を使って破壊するブロック
         var bS = block.GetComponent<BlocksScript>();
         //ブロック名
-        string[] blocksName = { "Blue", "Green", "Red", "Yellow" ,"Goal"};
+        string[] blocksName = { "Blue", "Green", "Red", "Yellow", "default" };
         //配列の何番目の文字かを返値で番号を返します
-        var ret = GetNumber(blocksName, NameAnalysis(blockName));
+        var ret = GetNumber(blocksName, block.name);
 
         switch (blocksName[ret])
         {
@@ -71,7 +71,13 @@ public class PlayerInventory : MonoBehaviour
 
                 break;
 
-            case "Goal":
+            //通常のブロックではない場合
+            #region 例外ブロック
+            //イベント付きのブロック
+            //爆破で突破ブロック
+            #endregion
+
+            case "default":
                 //ゴールブロックを破壊するためのヒントを表示します
                 bS.SetText();
                 
@@ -81,11 +87,12 @@ public class PlayerInventory : MonoBehaviour
 
     /// <summary>
     /// 名前の解析
+    /// プレイヤ―が取得するアイテム
     /// </summary>
     string NameAnalysis(string name)
     {
         //大文字、小文字のローマ字を抽出します
-        return _= Regex.Match(name, @"([A-Z]|[a-z])+").ToString();
+        return _= Regex.Match(name, @"_(.+)\(Clone\)").Groups[1].Value;
     }
 
     /// <summary>
@@ -97,7 +104,11 @@ public class PlayerInventory : MonoBehaviour
     int GetNumber(string[] array,string name)
     {
         //配列内の番号を出力します
-        return _ = Array.IndexOf(array, name);
+        var no = Array.IndexOf(array, name);
+
+        if (no < 0) return _= 4;
+
+        return no;
     }
 
     /// <summary>

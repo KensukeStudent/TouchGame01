@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-
-/// <summary>
+﻿/// <summary>
 /// シナリオの読み込みリスト
 /// </summary>
-public class ScenarioReader : MonoBehaviour
+public class ScenarioReader
 {
+    public static string scenarioId = "opeing";
+
     /// <summary>
     /// 出力するシナリオを格納します
     /// </summary>
@@ -20,23 +19,29 @@ public class ScenarioReader : MonoBehaviour
     JsonInfo ji;
 
     /// <summary>
-    /// コンストラクター
+    /// コンストラクターシナリオ用
     /// </summary>
-    public ScenarioReader()
+    /// <param name="id">初期値 = "opeing"</param>
+    public ScenarioReader() { }
+
+    /// <summary>
+    /// シナリオではこちらを処理します
+    /// </summary>
+    public void SinarioModeInit()
     {
         ji = new JsonInfo();
         //シナリオを読み込みます
         ji.ScenarioJson();
 
         //storyのIDをセットしてその配列を読み込みます
-        SetStoriesID("opeing");
+        SetStoriesID(scenarioId);
     }
 
     /// <summary>
     /// 読み込むstoryのIDをセットします
     /// </summary>
     /// <param name="id"></param>
-    public void SetStoriesID(string id)
+    void SetStoriesID(string id)
     {
         ji.SetScenario(this, id);
     }

@@ -48,12 +48,7 @@ public class StageManager : MonoBehaviour
 
     private void Awake()
     {
-        //各ステージ初期値を設定します ----->SaveDataから参照
-        InitData();
-
         DontDestroyOnLoad(this);
-
-        //StageUpdate(0, 25);
     }
 
     #region データ管理・更新
@@ -61,7 +56,7 @@ public class StageManager : MonoBehaviour
     /// <summary>
     /// ゲーム開始時のデータの動き
     /// </summary>
-    void InitData()
+    public void InitData()
     {
         var load = new SaveLoad();
 

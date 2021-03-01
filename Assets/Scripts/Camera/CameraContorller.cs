@@ -97,16 +97,22 @@ public class CameraContorller : MonoBehaviour
         {
             //右方向に移動
             case "R":
+                SetVec(dire, ref camVec.x, MinC.x);
+                break;
+
             //左方向に移動
             case "L":
-                SetVec(dire,ref camVec.x, MinC.x);
+                SetVec(dire,ref camVec.x, MaxC.x);
                 break;
 
             //下方向に移動
             case "D":
+                SetVec(dire, ref camVec.y, MinC.y);
+                break;
+
             //上方向に移動
             case "U":
-                SetVec(dire,ref camVec.y, MinC.y);
+                SetVec(dire,ref camVec.y, MaxC.y);
                 break;
         }
          transform.position = camVec;

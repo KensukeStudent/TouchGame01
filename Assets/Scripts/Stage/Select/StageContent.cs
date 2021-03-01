@@ -39,6 +39,8 @@ public class StageContent : MonoBehaviour
     /// </summary>
     [SerializeField] RectTransform clearRt;
 
+    #region 初期値
+
     /// <summary>
     /// このステージの中身をセットします
     /// </summary>
@@ -81,6 +83,10 @@ public class StageContent : MonoBehaviour
         //クリア時のオブジェクトの状態をセットします
         cat.SetObject(sm.ClearAnimMan[stageNo]);
     }
+    
+    #endregion
+
+    #region アニメーションの再生
 
     /// <summary>
     /// ステージクリア後のアニメーションを再生します
@@ -164,4 +170,6 @@ public class StageContent : MonoBehaviour
         //セーブ,画面操作可能にします
         sm.StageAnimFinish();
     }
+    
+    #endregion
 }

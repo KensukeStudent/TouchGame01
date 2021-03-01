@@ -6,14 +6,12 @@ TagManager:
   tags:
   - Enemy
   - Obstacles
-  - ItemAttack
   - InitPos
   - Goal
   - EnemyShot
-  - Key
   - Block
-  - EventKey
   - Floor
+  - Item
   layers:
   - Default
   - TransparentFX

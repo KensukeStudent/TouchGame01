@@ -54,13 +54,22 @@ public class GameManager : MonoBehaviour
     public void StartButton()
     {
         //セーブデータを初期化
-        SceneManager.LoadScene("StageSelect");       
+        var delete = new SaveLoad();
+        var sm = GameObject.Find("StageManager").GetComponent<StageManager>();
+        //データを削除し、新たにデータを作成します
+        delete.FileDelete(sm);
+
+        //sceneをノベルパート
+        SceneManager.LoadScene("NovelScene");       
     }
 
     public void ContinueButton()
     {
         //セーブデータを参照しつづきから始めます
-
+        SceneManager.LoadScene("StageSelect");
+        var sm = GameObject.Find("StageManager").GetComponent<StageManager>();
+        //データを引き継ぎます
+        sm.InitData();
     }
 
     public void EndButton()

@@ -50,7 +50,7 @@ public class SaveLoad : MonoBehaviour
 
         try
         {
-            //ファイルに書き込みします
+            //ファイルに書き込み(なければ作成)します
             using (var sw = new StreamWriter(dataPath))
             {
                 //データをJson化させます
@@ -58,6 +58,9 @@ public class SaveLoad : MonoBehaviour
 
                 //書き込み
                 sw.Write(str);
+
+                //ファイルを閉じます
+                sw.Close();//しなくてもよい
             }
             ret = true; //成功
         }
@@ -103,7 +106,26 @@ public class SaveLoad : MonoBehaviour
         }
 
         return ret;
-    }   
+    }
+
+    /// <summary>
+    /// ファイルの削除を行います
+    /// </summary>
+    public void FileDelete(StageManager sm)
+    {
+        //指定のファイルパスのデータを削除します
+        string path = Application.dataPath + "/Resources/SaveData/save.json";
+
+        //もしpathがあるなら処理します
+        if (string.IsNullOrEmpty(path))
+        {
+            //データを削除します
+            File.Delete(path);
+        }
+
+        //新たにデータを作成します
+        sm.InitData();
+    }
 }
 
 /// <summary>
