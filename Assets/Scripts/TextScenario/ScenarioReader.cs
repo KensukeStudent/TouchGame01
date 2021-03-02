@@ -71,4 +71,12 @@ public class ScenarioReader
     {
         return _ = index == listScenario.Length - 1;
     }
+
+    /// <summary>
+    /// indexが0以上なら読み始めます
+    /// </summary>
+    public bool IsReading()
+    {
+        return _ = index > -1;
+    }
 }

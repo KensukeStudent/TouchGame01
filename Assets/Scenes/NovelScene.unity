@@ -685,6 +685,7 @@ MonoBehaviour:
   clickSprite:
   - {fileID: 21300000, guid: b822ee9013bcbb746be52fa246a282c4, type: 3}
   - {fileID: 21300000, guid: 06431773dc9167b49935b9c5e841825f, type: 3}
+  fonts: []
 --- !u!1 &1966017993
 GameObject:
   m_ObjectHideFlags: 0
@@ -966,6 +967,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ClickImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 6931021531005650193, guid: 7312cdabaa14b7043b1aacdaaf36cfa5,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6931021531005650194, guid: 7312cdabaa14b7043b1aacdaaf36cfa5,
         type: 3}

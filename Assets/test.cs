@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class test : MonoBehaviour
 {
@@ -21,9 +22,11 @@ public class test : MonoBehaviour
 
     [SerializeField]AudioClip[] clip;
 
+    Action[] actions;
+
     private void Start()
     {
-        aud = GetComponent<AudioSource>();
+        //aud = GetComponent<AudioSource>();
 
         //Instant(scoreData, 0);
 
@@ -36,9 +39,34 @@ public class test : MonoBehaviour
         //List(a);
         //List(b);
 
-        StartCoroutine(Time());
+        //StartCoroutine(Time());
 
-        Debug.Log(this.enabled);
+        //Debug.Log(this.enabled);
+
+        Action[] show = { A, B };
+        //show[0]();
+
+        actions = show;
+        actions[0]();
+    }
+
+    void A()
+    {
+        StartCoroutine(enumerator());
+    }
+
+    IEnumerator enumerator()
+    {
+        for (int i = 0; i < 100; i++)
+        {
+            yield return new WaitForSeconds(0.01f);
+            Debug.Log(i);
+        }
+    }
+
+    void B()
+    {
+        Debug.Log("B");
     }
 
     IEnumerator Time()

@@ -129,6 +129,10 @@ public class PlayerContoller : MonoBehaviour, IAudio
         var mouseRay = Camera.main.ScreenPointToRay(pos);
         var hit = Physics2D.Raycast(mouseRay.origin, mouseRay.direction, Mathf.Infinity, hitLayer);
 
+        //右クリックでバクダンをもっているならマウス方向に爆弾を投げる
+
+        ThrowBakudan(pos);
+
         //ヒットしたものの状態を更新します
         Object(hit);
 
@@ -367,6 +371,27 @@ public class PlayerContoller : MonoBehaviour, IAudio
         return hitObj.layer == LayerMask.NameToLayer(layerName);
     }
 
+    /// <summary>
+    /// バクダンを持っているときに投げることができます
+    /// </summary>
+    void ThrowBakudan(Vector2 mousePos)
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            var pos = Camera.main.ScreenToWorldPoint(mousePos);
+
+            //プレイヤーからマウスまでの角度方向を取得
+            //Z成分を加味しないベクトル座標を正規化して角度を求めます
+            var direction = Vector3.Scale((pos - transform.position), new Vector3(1, 1, 0)).normalized;
+
+            var go = Instantiate(throwB, transform.position, Quaternion.identity);
+            var b = go.GetComponent<Bakudan>();
+
+            //ベクトル方向を代入
+            b.SetVec(direction);
+        }
+    }
+
     #endregion
 
     /// <summary>
@@ -574,7 +599,6 @@ public class PlayerContoller : MonoBehaviour, IAudio
         #region 処理流れ
 
         //黒いeventnの爆弾を取る
-        //爆弾を頭の上に表示
 
         //イベントパート
         //fontの変更
@@ -594,9 +618,6 @@ public class PlayerContoller : MonoBehaviour, IAudio
 
         #endregion
 
-        //取得したときの処理
-        TakeBakudan(col.gameObject);
-
         //タイムスケールで時間を止めます
         Time.timeScale = 0;
 
@@ -611,7 +632,17 @@ public class PlayerContoller : MonoBehaviour, IAudio
         tm.SetEvText(b.EvBakudan());
 
         //NovelFrameを徐々に表示します
-        tm.StartCoroutine(tm.TransparentCO());
+        tm.GetImage();
+
+        tm.SetAction(b.Actions());
+    }
+
+    /// <summary>
+    /// イベント用で爆弾を表示します
+    /// </summary>
+    public void ActiveBakudan()
+    {
+        bakudan.SetActive(true);
     }
 
     private void OnTriggerStay2D(Collider2D col)

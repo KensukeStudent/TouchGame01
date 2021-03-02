@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 3646335607240936577}
   - component: {fileID: 7413704704950230478}
   - component: {fileID: 3593846187276679918}
-  - component: {fileID: 1723490706}
   - component: {fileID: 114603054283576184}
+  - component: {fileID: 95945435659997478}
   m_Layer: 0
   m_Name: Bakudan
   m_TagString: Item
@@ -130,7 +130,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!95 &1723490706
+--- !u!114 &114603054283576184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8968447453793396021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 121a3e245f277f94c88bfc3d8d77db0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!95 &95945435659997478
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 0
@@ -149,15 +161,3 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &114603054283576184
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8968447453793396021}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 121a3e245f277f94c88bfc3d8d77db0f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

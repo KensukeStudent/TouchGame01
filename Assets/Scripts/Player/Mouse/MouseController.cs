@@ -35,8 +35,9 @@ public class MouseController : MonoBehaviour
     private void Update()
     {
         //画像のマウスまでの距離を描画します
-        FromPlayerToMouse();
+        if (Time.timeScale == 1) FromPlayerToMouse();
 
+        //プレイヤーから生えたように見せます
         mouseToPoint.transform.position = player.transform.position;
     }
 
@@ -96,6 +97,7 @@ public class MouseController : MonoBehaviour
             //距離を求め、正規化します
             size = Vector2.Distance(mousePos, objPos) * length;
         }
+
         return size;
     }
 
