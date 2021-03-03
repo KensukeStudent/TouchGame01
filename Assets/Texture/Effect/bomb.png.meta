@@ -60,6 +60,12 @@ TextureImporter:
     21300110: bomb_55
     21300112: bomb_56
     21300114: bomb_57
+    21300116: bomb_58
+    21300118: bomb_59
+    21300120: bomb_60
+    21300122: bomb_61
+    21300124: bomb_62
+    21300126: bomb_63
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -130,66 +136,6 @@ TextureImporter:
   spriteSheet:
     serializedVersion: 2
     sprites:
-    - serializedVersion: 2
-      name: bomb_0
-      rect:
-        serializedVersion: 2
-        x: 6
-        y: 487
-        width: 35
-        height: 36
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 296cb692264d36b42943e9e401cca88c
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: bomb_1
-      rect:
-        serializedVersion: 2
-        x: 98
-        y: 499
-        width: 27
-        height: 27
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 00ebbbc4778e7834c9a2169259b7faf0
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: bomb_2
-      rect:
-        serializedVersion: 2
-        x: 139
-        y: 506
-        width: 10
-        height: 11
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a96067a809485c74c921a6cce7d9c35b
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
     - serializedVersion: 2
       name: bomb_3
       rect:
@@ -294,10 +240,10 @@ TextureImporter:
       name: bomb_8
       rect:
         serializedVersion: 2
-        x: 61
-        y: 493
-        width: 21
-        height: 22
+        x: 48
+        y: 483
+        width: 48
+        height: 45
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -391,26 +337,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: bomb_13
-      rect:
-        serializedVersion: 2
-        x: 98
-        y: 466
-        width: 29
-        height: 28
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6b4260c0cac8b1f4f86e424ba8b35e9b
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: bomb_14
       rect:
         serializedVersion: 2
@@ -471,33 +397,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: bomb_17
-      rect:
-        serializedVersion: 2
-        x: 5
-        y: 439
-        width: 36
-        height: 38
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0ebb323d698cacb4ea728214aafc0b1e
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: bomb_18
       rect:
         serializedVersion: 2
-        x: 56
-        y: 438
-        width: 33
-        height: 35
+        x: 48
+        y: 435
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -506,26 +412,6 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: e612265c09014f24791d30316b000a57
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: bomb_19
-      rect:
-        serializedVersion: 2
-        x: 136
-        y: 470
-        width: 16
-        height: 17
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ca1d17931937bd143b8513a7aeb1a163
       vertices: []
       indices: 
       edges: []
@@ -626,46 +512,6 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: e0be929f3511ccf4fa4a67f82a048fe3
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: bomb_25
-      rect:
-        serializedVersion: 2
-        x: 98
-        y: 434
-        width: 29
-        height: 28
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c5a691c73b584c645b321f118454a17e
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: bomb_26
-      rect:
-        serializedVersion: 2
-        x: 134
-        y: 436
-        width: 21
-        height: 23
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 71a25bb0681618f40926f3d50515822c
       vertices: []
       indices: 
       edges: []
@@ -831,26 +677,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: bomb_36
-      rect:
-        serializedVersion: 2
-        x: 132
-        y: 403
-        width: 24
-        height: 25
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8d583e910f46d364aba80c47a01a03af
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: bomb_37
       rect:
         serializedVersion: 2
@@ -886,26 +712,6 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: a91429669825df1458da894bb1f25cd3
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: bomb_39
-      rect:
-        serializedVersion: 2
-        x: 131
-        y: 370
-        width: 27
-        height: 27
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b695826381e38f04f9b33fb6746e802d
       vertices: []
       indices: 
       edges: []
@@ -951,26 +757,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: bomb_42
-      rect:
-        serializedVersion: 2
-        x: 130
-        y: 338
-        width: 29
-        height: 28
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8063fb73e05b7444aa253910cb48674d
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: bomb_43
       rect:
         serializedVersion: 2
@@ -1011,106 +797,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: bomb_45
-      rect:
-        serializedVersion: 2
-        x: 129
-        y: 305
-        width: 29
-        height: 30
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b08934bc3b26f904eb7b548db5f2039f
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: bomb_46
-      rect:
-        serializedVersion: 2
-        x: 129
-        y: 273
-        width: 27
-        height: 31
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fda3b934a89e15247b5432f1457990ae
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: bomb_47
-      rect:
-        serializedVersion: 2
-        x: 129
-        y: 243
-        width: 27
-        height: 29
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 38a1650ce7f99fd4798da16a0fde1a12
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: bomb_48
-      rect:
-        serializedVersion: 2
-        x: 132
-        y: 211
-        width: 24
-        height: 30
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fd958010fc0b1fb4baab6ae7471d624f
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: bomb_49
-      rect:
-        serializedVersion: 2
-        x: 132
-        y: 185
-        width: 26
-        height: 24
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 16505d5c1206dbd4bb4e8cb2419286b6
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: bomb_50
       rect:
         serializedVersion: 2
@@ -1126,86 +812,6 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: bd4031a13040c8b40b30795e2eb35b53
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: bomb_51
-      rect:
-        serializedVersion: 2
-        x: 6
-        y: 8
-        width: 35
-        height: 36
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d0b14c5fe46055a478a057094a685f4e
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: bomb_52
-      rect:
-        serializedVersion: 2
-        x: 51
-        y: 9
-        width: 36
-        height: 34
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 19a21661c38367540be14d6ed227c021
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: bomb_53
-      rect:
-        serializedVersion: 2
-        x: 60
-        y: 42
-        width: 25
-        height: 19
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a459f8ad4fd7c974fb33e5af710b963a
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: bomb_54
-      rect:
-        serializedVersion: 2
-        x: 87
-        y: 18
-        width: 9
-        height: 6
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3a2685abbff44a14dadcd9ef3e39bd0a
       vertices: []
       indices: 
       edges: []
@@ -1231,13 +837,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: bomb_56
+      name: bomb_35
       rect:
         serializedVersion: 2
-        x: 68
-        y: 0
-        width: 18
-        height: 14
+        x: 48
+        y: 288
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1245,19 +851,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c936a72f00caf8a4f89a14ce646108b2
+      spriteID: 3acefe0a8e9c39540b3409bf04548023
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: bomb_57
+      name: bomb_58
       rect:
         serializedVersion: 2
-        x: 60
-        y: 0
-        width: 6
-        height: 4
+        x: 48
+        y: 336
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1265,7 +871,147 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3471cc59a6e38194ca1b28d47a27a2a1
+      spriteID: cbc31d16104da3c4bac64c23cb7194cc
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bomb_59
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 386
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 465d183cb35c2cf49b22ad3e547dfea1
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bomb_60
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 240
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 448abc44ca228ac4281eb8a58cb44da2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bomb_61
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 192
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fe6c8bebdfad32645adba0f51847c913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bomb_62
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 144
+        width: 48
+        height: 47
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 700173bcd022c524086eec620680ca57
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bomb_63
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 96
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7d8006bd834c5e9488a92015a402fc5e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bomb_53
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 48
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 85c9da77febddb54f82b64ae798763f3
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bomb_52
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 0
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 814d4c198e6312d4a8e0f15650555aea
       vertices: []
       indices: 
       edges: []

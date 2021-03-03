@@ -132,7 +132,7 @@ public class DokuroShot : Enemy
         if (col.CompareTag("Player") && Die)
         {
             //親がいる場合処理
-            EventParent();
+            //EventParent();
             //削除処理
             Explosion();
         }
@@ -143,6 +143,7 @@ public class DokuroShot : Enemy
     /// </summary>
     protected override void EventParent()
     {
+        Debug.Log("あ");
         if (!MyP) return;
         HaveParent();
         var d = MyP.GetComponent<DokuroShot>();

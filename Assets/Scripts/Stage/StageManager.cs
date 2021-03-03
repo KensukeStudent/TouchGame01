@@ -157,6 +157,23 @@ public class StageManager : MonoBehaviour
         if (!StageClearMan[stage]) StageClearMan[stage] = true;
     }
    
+    /// <summary>
+    /// ゲーム内でプレイヤーがクリア又は倒れた際に処理します
+    /// </summary>
+    public void GameEnd(Animator anim,string clipName)
+    {
+        var waitLag = TimeZeroAnim.GetAnimTime(anim, clipName);
+
+        //sceneステートを変更します
+        ScreenTransition.Instance.ChangeState(SceneState.gameOverMode);
+
+        //プレイヤーのクリア又は倒れるアニメーションが終わったら遷移を開始します
+        ScreenTransition.Instance.TimeST(waitLag);
+
+        //ゲーム開始フラグを切ります
+        GameManager.Instance.SetGame(false);
+    }
+
     #endregion
 
     #region ステージに情報の割り当て

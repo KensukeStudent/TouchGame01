@@ -10,6 +10,8 @@ public class HintUI : MonoBehaviour
 
     bool anim = true;
 
+    const float speed = 650;
+
     /// <summary>
     /// アニメーションフラグ
     /// </summary>
@@ -41,8 +43,8 @@ public class HintUI : MonoBehaviour
             var pos = rt.anchoredPosition;
             if (pos.x > min.x)
             {
-                pos.x -= Time.deltaTime * 500;
-                pos.y -= Time.deltaTime * 500;
+                pos.x -= Time.deltaTime * speed;
+                pos.y -= Time.deltaTime * speed;
 
                 if (pos.x <= min.x)
                 {
@@ -57,8 +59,8 @@ public class HintUI : MonoBehaviour
             var pos = rt.anchoredPosition;
             if (pos.x < max.x)
             {
-                pos.x += Time.deltaTime * 500;
-                pos.y += Time.deltaTime * 500;
+                pos.x += Time.deltaTime * speed;
+                pos.y += Time.deltaTime * speed;
 
                 if (pos.x >= max.x)
                 {

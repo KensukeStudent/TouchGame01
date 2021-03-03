@@ -8,7 +8,7 @@ public class SaveLoad : MonoBehaviour
     #region FilePath
     public string SavePath { get; } = "SaveData/save.json";
     public string BlockPath { get; } = "Json/Block.json";
-    public string DokuroPath { get; } = "Json/EnemyState.json";
+    public string EnemyPath { get; } = "Json/EnemyState.json";
     public string FloorPath { get; } = "Json/JumpFloor.json";
     public string HintPath { get; } = "Json/Hint.json";
     public string ScenarioPath { get; } = "Scenario/Story.json";

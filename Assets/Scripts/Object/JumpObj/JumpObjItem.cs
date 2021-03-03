@@ -8,7 +8,7 @@ public class JumpObjItem : JumpObj
     /// <summary>
     /// 敵を倒せるアイテムを生成
     /// </summary>
-    [SerializeField] GameObject attackItem;
+    [SerializeField] GameObject item;
     /// <summary>
     /// 生成するタイマー
     /// </summary>
@@ -34,13 +34,14 @@ public class JumpObjItem : JumpObj
             timer += Time.deltaTime;
             if(timer > instantTime)
             {
-                //アイテム生成位置を指定
-                var size = GetComponent<SpriteRenderer>().size;
-                var item = Instantiate(attackItem, transform.localPosition, transform.rotation);
+                //親位置に合わせたいので、localPositionでとります
+                var item = Instantiate(this.item, transform.localPosition, transform.rotation);
 
+                //アイテムが生成されていることをストックします
                 currentItem = item;
                 item.transform.SetParent(transform);
 
+                //位置を初期化します
                 var itemPos = item.transform.localPosition;
                 itemPos.x = 0;
                 itemPos.y = 0;

@@ -67,7 +67,7 @@ public class DokuroMove : Enemy
             Vector2 pos = transform.position;
 
             //プレイヤーから逃げる
-            if (PlayerContoller.AttackMode)
+            if (PlayerController.AttackMode)
             {
                 //向きを取得
                 ChnageAnim(initPos - pos);

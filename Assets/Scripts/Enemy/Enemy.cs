@@ -76,6 +76,8 @@ public class Enemy : MonoBehaviour
     /// </summary>
     public void Explosion()
     {
+        EventParent();
+
         //この敵がイベント敵なら処理します
         if(CurrentKind == EnemyKind.ev)
         {

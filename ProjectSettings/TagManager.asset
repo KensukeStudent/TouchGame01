@@ -26,8 +26,8 @@ TagManager:
   - EventWall
   - Hint
   - Effect
-  - 
-  - 
+  - Enemy
+  - Player
   - 
   - 
   - 
@@ -67,9 +67,6 @@ TagManager:
   - name: EventBlock
     uniqueID: 1569391807
     locked: 0
-  - name: Effect
-    uniqueID: 2548184373
-    locked: 0
   - name: Enemy
     uniqueID: 2355342009
     locked: 0
@@ -78,6 +75,9 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 406934331
+    locked: 0
+  - name: Effect
+    uniqueID: 2548184373
     locked: 0
   - name: UI
     uniqueID: 78826735

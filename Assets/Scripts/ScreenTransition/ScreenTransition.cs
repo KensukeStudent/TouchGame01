@@ -532,9 +532,13 @@ public class ScreenTransition : MonoBehaviour
                 //終わり次第ステージを選択、クリック可能にします
                 #endregion
 
-                //やりこみ要素でクリアしたものがあれば処理開始
-                var smc = GameObject.Find("StageContentManager").GetComponent<StageContentManager>();
-                smc.AnimGO();
+                //プレイヤーがステージをクリアしていたらアニメーションをさせます
+                if(PlayerController.currentState == State.goal)
+                {
+                    //やりこみ要素でクリアしたものがあれば処理開始
+                    var smc = GameObject.Find("StageContentManager").GetComponent<StageContentManager>();
+                    smc.AnimGO();
+                }
 
                 break;
 

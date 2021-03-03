@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -43,7 +42,6 @@ public class Cannon : MonoBehaviour,IAudio
     private void Start()
     {
         aud = GetComponent<AudioSource>();
-        //Debg();
     }
 
     private void Update()
@@ -55,6 +53,7 @@ public class Cannon : MonoBehaviour,IAudio
 
     void Debg()
     {
+        var shotSpeed = 5;
         var shotTimer = 1.0f;
         var count = 5;
         var interval = new float[5]
@@ -65,8 +64,6 @@ public class Cannon : MonoBehaviour,IAudio
             0.1f,
             0.5f
         };
-
-        var shotSpeed = 5;
 
         Init(false, shotSpeed, shotTimer, count, interval);
     }
@@ -156,7 +153,7 @@ public class Cannon : MonoBehaviour,IAudio
             goS.GetComponent<CannonShot>().SetSpeed(shotSpeed);
 
             //効果音を鳴らします
-            PlaySE(0, 0.5f);
+            PlaySE(0, 0.2f);
         }
 
         shotWait = false;

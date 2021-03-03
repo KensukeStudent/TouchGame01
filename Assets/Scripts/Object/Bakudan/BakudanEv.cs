@@ -1,49 +1,16 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
+using System;
 using UnityEngine;
 
 /// <summary>
-/// 爆弾スクリプト
+/// バクダンイベント
 /// </summary>
-public class Bakudan : MonoBehaviour
+public class BakudanEv : MonoBehaviour
 {
     /// <summary>
-    /// 速度
+    /// 取ったらバクダン生成するポジションを置きます
     /// </summary>
-    float speed = 5;
-    Rigidbody2D rb2d;
-
-    /// <summary>
-    /// 投げる方向
-    /// </summary>
-    Vector3 throwDirect;
-
-
-    private void Start()
-    {
-        rb2d = GetComponent<Rigidbody2D>();
-    }
-
-    private void FixedUpdate()
-    {
-        ThrowBakudan();
-    }
-
-    /// <summary>
-    /// プレイヤーとマウスの角度方向に爆弾を投げます
-    /// </summary>
-    void ThrowBakudan()
-    {
-        rb2d.velocity = throwDirect * speed;
-    }
-
-    /// <summary>
-    /// 投げる方向
-    /// </summary>
-    public void SetVec(Vector3 direct)
-    {
-        throwDirect = direct;
-    }
+    [SerializeField] GameObject instantBakudanPos;
 
     /// <summary>
     /// 爆弾イベントのノベルパート
@@ -70,9 +37,9 @@ public class Bakudan : MonoBehaviour
     /// <returns></returns>
     public Action[] Actions()
     {
-        Action[] actions = { EventAnim , EventDelete };
+        Action[] actions = { EventAnim, EventDelete };
         return actions;
-    } 
+    }
 
     /// <summary>
     /// テキスト内でアニメーションさせます
@@ -114,8 +81,17 @@ public class Bakudan : MonoBehaviour
     void EventDelete()
     {
         //全てが終わったら爆弾を削除して、プレイヤーの頭の上に爆弾を表示します
-        var player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerContoller>();
+        var player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         player.ActiveBakudan();
+
+        //バクダン生成を置きます
+        //親の位置
+        var go = Instantiate(instantBakudanPos, transform.position, Quaternion.identity);
+
+        var root = transform.root;
+
+        go.transform.SetParent(root);
+
         Destroy(gameObject);
     }
 }

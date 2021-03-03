@@ -131,7 +131,7 @@ public class BlocksScript : MonoBehaviour
     /// <summary>
     /// 破壊します
     /// </summary>
-    public void Destroy()
+    public virtual void Destroy()
     {
         //次のフロアを出すブロックなら処理します
         if (!string.IsNullOrEmpty(floorSet)) ActiveFloor();

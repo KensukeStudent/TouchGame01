@@ -30,10 +30,14 @@ public class MouseController : MonoBehaviour
         var s = mouseToPoint.GetComponent<SpriteRenderer>().size;
         //1マスをこの画像では何倍するかを計算します
         length = 1 / s.y;
+
+        transform.position = player.transform.position;
     }
 
     private void Update()
     {
+        if (PlayerController.currentState != State.nomal) return;
+
         //画像のマウスまでの距離を描画します
         if (Time.timeScale == 1) FromPlayerToMouse();
 

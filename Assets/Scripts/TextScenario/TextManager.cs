@@ -88,7 +88,7 @@ public class TextManager : MonoBehaviour
     /// <summary>
     /// 次の文字を表示する時間
     /// </summary>
-    const float nextTime = 0.05f;
+    const float nextTime = 0.025f;
     /// <summary>
     /// 出力計測時間
     /// </summary>

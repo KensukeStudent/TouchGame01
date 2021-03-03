@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1321249118154413347}
   - component: {fileID: 1443251111321516468}
   - component: {fileID: 79187586159063023}
-  - component: {fileID: 8490386975412347048}
+  - component: {fileID: 2079922659}
   m_Layer: 0
   m_Name: Bakudan_Ev
   m_TagString: Item
@@ -107,7 +107,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.6566667, y: 0.66333336}
   m_EdgeRadius: 0
---- !u!114 &8490386975412347048
+--- !u!114 &2079922659
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -116,6 +116,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 167116615637393633}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 121a3e245f277f94c88bfc3d8d77db0f, type: 3}
+  m_Script: {fileID: 11500000, guid: 3ecf98497ea9a6641a6a1b7647906bc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instantBakudanPos: {fileID: 460215739231836859, guid: 4cb37ab1915033b4db1f8fda70df8460,
+    type: 3}

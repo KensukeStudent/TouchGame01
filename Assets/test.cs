@@ -43,11 +43,14 @@ public class test : MonoBehaviour
 
         //Debug.Log(this.enabled);
 
-        Action[] show = { A, B };
+        //Action[] show = { A, B };
         //show[0]();
 
-        actions = show;
-        actions[0]();
+        //actions = show;
+        //actions[0]();
+
+        var e = new Example();
+        Debug.Log(e.Mode());
     }
 
     void A()

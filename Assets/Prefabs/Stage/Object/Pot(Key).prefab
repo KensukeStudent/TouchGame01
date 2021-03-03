@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1495039898945037810}
   - component: {fileID: 1495039898945037813}
   m_Layer: 0
-  m_Name: Pot
+  m_Name: Pot(Key)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -140,7 +140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61ba1ef852369a549b31083ea68c5bcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  key: {fileID: 2753694439256558225, guid: 78df3b3803ac64d4b8f5eafa201f7db4, type: 3}
+  item: {fileID: 9013745219491977385, guid: c7f9275bd18320d469547f7b052622a9, type: 3}
 --- !u!82 &1495039898945037813
 AudioSource:
   m_ObjectHideFlags: 0

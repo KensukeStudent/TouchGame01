@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// 破壊したら扉を開ける鍵を表示するクラス
@@ -8,9 +6,9 @@ using UnityEngine;
 public class Pot : MonoBehaviour
 {
     /// <summary>
-    /// 壊されたら表示する鍵
+    /// 壊されたら表示するアイテム
     /// </summary>
-    [SerializeField] GameObject key;
+    [SerializeField] GameObject item;
     Animator anim;
 
     private void Start()
@@ -23,7 +21,7 @@ public class Pot : MonoBehaviour
     /// </summary>
     public void InitSetKey(GameObject key)
     {
-        this.key = key;
+        this.item = key;
     }
 
     private void OnTriggerEnter2D(Collider2D col)
@@ -31,7 +29,7 @@ public class Pot : MonoBehaviour
         if (col.CompareTag("Player"))
         {
             //鍵を持っているなら生成します
-            if (key) Instantiate(key, transform.position, Quaternion.identity);
+            if (item) Instantiate(item, transform.position, Quaternion.identity);
 
             //アニメーション再生
             anim.SetBool("Break", true);

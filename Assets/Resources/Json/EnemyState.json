@@ -39,5 +39,31 @@
         }
       ]
     }
+  ],
+
+  "cannons": [
+    {
+      "id": "stage2",
+      "floor": [
+        {
+
+        },
+        {
+          "direction": [ true, true, true, true, false, false, false ],
+          "speed": [ 5, 5, 5, 5, 5, 5, 5 ],
+          "shotTime": [ 1, 1, 1, 1, 1, 1, 1 ],
+          "onceCount": [ 1, 1, 1, 1, 1, 1, 1 ],
+          "onceCountInterval": [
+            [ 0 ],
+            [ 0 ],
+            [ 0 ],
+            [ 0 ],
+            [ 0 ],
+            [ 0 ],
+            [ 0 ]
+          ]
+        }
+      ]
+    }
   ]
 }

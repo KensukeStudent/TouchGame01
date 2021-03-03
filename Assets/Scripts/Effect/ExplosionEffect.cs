@@ -5,6 +5,9 @@
 /// </summary>
 public class ExplosionEffect : MonoBehaviour
 {
+    /// <summary>
+    /// 削除時間
+    /// </summary>
     protected float DesTime { set; get; } = 0;
 
     Animation animt;
