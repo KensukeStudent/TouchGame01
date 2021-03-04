@@ -9,15 +9,17 @@ public class EnemyMan
     /// <summary>
     /// どくろ(弾)
     /// </summary>
-    public static void DokuroShot(DokuroShot dokuro, DokuroEnemy list,int floorNum, int num)
+    /// <param name="dokuro">どくろスクリプト</param>
+    /// <param name="df">Json格納値</param>
+    /// <param name="num">stateの配列番号</param>
+    public static void DokuroShot(DokuroShot dokuro, DokuroFloor df,int num)
     {
-        var d = list.floor[floorNum];
-        var s = d.shot[0];
+        var s = df.shot[0];
         var count = num;
         var name = s.name;
 
         //Jsonのデータを入れる
-        dokuro.SetShotStates(d, s, count, name);
+        dokuro.SetShotStates(df, s, count, name);
     } 
 
     /// <summary>

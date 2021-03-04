@@ -10,7 +10,7 @@ public class DokuroInstantEffect : ExplosionEffect
 
     void Start()
     {
-        const float addTime = 2;
+        const float addTime = 1;
         //削除時間を指定
         DesTime = DestoryEffectTime(addTime);
     }

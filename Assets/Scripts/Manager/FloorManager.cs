@@ -72,7 +72,7 @@ public class FloorManager : MonoBehaviour
 
                 //親のナンバーから二次元配列の位置を求めます
                 //ステージの高さ
-                var stageH = parentNo % c.StageX - 1;  //フロアが1から始まるので - 1を先にします
+                var stageH = parentNo / c.StageX;  //フロアが1から始まるので - 1を先にします
                 var stageW = parentNo % c.StageX;
 
                 Floors[stageH, stageW].SetFloorChildObj(go[j]);

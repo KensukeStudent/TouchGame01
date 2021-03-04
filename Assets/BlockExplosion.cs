@@ -26,7 +26,11 @@ public class BlockExplosion : BlocksScript
     public override void Destroy()
     {
         //エフェクトを表示
-        Instantiate(exEffect, transform.position, Quaternion.identity);
+        var go = Instantiate(exEffect, transform.position, Quaternion.identity);
+        var effect = go.GetComponent<ExplosionEffect>();
+        //アニメーション再生後削除します
+        Destroy(go.gameObject, effect.DestoryEffectTime());
+
         base.Destroy();
     }
 }

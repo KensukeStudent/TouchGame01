@@ -321,7 +321,6 @@ GameObject:
   m_Component:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
-  - component: {fileID: 519420029}
   - component: {fileID: 519420030}
   - component: {fileID: 519420033}
   m_Layer: 0
@@ -331,14 +330,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &519420029
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 519420028}
-  m_Enabled: 1
 --- !u!114 &519420030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -639,97 +630,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2426078144328176314, guid: 4906ec9c7d8b6ab44bda2c0e128e64f9,
         type: 3}
-      propertyPath: item.Array.size
-      value: 8
+      propertyPath: block.Array.size
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2426078144328176314, guid: 4906ec9c7d8b6ab44bda2c0e128e64f9,
         type: 3}
-      propertyPath: dc.Array.data[1].decos.Array.size
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 2426078144328176314, guid: 4906ec9c7d8b6ab44bda2c0e128e64f9,
-        type: 3}
-      propertyPath: item.Array.data[6]
+      propertyPath: block.Array.data[6]
       value: 
-      objectReference: {fileID: 167116615637393633, guid: 0a91192c54e64d942a96b0362822091f,
-        type: 3}
-    - target: {fileID: 2426078144328176314, guid: 4906ec9c7d8b6ab44bda2c0e128e64f9,
-        type: 3}
-      propertyPath: item.Array.data[7]
-      value: 
-      objectReference: {fileID: 167116615637393633, guid: 76dbc5f160e48d248a65c5441b29dda3,
-        type: 3}
-    - target: {fileID: 2426078144328176314, guid: 4906ec9c7d8b6ab44bda2c0e128e64f9,
-        type: 3}
-      propertyPath: dc.Array.data[1].decos.Array.data[0]
-      value: 
-      objectReference: {fileID: 8831128352004197227, guid: 15bbdbed63d2db04d9b6e127c1e8f1c8,
-        type: 3}
-    - target: {fileID: 2426078144328176314, guid: 4906ec9c7d8b6ab44bda2c0e128e64f9,
-        type: 3}
-      propertyPath: dc.Array.data[1].decos.Array.data[1]
-      value: 
-      objectReference: {fileID: 2625480961064361979, guid: 2497cd29381f2f64c93c787e23316595,
-        type: 3}
-    - target: {fileID: 2426078144328176314, guid: 4906ec9c7d8b6ab44bda2c0e128e64f9,
-        type: 3}
-      propertyPath: dc.Array.data[1].decos.Array.data[2]
-      value: 
-      objectReference: {fileID: 3934062567186311179, guid: 5cf0f9e0c3367e749953ef06ad4413d3,
-        type: 3}
-    - target: {fileID: 2426078144328176314, guid: 4906ec9c7d8b6ab44bda2c0e128e64f9,
-        type: 3}
-      propertyPath: dc.Array.data[1].decos.Array.data[3]
-      value: 
-      objectReference: {fileID: 3040635225024837168, guid: a52f0797cded24c4ab235bc43fec2e3f,
-        type: 3}
-    - target: {fileID: 2426078144328176314, guid: 4906ec9c7d8b6ab44bda2c0e128e64f9,
-        type: 3}
-      propertyPath: dc.Array.data[1].decos.Array.data[4]
-      value: 
-      objectReference: {fileID: 1605056469801232205, guid: 2a6b4b6fa14c0164fbdbdc70c953fe6c,
-        type: 3}
-    - target: {fileID: 2426078144328176314, guid: 4906ec9c7d8b6ab44bda2c0e128e64f9,
-        type: 3}
-      propertyPath: dc.Array.data[1].decos.Array.data[5]
-      value: 
-      objectReference: {fileID: 1707231900710792472, guid: e659e21a4560de64598ea41f6304cbfc,
-        type: 3}
-    - target: {fileID: 2426078144328176314, guid: 4906ec9c7d8b6ab44bda2c0e128e64f9,
-        type: 3}
-      propertyPath: dc.Array.data[1].decos.Array.data[6]
-      value: 
-      objectReference: {fileID: 7269579001552839458, guid: b6c1d6b464c766c408ea8218935c5c03,
-        type: 3}
-    - target: {fileID: 2426078144328176314, guid: 4906ec9c7d8b6ab44bda2c0e128e64f9,
-        type: 3}
-      propertyPath: dc.Array.data[1].decos.Array.data[7]
-      value: 
-      objectReference: {fileID: 3105503876764309450, guid: 98ce24bd5be91224a838676bef15242d,
-        type: 3}
-    - target: {fileID: 2426078144328176314, guid: 4906ec9c7d8b6ab44bda2c0e128e64f9,
-        type: 3}
-      propertyPath: dc.Array.data[1].decos.Array.data[8]
-      value: 
-      objectReference: {fileID: 8426557531220527136, guid: b5b3651f2c636af49a1008aef5905420,
-        type: 3}
-    - target: {fileID: 2426078144328176314, guid: 4906ec9c7d8b6ab44bda2c0e128e64f9,
-        type: 3}
-      propertyPath: dc.Array.data[1].decos.Array.data[9]
-      value: 
-      objectReference: {fileID: 3803335159825416912, guid: 1861a8119e95e2943ac731ff873bbb28,
-        type: 3}
-    - target: {fileID: 2426078144328176314, guid: 4906ec9c7d8b6ab44bda2c0e128e64f9,
-        type: 3}
-      propertyPath: dc.Array.data[1].decos.Array.data[10]
-      value: 
-      objectReference: {fileID: 2335310375503767705, guid: a8d60537fd31f7f4ab1fb43feb822228,
-        type: 3}
-    - target: {fileID: 2426078144328176314, guid: 4906ec9c7d8b6ab44bda2c0e128e64f9,
-        type: 3}
-      propertyPath: dc.Array.data[1].decos.Array.data[11]
-      value: 
-      objectReference: {fileID: 310700104209061059, guid: f4ba03e364ff3a94b9cd67c98b18cbaa,
+      objectReference: {fileID: 8094749725175674198, guid: f516231a8b886ac4586d5e958ef32792,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4906ec9c7d8b6ab44bda2c0e128e64f9, type: 3}

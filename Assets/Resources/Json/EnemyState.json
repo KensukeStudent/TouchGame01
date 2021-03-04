@@ -38,6 +38,66 @@
           ]
         }
       ]
+    },
+    {
+      "id": "stage2",
+      "floor": [
+        {
+
+        },
+        {
+
+        },
+        {
+
+        },
+        {
+
+        },
+        {
+          "state": [
+            "nomal",
+            "nomal",
+            "nomal",
+            "nomal",
+            "nomal",
+            "nomal",
+            "nomal",
+            "nomal",
+            "nomal",
+            "nomal",
+            "nomal",
+            "nomal",
+            "nomal",
+            "nomal",
+            "nomal",
+            "nomal"
+          ],
+          "move": [
+            {
+              "name": "DokuroMove_",
+              "moveSpeed": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ]
+            }
+          ]
+        }
+      ]
     }
   ],
 
@@ -52,14 +112,14 @@
           "direction": [ true, true, true, true, false, false, false ],
           "speed": [ 5, 5, 5, 5, 5, 5, 5 ],
           "shotTime": [ 1, 1, 1, 1, 1, 1, 1 ],
-          "onceCount": [ 1, 1, 1, 1, 1, 1, 1 ],
+          "onceCount": [ 8, 3, 2, 1, 4, 2, 1 ],
           "onceCountInterval": [
+            [ 0,0.5,0.5,0.2,0.2,0.8,1.0,0.5 ],
+            [ 0,0.2,1.0 ],
+            [ 0,0.5 ],
             [ 0 ],
-            [ 0 ],
-            [ 0 ],
-            [ 0 ],
-            [ 0 ],
-            [ 0 ],
+            [ 0,0.5,0.2,0.2 ],
+            [ 0,0.5 ],
             [ 0 ]
           ]
         }

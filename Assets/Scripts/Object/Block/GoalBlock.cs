@@ -25,12 +25,6 @@ public class GoalBlock : BlocksScript
     /// </summary>
     public List<GameObject> EvEnemy { private set; get; } = new List<GameObject>();
 
-    /// <summary>
-    /// 特定の鍵を入手していたらゴールブロックが破壊されます
-    /// </summary>
-    public GameObject EvKey { private set; get; }
-
-
     protected override void Awake()
     {
         base.Awake();
@@ -71,11 +65,6 @@ public class GoalBlock : BlocksScript
                             EvEnemy.Add(enemy);
                     }
                 }
-                break;
-           
-            case goalKind.key:
-                //破壊することのできる鍵を取得します
-                EvKey = GameObject.FindGameObjectWithTag("EventKey");
                 break;
         }
     }

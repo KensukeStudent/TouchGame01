@@ -131,7 +131,7 @@ public partial class PlayerController : MonoBehaviour
     /// </summary>
     void HaveKey(Collider2D col)
     {
-        //鍵の種類に応じてカウントを所字数を上げます
+        //鍵の種類に応じてカウントの所字数を上げます
         pi.GetKindKey(col.gameObject.name);
 
         //サウンドを鳴らします

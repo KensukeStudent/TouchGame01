@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 2865530055998749639}
   - component: {fileID: 3954572816728608745}
   - component: {fileID: 5730146279608407834}
+  - component: {fileID: 114915664378023786}
+  - component: {fileID: 111933607099090072}
   m_Layer: 0
   m_Name: BlockExplosion
   m_TagString: Untagged
@@ -99,3 +101,30 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114915664378023786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4887983575439150215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5021273329a6f446842885174fb4ae7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!111 &111933607099090072
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4887983575439150215}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: fc94eb8ac69d65e489bad77aeff142d2, type: 2}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0

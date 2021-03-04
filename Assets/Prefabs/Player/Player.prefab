@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 2131968760339159452}
   - component: {fileID: 2131968760339159453}
   - component: {fileID: 82811963622168486}
+  - component: {fileID: 81682580757400188}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -285,9 +286,9 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 5.5
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 1
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -360,6 +361,14 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!81 &81682580757400188
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2131968760339159394}
+  m_Enabled: 1
 --- !u!1 &2781715852767932091
 GameObject:
   m_ObjectHideFlags: 0

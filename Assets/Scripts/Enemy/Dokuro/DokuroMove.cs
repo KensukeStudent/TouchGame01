@@ -46,13 +46,25 @@ public class DokuroMove : Enemy
         initPos = transform.position;
     }
 
- 
+    private void OnEnable()
+    {
+        transform.position = initPos;
+    }
+
     void Update()
     {
         //プレイヤーの座標を取得
         var playerPos = player.transform.position;
         //プレイヤーとこの敵との距離を取得
         Distance(playerPos);
+    }
+
+    /// <summary>
+    /// 値を入れます
+    /// </summary>
+    public void SetInit(float speed)
+    {
+        MoveSpeed = speed;
     }
 
     /// <summary>

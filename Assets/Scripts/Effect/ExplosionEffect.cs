@@ -19,7 +19,7 @@ public class ExplosionEffect : MonoBehaviour
     public void PlaySE(AudioClip clip,float vol = 1.0f)
     {
         aud = GetComponent<AudioSource>();
-        aud.PlayOneShot(clip, vol);
+        aud?.PlayOneShot(clip, vol);
 
         //破壊時間を指定
         var desTime = DestoryEffectTime(1.0f, clip.length);

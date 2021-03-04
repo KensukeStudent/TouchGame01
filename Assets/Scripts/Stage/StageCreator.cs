@@ -349,6 +349,9 @@ public partial class StageCreator : MonoBehaviour
         var go = Instantiate(obj, pos, Quaternion.identity);
         //parent = フロア番号
         go.transform.SetParent(floor.transform);
+
+        go.transform.localPosition = pos;
+
         return go;
     }
 

@@ -97,8 +97,7 @@ public class DokuroShot : Enemy
     /// <summary>
     /// 初期値でステータスを入れます
     /// </summary>
-    /// <param name="s"></param>
-    /// <param name="count"></param>
+    /// <param name="count">stateが入っている配列</param>
     public void SetShotStates(DokuroFloor d, D_Shot s, int count, string name)
     {
         //速度,発射位置,発射時間,名前

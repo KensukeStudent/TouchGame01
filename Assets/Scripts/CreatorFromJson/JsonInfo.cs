@@ -1,4 +1,6 @@
-﻿/// <summary>
+﻿using UnityEngine;
+
+/// <summary>
 /// Jsonから読み出しを行うクラス
 /// </summary>
 public class JsonInfo
@@ -91,13 +93,25 @@ public class JsonInfo
     /// 生成されたどくろに値を代入
     /// </summary>
     /// <param name="num">何番目の敵</param>
-    public void SetDokuro(string stageId, DokuroShot dS, int num, int floorNum)
+    public void SetDokuro(string stageId, GameObject gd, int num, int floorNum, string tileNum)
     {
         //どくろクラスの定義
-        var d = ID.GetDataNo(dokuroList.dokuros, stageId);
+        var d = ID.GetDataNo(dokuroList.dokuros, stageId).floor[floorNum];
 
-        //値の代入
-        EnemyMan.DokuroShot(dS, d, floorNum, num);
+        switch (tileNum)
+        {
+            case "0":
+                var dS = gd.GetComponent<DokuroShot>();
+                //どくろ(弾)値の代入
+                EnemyMan.DokuroShot(dS, d, num);
+                break;
+
+            case "1":
+                var dm = gd.GetComponent<DokuroMove>();
+                //どくろ(移動)値の代入
+                dm.SetInit(d.move[0].moveSpeed[num]);
+                break;
+        }
     }
 
     /// <summary>

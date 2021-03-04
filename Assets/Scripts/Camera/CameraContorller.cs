@@ -57,8 +57,8 @@ public class CameraContorller : MonoBehaviour
     void SetInit()
     {
         //最大最小の初期位置テーブル
-        Vector2[] vecMax = { new Vector2(0.5f, 0.5f),new Vector2(38.5f, 0.5f) };
-        Vector2[] vecMin = { new Vector2(0.5f, 0.5f), new Vector2(38.5f, 0.5f) };
+        Vector2[] vecMax = { new Vector2(0.5f, 0.5f),new Vector2(37.0f, 0.5f) };
+        Vector2[] vecMin = { new Vector2(0.5f, 0.5f), new Vector2(37.0f, 0.5f) };
 
         //現在のステージ番号を取得
         //var fileNo = GameManager.Instance.StageNo;
@@ -107,12 +107,12 @@ public class CameraContorller : MonoBehaviour
 
             //下方向に移動
             case "D":
-                SetVec(dire, ref camVec.y, MinC.y);
+                SetVec(dire, ref camVec.y, MaxC.y);
                 break;
 
             //上方向に移動
             case "U":
-                SetVec(dire,ref camVec.y, MaxC.y);
+                SetVec(dire,ref camVec.y, MinC.y);
                 break;
         }
          transform.position = camVec;
@@ -124,26 +124,43 @@ public class CameraContorller : MonoBehaviour
     /// <param name="direction">移動方向</param>
     /// <param name="vec">自分の座標値</param>
     /// <param name="nextVex">代入する座標値</param>
-    void SetVec(string direction, ref float vec, float nextVex)
+    void SetVec(string direction, ref float vec, float nextVec)
     {
         switch (direction)
         {
             //プラスの値
             case "R":
             case "U":
-                if (vec < nextVex) vec += Time.deltaTime * moveSpeed;
-                else autoMove = false;
+                if (vec < nextVec)
+                {
+                    vec += Time.deltaTime * moveSpeed;
+
+                    //次の値がnextVecを超えていたら
+                    //値をnextVecにします
+                    if (vec > nextVec) vec = nextVec;
+                }
+                else
+                    autoMove = false;
                 break;
 
             //マイナスの値
             case "D":
             case "L":
-                if (vec > nextVex) vec -= Time.deltaTime * moveSpeed;
-                else autoMove = false;
+                if (vec > nextVec)
+                {
+                    vec -= Time.deltaTime * moveSpeed;
+
+                    //次の値がnextVecを未満なら
+                    //値をnextVecにします
+                    if (vec < nextVec) vec = nextVec;
+                }
+                else
+                    autoMove = false;
                 break;
         }
 
-        if(!autoMove) vec = nextVex;
+        //値を代入します
+        if(!autoMove) vec = nextVec;
     }
 
     /// <summary>

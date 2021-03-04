@@ -132,7 +132,7 @@ public partial class StageCreator : MonoBehaviour
     void SwitchEventItem(string tileNum, Vector2 pos, GameObject floor, int floorNum)
     {
         #region 詳細
-        
+
         //青鍵
         //case "0":
         //緑鍵
@@ -141,10 +141,14 @@ public partial class StageCreator : MonoBehaviour
         //case "2":
         //黄鍵
         //case "3":
+        //ゴール鍵
+        //case "8":
+
         //壺(空)
         //case "4":
         //壺(鍵)
         //case "5":
+        
         //バクダンイベント
         //case "6"
         //バクダン
@@ -152,13 +156,23 @@ public partial class StageCreator : MonoBehaviour
 
         #endregion
 
-        string[] itemNo = { "0", "1", "2", "3", "4", "5", "6", "7" };
+        string[] itemNo = { "0", "1", "2", "3", "4", "5", "6", "7", "8" };
 
         //読み込んだ文字数値がitemNo配列にあるかを解析し、配列番号のオブジェクトを
         //現在のフロアに生成します。
         if (!OnMozi(itemNo, tileNum, 0))
         {
-            InstantObj(item[SetNumber(itemNo, tileNum)], pos, floor);
+            var go = InstantObj(item[SetNumber(itemNo, tileNum)], pos, floor);
+
+            switch (itemNo[int.Parse(tileNum)])
+            {
+                case "8":
+                    //名前を変更します
+                    var keyName = "Key_Goal" + floorNum;
+                    go.name = keyName;
+                    break;
+            }
+
         }
     }
 
@@ -175,15 +189,12 @@ public partial class StageCreator : MonoBehaviour
         {
             //どくろShot
             case "0":
-                var e0 = InstantObj(enemy[0], pos, floor);
-                var d = e0.GetComponent<DokuroShot>();
-                //情報を入れます
-                ji.SetDokuro(stageID, d, counter, floorNum);
-                counter++;
-                break;
             //どくろMove
             case "1":
-
+                var e = InstantObj(enemy[int.Parse(tileNum)], pos, floor);
+                //情報を入れます
+                ji.SetDokuro(stageID, e, counter, floorNum, tileNum);
+                counter++;
                 break;
 
             //大砲
@@ -240,7 +251,7 @@ public partial class StageCreator : MonoBehaviour
         if (OnMozi(bNo, tileNum, 0)) return;
         //---0～3が鍵ブロック---
         //ブロック名をイベントにします
-        else if (OnMozi(bNo, tileNum, 5))
+        else if (OnMozi(bNo, tileNum, 6))
         {
             blockName = nameArray[0];
         }
@@ -263,7 +274,7 @@ public partial class StageCreator : MonoBehaviour
         counter++;
 
         //ブロックがゴールブロックの場合
-        if (blockName == nameArray[0]) SwitchGoalKind(b, tileNum);
+        if (blockName == nameArray[1]) SwitchGoalKind(b, tileNum);
     }
 
     /// <summary>
@@ -276,12 +287,12 @@ public partial class StageCreator : MonoBehaviour
 
         switch (num)
         {
-            case "4":
+            case "5":
                 //敵(全ての敵を倒す条件を指定)
                 g.GoalKind(goalKind.enemy);
                 break;
 
-            case "5":
+            case "6":
                 //鍵(指定の鍵を入手)
                 g.GoalKind(goalKind.key);
                 break;
