@@ -415,6 +415,8 @@ public class ScreenTransition : MonoBehaviour
         }
     }
 
+    #region 遷移始まり関数一覧
+
     /// <summary>
     /// 状態stageSelect時の処理
     /// ステージが選択されたときにボタンに処理を入れます
@@ -514,6 +516,8 @@ public class ScreenTransition : MonoBehaviour
         }
     }
 
+    #endregion
+
     /// <summary>
     /// ステートに応じて処理をします
     /// </summary>
@@ -541,6 +545,12 @@ public class ScreenTransition : MonoBehaviour
                     //やりこみ要素でクリアしたものがあれば処理開始
                     var smc = GameObject.Find("StageContentManager").GetComponent<StageContentManager>();
                     smc.AnimGO();
+                }
+                else
+                {
+                    ////終わり次第ステージを選択、クリック可能にします----->アニメシーンのラグを作成
+                    var scroll = GameObject.Find("Content").GetComponent<ScrollSelect>();
+                    scroll.SetSelect();
                 }
 
                 break;
@@ -581,7 +591,9 @@ public class ScreenTransition : MonoBehaviour
                 break;
 
             case SceneState.reState:
-                
+
+                Time.timeScale = 1;
+
                 //オートで遷移を呼びます
                 TimeST(tLag);
 

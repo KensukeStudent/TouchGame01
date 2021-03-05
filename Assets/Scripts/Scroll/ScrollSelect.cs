@@ -192,6 +192,12 @@ public class ScrollSelect : MonoBehaviour
         var nowStage = GameManager.Instance.StageNo + 1;
 
         scrollNo = nowStage;
+
+        //scrollNoを更新します
+        ScrollNoUpdate();
+
+        //スクロールされたときに呼ばれます
+        StageUpdate();
     }
 
     #endregion

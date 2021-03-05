@@ -42,7 +42,15 @@ public class Cannon : MonoBehaviour,IAudio
     private void Start()
     {
         aud = GetComponent<AudioSource>();
-        Debg();
+    }
+
+    private void OnDisable()
+    {
+        //計測を停止します
+        shotWait = false;
+
+        //計測時間の初期化
+        time = 0;
     }
 
     private void Update()
@@ -153,7 +161,7 @@ public class Cannon : MonoBehaviour,IAudio
             //弾の生成
             var goS = Instantiate(shot, pos, Quaternion.identity);
             //弾の速度を入れます
-            goS.GetComponent<CannonShot>().SetSpeed(shotSpeed);
+            goS.GetComponent<EnemyShot>().SetSpeed(shotSpeed);
 
             //効果音を鳴らします
             PlaySE(0, 0.2f);

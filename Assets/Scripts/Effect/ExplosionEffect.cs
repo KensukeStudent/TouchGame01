@@ -32,6 +32,7 @@ public class ExplosionEffect : MonoBehaviour
     public float DestoryEffectTime(float addTime = 1.0f , float effectTime = 0.0f)
     {
         animt = GetComponent<Animation>();
+        //アニメーション時間を破棄する時間と設定します
         return _ = animt.clip.length * addTime + effectTime;
     }
 }

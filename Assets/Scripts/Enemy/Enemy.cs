@@ -21,19 +21,12 @@ public enum EnemyKind
 /// <summary>
 /// 敵クラス
 /// </summary>
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour,IDamage
 {
     /// <summary>
     /// 敵がイベント持ちか
     /// </summary>
     public EnemyKind CurrentKind { private set; get; }
-
-    [SerializeField] GameObject explosion;
-
-    /// <summary>
-    /// 倒せる敵かどうか
-    /// </summary>
-    public bool Defeat { private set; get; }
 
     /// <summary>
     /// 親の時に子の敵を格納します
@@ -46,12 +39,25 @@ public class Enemy : MonoBehaviour
     protected Enemy MyP { private set; get; }
 
     /// <summary>
+    /// 攻撃量は基本１
+    /// </summary>
+    protected int damageAmount = 1;
+
+    /// <summary>
+    /// 倒せる敵かどうか
+    /// </summary>
+    public bool Defeat { private set; get; }
+    /// <summary>
     /// 死亡フラグ
     /// </summary>
     public bool Die { private set; get; } = false;
 
     AudioSource aud;
 
+    /// <summary>
+    /// 爆破エフェクト
+    /// </summary>
+    [SerializeField] GameObject explosion;
     #region サウンド効果音表
     // 0 破壊エフェクトSE
     //
@@ -69,6 +75,14 @@ public class Enemy : MonoBehaviour
     protected void PlaySE(int clipNo, float vol = 1.0f)
     {
         aud.PlayOneShot(clip[clipNo], vol);
+    }
+
+    /// <summary>
+    /// 自分もつ相手へのダメージ量
+    /// </summary>
+    public int Damage()
+    {
+        return _ = damageAmount;
     }
 
     /// <summary>

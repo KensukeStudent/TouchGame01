@@ -144,6 +144,9 @@ public class BlocksScript : MonoBehaviour
         //当たり判定を切ります
         GetComponent<BoxCollider2D>().enabled = false;
 
+        //子の当たり判定も切ります
+        transform.GetChild(0).gameObject.SetActive(false);
+
         //スプライトを切ります
         GetComponent<SpriteRenderer>().enabled = false;
 

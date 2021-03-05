@@ -14,7 +14,7 @@ public partial class PlayerController : MonoBehaviour
         if (col.gameObject.CompareTag("Enemy")) HitEnemy(col);
 
         //敵弾に当たったら処理
-        if (col.gameObject.CompareTag("EnemyShot")) HitEnemyShot();
+        if (col.gameObject.CompareTag("EnemyShot")) HitEnemyShot(col);
 
         //アイテムを取得し解析します
         if (col.CompareTag("Item")) GetItemSwitch(col);
@@ -49,26 +49,32 @@ public partial class PlayerController : MonoBehaviour
         }
         else if (!AttackMode)
         {
-            Debug.Log("ダメージを受ける");
-
             if (bakudan.activeInHierarchy)
             {
-                //即死
-                Debug.Log("バクダンが破裂します");
-
                 //エフェクトを生成します
                 var b = bakudan.GetComponent<InstantEffect>();
                 b.EffectInstant(transform.position);
+
+                //敵のダメージを受けます
+                pi.Hm.DamageHP(5);
+                return;
             }
+
+            //敵のダメージを受けます
+            pi.Hm.DamageHP(enemy.Damage());
         }
     }
 
     /// <summary>
     /// 敵弾に衝突
     /// </summary>
-    void HitEnemyShot()
+    void HitEnemyShot(Collider2D col)
     {
-        Debug.Log("ダメージを受ける");
+        var es = col.GetComponent<EnemyShot>();
+
+        //敵弾のダメージを受けます
+        pi.Hm.DamageHP(es.Damage());
+
         PlaySE(3);
     }
 
@@ -78,12 +84,12 @@ public partial class PlayerController : MonoBehaviour
     void GetItemSwitch(Collider2D col)
     {
         //解析したアイテム名
-        switch (ItemName(col.name))
+        switch (RE.GetName(col.name))
         {
             //攻撃
             case "Food":
-                //敵を倒せるようになります
-                NowAttackMode(col);
+                //食べたもの二応じて処理を変えます
+                FoodSwitch(col);
                 break;
 
             //鍵
@@ -102,18 +108,27 @@ public partial class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// 名前を解析します
+    /// 場合分けした食べ物アイテムを処理します
     /// </summary>
-    /// <param name="name">アイテム名</param>
-    string ItemName(string name)
+    void FoodSwitch(Collider2D col)
     {
-        return _ = Regex.Match(name, @"(.+)_").Groups[1].Value;
+        switch (RE.NameAnalysis(col.name))
+        {
+            //攻撃可能アイテム
+            case "AttackItem":
+                GetAttackMode(col);
+                break;
+
+            case "Heart":
+                GetHeart(col);
+                break;
+        }
     }
 
     /// <summary>
     /// 現在アタックモード
     /// </summary>
-    void NowAttackMode(Collider2D col)
+    void GetAttackMode(Collider2D col)
     {
         //攻撃モードになります
         AttackMode = true;
@@ -124,6 +139,20 @@ public partial class PlayerController : MonoBehaviour
         sprite.color = new Color(1, 0.6f, 0, 1);
         //SEを鳴らします
         PlaySE(1);
+    }
+
+    /// <summary>
+    /// ハートを取得したときに処理します
+    /// </summary>
+    void GetHeart(Collider2D col)
+    {
+        //体力を回復します
+        pi.Hm.IncreaseHP(1);
+
+        Destroy(col.gameObject);
+
+        //SEを鳴らします
+
     }
 
     /// <summary>

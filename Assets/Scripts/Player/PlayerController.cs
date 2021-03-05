@@ -16,6 +16,9 @@ public partial class PlayerController : MonoBehaviour, IAudio
 {
     public static State currentState = State.nomal;
 
+    /// <summary>
+    /// 移動速度
+    /// </summary>
     const float moveSpeed = 10.0f;
     /// <summary>
     /// 敵を倒せるモードである
@@ -102,12 +105,16 @@ public partial class PlayerController : MonoBehaviour, IAudio
 
         //アイテム管理クラス
         pi = new PlayerInventory();
+
+        //アニメーション
         anim = GetComponent<Animator>();
 
+        //サウンド
         aud = GetComponent<AudioSource>();
 
         //初期位置
         moveObj = GameObject.FindGameObjectWithTag("InitPos");
+        //初期親を指定
         transform.SetParent(moveObj.transform);
     }
 
@@ -121,6 +128,8 @@ public partial class PlayerController : MonoBehaviour, IAudio
         //移動モードの時に処理します
         if (move) CheckMoveDistance();
     }
+
+    //------レイやサウンド、死亡フラグについて記述------//
 
     /// <summary>
     /// レイでマウス座標にあるものを取得します

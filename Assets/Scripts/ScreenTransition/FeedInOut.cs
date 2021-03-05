@@ -122,7 +122,7 @@ public class FeedInOut : MonoBehaviour
             case "DOWN":
                 //下向きに移動
                 if (rt.anchoredPosition.y >= goalRectY)
-                    pos.y += Time.deltaTime * speedY;
+                    pos.y += Time.unscaledDeltaTime * speedY; // TimeScale０の時に処理することがあるためunsclaedDeltaTimeで取る
                 else
                     Flag = false;
                 
@@ -131,7 +131,7 @@ public class FeedInOut : MonoBehaviour
             case "UP":
                 //上向きに移動
                 if (rt.anchoredPosition.y <= goalRectY)
-                    pos.y += Time.deltaTime * speedY;
+                    pos.y += Time.unscaledDeltaTime * speedY;
                 else
                     Flag = false;
 
@@ -201,6 +201,7 @@ public class FeedInOut : MonoBehaviour
     void RightLeft()
     {
         var pos = rt.anchoredPosition;
+
         switch (direction)
         {
             case "RIGHT":

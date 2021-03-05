@@ -5,45 +5,30 @@ using UnityEngine;
 /// <summary>
 /// 大砲から発射される弾クラス
 /// </summary>
-public class CannonShot : MonoBehaviour
+public class CannonShot : EnemyShot
 {
-    /// <summary>
-    /// 弾の速度
-    /// </summary>
-    float speed = 0;
-
-    private void Update()
+    protected override void Start()
     {
-        //移動します
-        MoveShot();
+        base.Start();
+    }
+
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
     }
 
     /// <summary>
     /// 弾の移動
     /// </summary>
-    void MoveShot()
+    public override void ShotMove()
     {
-        var pos = transform.position;
-
-        pos.y += speed * Time.deltaTime;
+        var pos = rb2D.velocity;
+        //y軸方向に飛ばします
+        pos.y = shotSpeed;
         
-        transform.position = pos;
-    }
+        //pos.y += ..... * Time.deltatime   これで、徐々に加速させる
+        //pos.y += .....　　　　　　　　　これで、高速
 
-    /// <summary>
-    /// 弾の速度を入れます
-    /// </summary>
-    public void SetSpeed(float speed)
-    {
-        this.speed = speed;
-    }
-
-    private void OnTriggerEnter2D(Collider2D col)
-    {
-        if (col.gameObject.CompareTag("Obstacles"))
-        {
-            //障害物に当たったら削除します
-            Destroy(gameObject);
-        }   
+        rb2D.velocity = pos;
     }
 }

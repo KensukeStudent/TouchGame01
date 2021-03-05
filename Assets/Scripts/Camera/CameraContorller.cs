@@ -61,8 +61,8 @@ public class CameraContorller : MonoBehaviour
         Vector2[] vecMin = { new Vector2(-1.0f, 0.5f), new Vector2(37.0f, 0.5f) };
 
         //現在のステージ番号を取得
-        var fileNo = GameManager.Instance.StageNo;
-        //var fileNo = 0;
+        //var fileNo = GameManager.Instance.StageNo;
+        var fileNo = 0;
 
         //座標を入れます
         MaxC = vecMax[fileNo];

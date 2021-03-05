@@ -187,8 +187,8 @@ public partial class StageCreator : MonoBehaviour
     private void Awake()
     {
         //ステージ番号のステージを作成します
-        fileNum = GameManager.Instance.StageNo;
-        //fileNum = 0;
+        //fileNum = GameManager.Instance.StageNo;
+        fileNum = 0;
 
         //現在のステージ番号を指定します
         stageID = string.Format("stage{0}", fileNum + 1);

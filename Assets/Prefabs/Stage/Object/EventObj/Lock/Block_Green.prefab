@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 114964151999352856}
   - component: {fileID: 82724483028187290}
   m_Layer: 10
-  m_Name: Green
+  m_Name: Block_Green
   m_TagString: Block
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -233,7 +233,7 @@ PrefabInstance:
     - target: {fileID: 382373279979619263, guid: 83b20a7e76f207140afd09cffdd961e5,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5933846886343064018, guid: 83b20a7e76f207140afd09cffdd961e5,
         type: 3}

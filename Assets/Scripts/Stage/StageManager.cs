@@ -247,7 +247,7 @@ public class StageManager : MonoBehaviour
         var sm = GameObject.Find("StageManager").GetComponent<StageManager>();
         var save = new SaveLoad(sm);
 
-        ////終わり次第ステージを選択、クリック可能にします----->アニメシーンのラグを作成
+        //終わり次第ステージを選択、クリック可能にします----->アニメシーンのラグを作成
         var scroll = GameObject.Find("Content").GetComponent<ScrollSelect>();
         scroll.SetSelect();
     }

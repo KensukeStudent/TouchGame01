@@ -89,8 +89,8 @@ public class DokuroShot : Enemy
             {
                 var shot = Instantiate(shotObj, InstantPos(shotAngle[i]), Quaternion.Euler(0, 0, shotAngle[i]));
                 //指定した速度を代入
-                var dShot = shot.GetComponent<DShot>();
-                dShot.ShotSpeed = ShotSpeed;
+                var dShot = shot.GetComponent<EnemyShot>();
+                dShot.SetSpeed(ShotSpeed);
             }
     }
 
@@ -142,7 +142,6 @@ public class DokuroShot : Enemy
     /// </summary>
     protected override void EventParent()
     {
-        Debug.Log("あ");
         if (!MyP) return;
         HaveParent();
         var d = MyP.GetComponent<DokuroShot>();

@@ -9,6 +9,23 @@ using TMPro;
 /// </summary>
 public class PlayerInventory : MonoBehaviour
 {
+    /// <summary>
+    /// コンストラクター
+    /// </summary>
+    /// <param name="hm">HP管理</param>
+    public PlayerInventory() 
+    {
+        var invent = GameObject.Find("InventForPlayer");
+        Hm = invent.transform.Find("HeartManager").GetComponent<HeartManager>();
+    }
+
+    /// <summary>
+    /// HP管理クラス
+    /// </summary>
+    public HeartManager Hm { private set; get; }
+
+    #region 鍵
+
     #region 配列内の鍵情報
 
     //0 -----> blueKey
@@ -18,7 +35,9 @@ public class PlayerInventory : MonoBehaviour
 
     #endregion
 
-    //鍵
+    /// <summary>
+    /// 鍵
+    /// </summary>
     int[] keysCounter = { 0, 0, 0, 0 };
 
     /// <summary>
@@ -36,7 +55,7 @@ public class PlayerInventory : MonoBehaviour
         string[] keysName = { "Blue", "Green", "Red", "Yellow", "Goal" };
 
         //GoalKeyの場合は鍵名をリストに入れてreturnします
-        if (NameAnalysis(keyName) == keysName[4])
+        if (RE.NameAnalysis(keyName) == keysName[4])
         {
             goalKey.Add(keyName);
             return;
@@ -44,7 +63,7 @@ public class PlayerInventory : MonoBehaviour
 
         //配列の何番目の名前かを数字で返値で出します
         //配列名にすることでkeysCounterと連携します
-        var ret = GetArrayNumber(keysName,NameAnalysis(keyName));
+        var ret = GetArrayNumber(keysName,RE.NameAnalysis(keyName));
         
         //取得した種類の鍵の値を増やします。
         keysCounter[ret]++;
@@ -108,16 +127,6 @@ public class PlayerInventory : MonoBehaviour
     }
 
     /// <summary>
-    /// 名前の解析
-    /// プレイヤ―が取得するアイテム
-    /// </summary>
-    string NameAnalysis(string name)
-    {
-        //大文字、小文字のローマ字を抽出します
-        return _= Regex.Match(name, @"_(.+)(\(Clone\)|[0-9])").Groups[1].Value;
-    }
-
-    /// <summary>
     /// 指定の色が何番目のリストに存在するかを求めます
     /// </summary>
     /// <param name="array">配列</param>
@@ -153,7 +162,7 @@ public class PlayerInventory : MonoBehaviour
     void GoalBlock(BlocksScript block)
     {
         //ゴールブロックのフロア番号を取得します
-        var keyName = "Key_Goal" + GetNo(block.name);
+        var keyName = "Key_Goal" + RE.GetNo(block.name);
 
         //goalKeyのリストに同じ名前があるかを判定します
         var listNum = goalKey.IndexOf(keyName);
@@ -172,12 +181,5 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 番号を取得します
-    /// </summary>
-    string GetNo(string name)
-    {
-        //数値だけ取得
-        return _ = Regex.Match(name, @"[0-9]+").ToString();
-    }
+    #endregion
 }
