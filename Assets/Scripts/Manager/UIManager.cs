@@ -2,44 +2,36 @@
 using UnityEngine;
 #pragma warning disable 649
 
+/// <summary>
+/// ステージ選択から遷移されたら処理されるクラス
+/// </summary>
 public class UIManager : MonoBehaviour
 {
-    /// <summary>
-    /// PlayerInventryパネル
-    /// MaxY: 135  MinY:-105
-    /// </summary>
-    RectTransform rectP;
-    /// <summary>
-    /// 現在動作中
-    /// </summary>
-    bool move = false;
-    /// <summary>
-    /// true -> down,false -> up
-    /// </summary>
-    bool downOrUp = false;
-    /// <summary>
-    /// 鍵の取得数UIの最上位置
-    /// </summary>
-    const float maxPos = 135f;
-    /// <summary>
-    /// 鍵の取得数UIの最低位置
-    /// </summary>
-    const float minPos = -105f;
-
     /// <summary>
     /// ステージ開始前キャンバス
     /// </summary>
     [SerializeField] GameObject stageBacCanvas;
+    /// <summary>
+    /// ネコの手
+    /// </summary>
     [SerializeField] GameObject catHand;
     AudioSource aud;
+    /// <summary>
+    /// クリックされたら鳴らします
+    /// </summary>
     [SerializeField] AudioClip catVoice;
+    /// <summary>
+    /// クリック後テキスト表示を切り替えます
+    /// </summary>
     [SerializeField] GameObject textObj;
+    /// <summary>
+    /// この文字に変換
+    /// </summary>
     string changeText = "We Love Cats";
 
     private void Start()
     {
         aud = catHand.GetComponent<AudioSource>();
-        rectP = GameObject.Find("KeyPanel").GetComponent<RectTransform>();
     }
 
     private void Update()
@@ -50,10 +42,6 @@ public class UIManager : MonoBehaviour
             //遷移準備
             SetCatHand();
         }
-
-        //もしゲームスタートならUI鍵取得数を上下出来ます
-        if (GameManager.Instance.GameStart) 
-            PanelMove();
     }
 
     /// <summary>
@@ -84,44 +72,8 @@ public class UIManager : MonoBehaviour
 
         //ステージのクリックイベントがすべて終わったら遷移を開始します
         ScreenTransition.Instance.TimeST(0);
-    }
 
-    /// <summary>
-    /// 鍵パネルを動作させます
-    /// </summary>
-    void PanelMove()
-    {
-        if (Input.GetMouseButtonDown(1) && !move)
-        {
-            move = true;
-            if (rectP.anchoredPosition.y <= minPos) downOrUp = false;
-            else if (rectP.anchoredPosition.y >= maxPos) downOrUp = true;
-        }
-
-        if (move)
-        {
-            var pos = rectP.anchoredPosition;
-
-            //down
-            if (downOrUp)
-            {
-                pos.y -= Time.deltaTime * 1000;
-                if (pos.y <= minPos)
-                {
-                    move = false;
-                    pos.y = minPos;
-                }
-            }
-            else
-            {
-                pos.y += Time.deltaTime * 1000;
-                if (pos.y >= maxPos)
-                {
-                    move = false;
-                    pos.y = maxPos;
-                }
-            }
-            rectP.anchoredPosition = pos;
-        }
+        //もう使わないので破棄します
+        Destroy(gameObject, aud.clip.length);
     }
 }

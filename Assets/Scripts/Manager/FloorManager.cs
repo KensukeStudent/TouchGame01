@@ -20,9 +20,9 @@ public class FloorManager : MonoBehaviour
 
     void Start()
     {
-        var c = GameObject.Find("StageCreator").GetComponent<StageCreator>();
+        var stageX = StageCreator.StageX;
         //ステージのフロア数を取得
-        SetFloors(c);
+        SetFloors(stageX);
         //プレイヤーが現在いるフロア以外非表示にする
         FloorAllInActive();
     }
@@ -30,34 +30,34 @@ public class FloorManager : MonoBehaviour
     /// <summary>
     /// 各フロアのオブジェクトを取得
     /// </summary>
-    void SetFloors(StageCreator c)
+    void SetFloors(int stageX)
     {
         //現在のフロア分取得
         var floorObj = GameObject.FindGameObjectsWithTag("Floor");
         //ステージの高さ
-        var stageH = c.FloorCount / c.StageX;
+        var stageH = StageCreator.FloorCount / stageX;
         //各フロア管理スクリプト取得
-        Floors = new Floor[stageH,c.StageX];
+        Floors = new Floor[stageH, stageX];
 
         //二次元のFloorsにステージにあるフロアを管理してもらいます。
         for (int i = 0; i < floorObj.Length; i++)
         {
             //縦の番地
-            var h = i / c.StageX;
+            var h = i / stageX;
             //横の番地
-            var w = i % c.StageX;
+            var w = i % stageX;
 
             Floors[h, w] = floorObj[i].GetComponent<Floor>();
         }
 
         //各フロアへ取得したオブジェクトを割り当てます
-        GetObjToFloors(c);
+        GetObjToFloors(stageX);
     }
 
     /// <summary>
     /// 取得したオブジェクトを指定の親のリストへ入れます
     /// </summary>
-    void GetObjToFloors(StageCreator c)
+    void GetObjToFloors(int stageX)
     {
         string[] tags = { "Enemy" };
 
@@ -72,8 +72,8 @@ public class FloorManager : MonoBehaviour
 
                 //親のナンバーから二次元配列の位置を求めます
                 //ステージの高さ
-                var stageH = parentNo / c.StageX;  //フロアが1から始まるので - 1を先にします
-                var stageW = parentNo % c.StageX;
+                var stageH = parentNo / stageX;  //フロアが1から始まるので - 1を先にします
+                var stageW = parentNo % stageX;
 
                 Floors[stageH, stageW].SetFloorChildObj(go[j]);
             }

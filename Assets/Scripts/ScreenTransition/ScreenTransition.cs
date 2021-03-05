@@ -532,8 +532,11 @@ public class ScreenTransition : MonoBehaviour
                 //終わり次第ステージを選択、クリック可能にします
                 #endregion
 
+                //タイルの削除
+                ClearList();
+
                 //プレイヤーがステージをクリアしていたらアニメーションをさせます
-                if(PlayerController.currentState == State.goal)
+                if (PlayerController.currentState == State.goal)
                 {
                     //やりこみ要素でクリアしたものがあれば処理開始
                     var smc = GameObject.Find("StageContentManager").GetComponent<StageContentManager>();
@@ -568,6 +571,9 @@ public class ScreenTransition : MonoBehaviour
                 break;
 
             case SceneState.gameMode:
+                //タイルの削除
+                ClearList();
+
                 //プレイヤーを操作可能にします
 
                 //初めにこのフロアの目標を画面にUIで表示します

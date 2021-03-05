@@ -146,15 +146,15 @@ public partial class StageCreator : MonoBehaviour
     /// ステージ番号
     /// ステージ選択時にセットします
     /// </summary>
-    int fileNum = 0;
+    static int fileNum = 0;
     /// <summary>
     /// ステージ内のフロア数
     /// </summary>
-    readonly int[] floorCount = { 3, 6 };
+    readonly static int[] floorCount = { 3, 8 };
     /// <summary>
     /// 現在のステージのフロア数を返します
     /// </summary>
-    public int FloorCount
+    public static int FloorCount
     {
         get
         {
@@ -170,8 +170,8 @@ public partial class StageCreator : MonoBehaviour
     /// <summary>
     /// 横のステージのフロア数
     /// </summary>
-    readonly int[] stageX = { 3, 3 };
-    public int StageX
+    readonly static int[] stageX = { 3, 4 };
+    public static int StageX
     {
         get
         {
@@ -182,13 +182,13 @@ public partial class StageCreator : MonoBehaviour
     /// <summary>
     /// ステージ番号
     /// </summary>
-    string stageID = "";
+    public static string stageID = "";
 
     private void Awake()
     {
         //ステージ番号のステージを作成します
-        //fileNum = GameManager.Instance.StageNo;
-        fileNum = 1;
+        fileNum = GameManager.Instance.StageNo;
+        //fileNum = 0;
 
         //現在のステージ番号を指定します
         stageID = string.Format("stage{0}", fileNum + 1);
@@ -211,6 +211,9 @@ public partial class StageCreator : MonoBehaviour
 
         //ステージ作成
         CreateStage();
+
+        //オブジェクトを破棄します
+        Destroy(gameObject);
     }
 
     #region マップ生成読み込み
@@ -255,6 +258,9 @@ public partial class StageCreator : MonoBehaviour
     {
         //csvファイルの検索
         var csvFile = Resources.Load(stageTagName) as TextAsset;
+
+        if (csvFile == null) return;
+
         //csvファイルの読み込み
         var reader = new StringReader(csvFile.text);
 

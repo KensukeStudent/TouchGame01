@@ -96,18 +96,18 @@ public class FloorMoveObj : MonoBehaviour
     void SetFloorObj(string dire)
     {
         var floor = GameObject.Find("FloorManager").GetComponent<FloorManager>();
-        var c = GameObject.Find("StageCreator").GetComponent<StageCreator>();
+        var stageX = StageCreator.StageX;
 
         //現在のフロア(プレイヤーのいるフロア)を取得します
         var nowFloor = floor.PlayerFloor;
     
         //縦の位置を求めます
         //   現在のフロア番号  / 横のフロア数
-        var stageH = nowFloor / c.StageX;
+        var stageH = nowFloor / stageX;
 
         //横の位置を求めます
         //   現在のフロア番号 % 横のフロア数
-        var stageW = nowFloor % c.StageX;
+        var stageW = nowFloor % stageX;
 
         //移動時どのステージフロアにいるかを求める
         switch (dire)
@@ -138,7 +138,7 @@ public class FloorMoveObj : MonoBehaviour
         }
 
         //移動先のフロアを計算します
-        var fn = GetFloorNo(dire, stageH, stageW, c);
+        var fn = GetFloorNo(dire, stageH, stageW, stageX);
         //プレイヤーの現在地点フロア番号をいれます
         floor.SetPlayerFloor(fn.ToString());
     }
@@ -146,7 +146,7 @@ public class FloorMoveObj : MonoBehaviour
     /// <summary>
     /// 移動先のフロア番号を取得します
     /// </summary>
-    int GetFloorNo(string dire,int stageH,int nowFloor, StageCreator c)
+    int GetFloorNo(string dire,int stageH,int nowFloor, int stageX)
     {
         int no = 0;
 
@@ -159,22 +159,22 @@ public class FloorMoveObj : MonoBehaviour
         {
             //右に移動
             case "R":
-                no = stageH * c.StageX + nowFloor + 1;
+                no = stageH * stageX + nowFloor + 1;
                 break;
 
             //上に移動
             case "U":
-                no = (stageH - 1) * c.StageX + nowFloor;
+                no = (stageH - 1) * stageX + nowFloor;
                 break;
 
             //左に移動
             case "L":
-                no = stageH * c.StageX + nowFloor - 1;
+                no = stageH * stageX + nowFloor - 1;
                 break;
 
             //下に移動
             case "D":
-                no = (stageH + 1) * c.StageX + nowFloor;
+                no = (stageH + 1) * stageX + nowFloor;
                 break;
         }
         return no;

@@ -69,21 +69,32 @@ public class FeedInOut : MonoBehaviour
 
         //位置を指定します
         var childPos = child.anchoredPosition;
+
         switch (direction)
         {
             case "RIGHT":
+                
+                //canvasXサイズとこの画像の半分の大きさ分,右にずらします(ちょうど画面端)
                 childPos.x = rt.sizeDelta.x / 2 + child.sizeDelta.x / 2 - marine;
                 rt.anchoredPosition = new Vector2(rt.anchoredPosition.x - child.sizeDelta.x, rt.anchoredPosition.y);
+                
                 break;
 
             case "LEFT":
+                
+                //canvasXサイズとこの画像の半分の大きさ分,左にずらします(ちょうど画面端)
                 childPos.x = -rt.sizeDelta.x / 2 + -child.sizeDelta.x / 2 + marine;
+                
+                //ネコの手が右向きになるように回転させます
                 var l = child.localRotation;
                 l.z = 180;
                 child.localRotation = l;
+
                 rt.anchoredPosition = new Vector2(rt.anchoredPosition.x + child.sizeDelta.x, rt.anchoredPosition.y);
+                
                 break;
         }
+
         child.anchoredPosition = childPos;
     }
 
@@ -92,13 +103,16 @@ public class FeedInOut : MonoBehaviour
     /// </summary>
     public void SetPosKey(float goalRt,float speed,string direct)
     {
+        //目的位置
         goalRectY = goalRt;
+        //目的位置までの速度
         speedY = speed;
+        //方向
         direction = direct;
     }
 
     /// <summary>
-    /// 幕のようなアニメーション
+    /// 幕のような上下から閉じるアニメーション
     /// </summary>
     void UpDown()
     {
@@ -106,6 +120,7 @@ public class FeedInOut : MonoBehaviour
         switch (direction)
         {
             case "DOWN":
+                //下向きに移動
                 if (rt.anchoredPosition.y >= goalRectY)
                     pos.y += Time.deltaTime * speedY;
                 else
@@ -114,6 +129,7 @@ public class FeedInOut : MonoBehaviour
                 break;
 
             case "UP":
+                //上向きに移動
                 if (rt.anchoredPosition.y <= goalRectY)
                     pos.y += Time.deltaTime * speedY;
                 else
@@ -145,7 +161,7 @@ public class FeedInOut : MonoBehaviour
                     pos.y += Time.deltaTime * speedY;
                 else
                     Flag = false;
-
+                
                 break;
 
             case "UP":
@@ -163,6 +179,7 @@ public class FeedInOut : MonoBehaviour
             //全てのtileが終了していれば、state変更フラグを立てます
             ScreenTransition.Instance.FinishScene();
         }
+
         rt.anchoredPosition = pos;
     }
 

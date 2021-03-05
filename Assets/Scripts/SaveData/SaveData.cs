@@ -117,10 +117,12 @@ public class SaveLoad : MonoBehaviour
         string path = Application.dataPath + "/Resources/SaveData/save.json";
 
         //もしpathがあるなら処理します
-        if (string.IsNullOrEmpty(path))
+        if (!string.IsNullOrEmpty(path))
         {
             //データを削除します
             File.Delete(path);
+
+            Debug.Log("ファイルを削除しました");
         }
 
         //新たにデータを作成します

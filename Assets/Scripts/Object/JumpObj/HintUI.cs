@@ -7,9 +7,13 @@ using UnityEngine;
 public class HintUI : MonoBehaviour
 {
     RectTransform rt;
-
+    /// <summary>
+    /// 移動フラグ
+    /// </summary>
     bool anim = true;
-
+    /// <summary>
+    /// 移動速度
+    /// </summary>
     const float speed = 650;
 
     /// <summary>
@@ -17,14 +21,22 @@ public class HintUI : MonoBehaviour
     /// </summary>
     bool flag = false;
 
+    /// <summary>
+    /// 位置移動の最大値
+    /// </summary>
     Vector2 max;
+    /// <summary>
+    /// 位置移動の最小値
+    /// </summary>
     Vector2 min;
 
     private void Start()
     {
         rt = GetComponent<RectTransform>();
 
+        //現在の位置を最大値とします
         max = rt.anchoredPosition;
+        //現在の逆の位置を最小値とします
         min = -rt.anchoredPosition;
     }
 

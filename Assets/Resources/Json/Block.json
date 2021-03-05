@@ -45,7 +45,7 @@
           ]
         },
         {
-          "name": ["Goal_5"],
+          "name": ["Goal_6"],
           "jumpFloor": [
             "R"
           ],
@@ -66,6 +66,9 @@
           "ev": [
 
           ]
+        },
+        {
+
         },
         {
           "name": ["Explosion"],

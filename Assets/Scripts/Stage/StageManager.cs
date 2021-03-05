@@ -162,7 +162,11 @@ public class StageManager : MonoBehaviour
     /// </summary>
     public void GameEnd(Animator anim,string clipName)
     {
-        var waitLag = TimeZeroAnim.GetAnimTime(anim, clipName);
+        //アニメーションクリップ取得
+        var clip = TimeZeroAnim.GetAnimTime(anim, clipName);
+
+        //クリップの長さ
+        var waitLag = clip.length;
 
         //sceneステートを変更します
         ScreenTransition.Instance.ChangeState(SceneState.gameOverMode);

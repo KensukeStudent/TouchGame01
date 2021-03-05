@@ -675,10 +675,12 @@ public class TextManager : MonoBehaviour
         {
             case 0:
                 animC.SetBool("Arrow", false);
+                nextClick.gameObject.SetActive(false);
                 break;
             
             case 1:
                 animC.SetBool("Arrow", true);
+                nextClick.gameObject.SetActive(true);
                 break;
         }
     }

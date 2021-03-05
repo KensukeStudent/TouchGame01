@@ -43,8 +43,10 @@ public class BlocksScript : MonoBehaviour
         //順を追って探します
         var canvas = GameObject.Find("DescriptionCanvas");
         back = canvas.transform.Find("Back").gameObject;
-        senText = back.transform.Find("Text").GetComponent<TMP_Text>();
         var image = back.transform.Find("Image").gameObject;
+        //ブロック説明テキストを取得
+        senText = image.transform.Find("Description").GetComponent<TMP_Text>();
+        //ブロック名テキストを取得
         nameText = image.transform.Find("Name").GetComponent<TMP_Text>();
     }
 

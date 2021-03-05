@@ -42,6 +42,7 @@ public class Cannon : MonoBehaviour,IAudio
     private void Start()
     {
         aud = GetComponent<AudioSource>();
+        Debg();
     }
 
     private void Update()
@@ -54,15 +55,17 @@ public class Cannon : MonoBehaviour,IAudio
     void Debg()
     {
         var shotSpeed = 5;
-        var shotTimer = 1.0f;
-        var count = 5;
-        var interval = new float[5]
+        var shotTimer = 0;
+        var count = 7;
+        var interval = new float[7]
         {
-            0.5f,
+            0.1f,
             0.1f,
             0.5f,
+            0.5f,
+            0.5f,
             0.1f,
-            0.5f
+            0.1f,
         };
 
         Init(false, shotSpeed, shotTimer, count, interval);

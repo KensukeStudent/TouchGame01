@@ -57,12 +57,12 @@ public class CameraContorller : MonoBehaviour
     void SetInit()
     {
         //最大最小の初期位置テーブル
-        Vector2[] vecMax = { new Vector2(0.5f, 0.5f),new Vector2(37.0f, 0.5f) };
-        Vector2[] vecMin = { new Vector2(0.5f, 0.5f), new Vector2(37.0f, 0.5f) };
+        Vector2[] vecMax = { new Vector2(-1.0f, 0.5f),new Vector2(37.0f, 0.5f) };
+        Vector2[] vecMin = { new Vector2(-1.0f, 0.5f), new Vector2(37.0f, 0.5f) };
 
         //現在のステージ番号を取得
-        //var fileNo = GameManager.Instance.StageNo;
-        var fileNo = 1;
+        var fileNo = GameManager.Instance.StageNo;
+        //var fileNo = 0;
 
         //座標を入れます
         MaxC = vecMax[fileNo];

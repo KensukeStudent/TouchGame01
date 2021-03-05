@@ -23,6 +23,29 @@ public class TimeZeroAnim : MonoBehaviour
     private void Start()
     {
         anim = GetComponent<Animator>();
+
+        //アニメーションclipを取得
+        var anima = GetAnimTime(anim, "arrow");
+
+        //一フレーム当たりの速度(60FPS)
+        var oneFrameSpeed = 1.0f / 60.0f;
+
+        //全部で何コマあるか
+        var frameCount = Mathf.CeilToInt(anima.frameRate * anima.length);
+
+        //全体のコマで表示する速度
+        var length = oneFrameSpeed * anima.frameRate;
+
+        //一コマ当たりの速度
+        var speed = length / frameCount;
+
+        frameRate = speed;
+    }
+
+    private void Update()
+    {
+        //タイムスケール0でも動かせるアニメーション
+        UnScaleAnim();
     }
 
     /// <summary>
@@ -33,11 +56,11 @@ public class TimeZeroAnim : MonoBehaviour
         //指定のフレーム数を上げます
         frame += frameRate;
 
-        if (frame >= endFrame)
-        {
-            anim.speed = 0;
-            return;
-        }
+        //if (frame >= endFrame)
+        //{
+        //    anim.speed = 0;
+        //    return;
+        //}
 
         //フレーム位置でアニメーションの再生を行います
         anim.Play("arrow", -1, frame);
@@ -49,14 +72,12 @@ public class TimeZeroAnim : MonoBehaviour
     /// <param name="anim">指定のアニメーター</param>
     /// <param name="clipName">クリップ名</param>
     /// <returns></returns>
-    public static float GetAnimTime(Animator anim, string clipName)
+    public static AnimationClip GetAnimTime(Animator anim, string clipName)
     {
         //指定するanimatorに入っている全てアニメーションを表示します
         var ac = anim.runtimeAnimatorController;
 
         //acの配列内から指定のアニメーションと同じものをclipに入れます
-        var clip = System.Array.Find(ac.animationClips, anima => anima.name == clipName);
-
-        return clip.length;
+        return _ = System.Array.Find(ac.animationClips, anima => anima.name == clipName);
     }
 }

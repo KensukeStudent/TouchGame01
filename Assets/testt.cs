@@ -28,12 +28,6 @@ public class testt : MonoBehaviour
 
     [SerializeField] GameObject obj;
 
-    private void OnEnable()
-    {
-        Debug.Log("Enable");
-        obj = GameObject.Find("obj");
-    }
-
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
@@ -43,7 +37,7 @@ public class testt : MonoBehaviour
 
         //anima["Arrow"].normalizedTime = 0.6f;
 
-        //Time.timeScale = 0;
+        Time.timeScale = 0;
 
         anim = GetComponent<Animator>();
 
@@ -52,8 +46,19 @@ public class testt : MonoBehaviour
 
         var anima = GetAnimation(anim, "Arrow");
 
-        frameRate = anima.frameRate / 1000;
-        Debug.Log("Start");
+        //一フレーム当たりの速度(60FPS)
+        var oneFrame = 1.0f / 60.0f;
+
+        //全部で何コマあるか
+        var f = Mathf.CeilToInt(anima.frameRate * anima.length);
+
+        //全体のコマで表示する速度
+        var speedAll = oneFrame * anima.frameRate;
+
+        //一コマ当たりの速度
+        var speed = speedAll / f;
+
+        frameRate = speed;
     }
 
     /// <summary>
@@ -77,11 +82,11 @@ public class testt : MonoBehaviour
         //指定のフレーム数を上げます
         frame += frameRate;
 
-        if (frame >= endFrame)
-        {
-            anim.speed = 0;
-            return;
-        }
+        //if (frame >= endFrame)
+        //{
+          //  anim.speed = 0;
+            //return;
+        //}
 
         //フレーム位置でアニメーションの再生を行います
         anim.Play("arrow", -1, frame);
@@ -107,21 +112,8 @@ public class testt : MonoBehaviour
 
     private void Update()
     {
-        if (animFlag)
-        {
-            scale = 1;
-            obj.SetActive(false);
-        }
-        else
-        {
-            scale = 0;
-        }
-
-        if (scale == 0)
-        {
-            //タイムスケール0でアニメーションの再生
-             UnScaleAnim();
-        }
+        //タイムスケール0でアニメーションの再生
+        UnScaleAnim();
 
         //if (state == MoveState.trans) TransMove();
     }
