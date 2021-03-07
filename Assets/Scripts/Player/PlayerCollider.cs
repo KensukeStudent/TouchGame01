@@ -34,6 +34,7 @@ public partial class PlayerController : MonoBehaviour
         if (!enemy) return;
 
         //攻撃モードの時に敵を破壊できます
+        //ただしバクダンを所持していない時のみ
         if (AttackMode && !bakudan.activeInHierarchy)
         {
             //攻撃アニメーション
@@ -56,12 +57,12 @@ public partial class PlayerController : MonoBehaviour
                 b.EffectInstant(transform.position);
 
                 //敵のダメージを受けます
-                pi.Hm.DamageHP(5);
+                Damage(5);
                 return;
             }
 
             //敵のダメージを受けます
-            pi.Hm.DamageHP(enemy.Damage());
+            Damage(enemy.Damage());
         }
     }
 
@@ -72,10 +73,8 @@ public partial class PlayerController : MonoBehaviour
     {
         var es = col.GetComponent<EnemyShot>();
 
-        //敵弾のダメージを受けます
-        pi.Hm.DamageHP(es.Damage());
-
-        PlaySE(3);
+        //敵弾のダメージを受けます     
+        Damage(es.Damage());
     }
 
     /// <summary>
@@ -149,10 +148,11 @@ public partial class PlayerController : MonoBehaviour
         //体力を回復します
         pi.Hm.IncreaseHP(1);
 
+        //取得したオブジェクトを破壊します
         Destroy(col.gameObject);
 
         //SEを鳴らします
-
+        PlaySE(4);
     }
 
     /// <summary>
@@ -205,9 +205,7 @@ public partial class PlayerController : MonoBehaviour
     {
         //爆弾の状態
         //nomalかev
-        var condition = Regex.Match(col.name, @"_(.+)\(Clone\)").Groups[1].Value;
-
-        switch (condition)
+        switch (RE.NameAnalysis(col.name))
         {
             //通常の爆弾
             case "Nomal":
@@ -218,8 +216,11 @@ public partial class PlayerController : MonoBehaviour
 
             //イベント式の爆弾
             case "Ev":
+                //Ev爆弾のノベルパートを取得
+                var b = col.GetComponent<BakudanEv>();
+
                 //イベント開始
-                BakudanEvent(col);
+                ADV.StartADV(b.ADVBakudan(), b.Actions());
                 break;
         }
     }
@@ -236,57 +237,27 @@ public partial class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// 爆弾イベントの時一回限り呼ばれます
-    /// </summary>
-    void BakudanEvent(Collider2D col)
-    {
-        #region 処理流れ
-
-        //黒いeventnの爆弾を取る
-
-        //イベントパート
-        //fontの変更
-        //----> 「なんにゃー、このくだもの？？」(ネコのセリフ)
-
-        //テキストの方でWaitを書けます(animationの時間分)
-        // 爆弾の色を徐々に元の色に戻していきます
-
-        //----> 「にゃ！にゃ！？　ばくだんにゃーーー！！！」
-
-        //解説
-        //---> fontを変更
-        //----> 「ジャンプ位置でない所で右クリックすることで投げることができます」
-        //----> 「敵を倒すこともできるので快感を味わってみてください。
-        //        ただし、自分もまき壊れることもあるのでお気をつけて。」
-        //----> 「爆弾は何度も生成されるので、何回でも使うことができます」
-
-        #endregion
-
-        //タイムスケールで時間を止めます
-        Time.timeScale = 0;
-
-        //表示用テキストCanvas
-        var cavas = GameObject.Find("DescriptionCanvas");
-        //親から表示用テキストを取得
-        var tm = cavas.transform.Find("NovelFrame").GetComponent<TextManager>();
-        //Ev爆弾のノベルパートを取得
-        var b = col.GetComponent<BakudanEv>();
-
-        //読み込むテキストを表示用UIの方に格納します
-        tm.SetEvText(b.EvBakudan());
-
-        //NovelFrameを徐々に表示します
-        tm.GetImage();
-
-        tm.SetAction(b.Actions());
-    }
-
-    /// <summary>
     /// イベント用で爆弾を表示します
     /// </summary>
     public void ActiveBakudan()
     {
         bakudan.SetActive(true);
+    }
+
+    /// <summary>
+    /// ダメージを受けたら処理します
+    /// </summary>
+    void Damage(int amount)
+    {
+        //ダメージSEを鳴らします
+        PlaySE(3);
+
+        //敵のダメージを受けます
+        if (pi.Hm.DamageHP(amount) <= 0)
+        {
+            //0以下になったら負け
+            DiePlayer();
+        }
     }
 
     private void OnTriggerStay2D(Collider2D col)

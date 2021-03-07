@@ -341,13 +341,6 @@ public class TextManager : MonoBehaviour
                 lineLength = -1;
                 break;
 
-            #region 特殊コード一覧
-            //@Sシーン名       次のシーンに飛びます
-            //@A**             音を鳴らします
-            //@E**             SEを鳴らします
-            //@B**             背景を変えます
-            #endregion
-
             //特殊コード
             case "@":
 
@@ -373,6 +366,20 @@ public class TextManager : MonoBehaviour
     /// </summary>
     void SpecailCode(string sc)
     {
+        #region 特殊コード一覧
+        
+        //@Sシーン名       次のシーンに飛びます
+        //@A**             音を鳴らします
+        //@E**             SEを鳴らします
+        //@B**             背景を変えます
+        //@P*              アクションを発火します
+        //@F*              フォントを変更します
+        //@Sシーン名       Sceneを変更します
+        //@N               自動改行
+        //@D               ADVパートを終了します
+
+        #endregion
+
         switch (sc)
         {
             //文字を使わない

@@ -63,7 +63,7 @@ public class BlocksScript : MonoBehaviour
     /// <param name="description">ブロック説明</param>
     public void SetBlock(string description,string bName,string setFloor)
     {
-        var name = Regex.Match(description, @"^@(.+){").Groups[1].Value;
+        var name = Regex.Match(description, @"^@(.+){",RegexOptions.Singleline).Groups[1].Value;
         var role = Regex.Match(description, @"{(.+)}",RegexOptions.Singleline).Groups[1].Value;
 
         //ブロック名

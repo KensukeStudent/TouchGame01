@@ -33,8 +33,11 @@ public class HeartManager : MonoBehaviour
     /// ダメージを受ける
     /// </summary>
     /// <param name="amount">ダメージ回数</param>
-    public void DamageHP(int amount)
+    public int DamageHP(int amount)
     {
+        //現在のHP
+        var currentHP = 0;
+
         //amount回ダメージを受けます
         for (int c = 0; c < amount; c++)
         {
@@ -43,12 +46,18 @@ public class HeartManager : MonoBehaviour
             {
                 if(flag[i] == 1)
                 {
+                    //ハートを空の画像に切り替えます
                     hearts[i].sprite = heartSprite[0];
+                    //ダメージ1減ります
                     flag[i] = 0;
+
+                    currentHP = i;
                     break;
                 }
             }
         }
+
+        return currentHP;
     }
 
     /// <summary>

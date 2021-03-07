@@ -146,6 +146,7 @@ public class JsonInfo
     #endregion
 
     #region シナリオ用Json
+
     public ScenarioList scenarioList;
 
     /// <summary>

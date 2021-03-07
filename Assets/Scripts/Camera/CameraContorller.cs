@@ -33,7 +33,15 @@ public class CameraContorller : MonoBehaviour
     const float moveSpeed = 30f;
 
     AudioSource aud;
-    [SerializeField] AudioClip clip;
+    /// <summary>
+    /// AudioClip
+    /// </summary>
+    [SerializeField] AudioClip[] clipA;
+
+    /// <summary>
+    /// SeClip
+    /// </summary>
+    [SerializeField] AudioClip clipSE;
 
     private void Start()
     {
@@ -42,7 +50,17 @@ public class CameraContorller : MonoBehaviour
         //初期座標を入れます
         SetInit();
 
+        var no = GameManager.Instance.StageNo;
+
         aud = GetComponent<AudioSource>();
+        //ステージに応じたBGMを割り当てます
+        aud.clip = clipA[no];
+
+        //ステージに応じた音量を設定します
+        var vol = new float[2] { 0.5f, 0.8f };
+        aud.volume = vol[no];
+
+        aud.Play();
     }
 
     private void Update()
@@ -61,8 +79,8 @@ public class CameraContorller : MonoBehaviour
         Vector2[] vecMin = { new Vector2(-1.0f, 0.5f), new Vector2(37.0f, 0.5f) };
 
         //現在のステージ番号を取得
-        //var fileNo = GameManager.Instance.StageNo;
-        var fileNo = 0;
+        var fileNo = GameManager.Instance.StageNo;
+        //var fileNo = 0;
 
         //座標を入れます
         MaxC = vecMax[fileNo];
@@ -172,9 +190,11 @@ public class CameraContorller : MonoBehaviour
         dire = direction;
         MaxC = max;
         MinC = min;
+        
         //オート移動開始
         autoMove = true;
+
         //移動サウンドを鳴らします
-        aud.PlayOneShot(clip);
+        aud.PlayOneShot(clipSE); //SE音量はBGMに依存させます
     }
 }

@@ -87,7 +87,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86d386e3f80268c4b93a11e8f08601e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clip: {fileID: 8300000, guid: 4cde0d2752c5639468d78816504bdf5c, type: 3}
+  clipA:
+  - {fileID: 8300000, guid: 497fc8e0b1e56434bad43545dcbec6ea, type: 3}
+  - {fileID: 8300000, guid: 75d1d1dbae0c45c47b3f631906b1c76a, type: 3}
+  clipSE: {fileID: 8300000, guid: 4cde0d2752c5639468d78816504bdf5c, type: 3}
 --- !u!82 &3814753019206447474
 AudioSource:
   m_ObjectHideFlags: 0
@@ -102,7 +105,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

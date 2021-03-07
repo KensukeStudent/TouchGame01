@@ -437,8 +437,15 @@ public class ScreenTransition : MonoBehaviour
     /// </summary>
     void SelectEnd()
     {
+        string stage = "Stage";
+
         //Scene遷移
-        const string stage = "Stage";
+        if (GameManager.Instance.StageNo == 2)
+        {
+           ScenarioReader.scenarioId = "ending";
+            stage = "NovelScene";
+        }
+
         ChangeScene(stage);
 
         Pattern = 1;
@@ -584,10 +591,14 @@ public class ScreenTransition : MonoBehaviour
                 //タイルの削除
                 ClearList();
 
-                //プレイヤーを操作可能にします
-
-                //初めにこのフロアの目標を画面にUIで表示します
-
+                //ステージ1の時にADVパートを入れます
+                if(GameManager.Instance.StageNo == 0)
+                {
+                    var st1 = new Stage1Event();
+                    //ADVパートを発火します
+                    ADV.StartADV(st1.ADVTutorial(), st1.Actions());
+                }
+                
                 break;
 
             case SceneState.reState:

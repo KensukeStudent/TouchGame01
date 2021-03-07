@@ -10,9 +10,17 @@ using System.Text.RegularExpressions;
 public class StageContent : MonoBehaviour
 {
     /// <summary>
+    /// ステージ番号
+    /// </summary>
+    [SerializeField] TMP_Text stageNo;
+    /// <summary>
     /// ステージ名
     /// </summary>
     [SerializeField] TMP_Text stageName;
+    /// <summary>
+    /// クリアしていなかったら被せるオブジェクト
+    /// </summary>
+    [SerializeField] GameObject stop;
     /// <summary>
     /// ステージ背景
     /// </summary>
@@ -45,26 +53,42 @@ public class StageContent : MonoBehaviour
     /// このステージの中身をセットします
     /// </summary>
     /// <param name="sName">ステージ名</param>
-    public void SetContent(string sName, StageManager sm)
+    public void SetContent(string stageNo, StageManager sm)
     {
+        //ステージ番号を数値化します
+        var no = int.Parse(RE.GetNo(stageNo)) - 1;
+
+        //ステージ1もしくは前のステージをクリアしていたらstopオブジェクトを非アクティブにします
+        if (stageNo == "Stage1" || sm.StageClearMan[no - 1] && no > 0)
+        {
+            SetStop(false);
+        }
+        //クリアしていない場合はstopオブジェクトをアクティブ状態にします
+        else if (!sm.StageClearMan[no - 1])
+        {
+            SetStop(true);
+        }
+
         backGround = transform.Find("BackGround").GetComponent<Image>();
 
-        //ステージ番号を数値化します
-        var stageNo = int.Parse(Regex.Match(sName, "[0-9]+").Groups[0].Value) - 1;
-
         //ステージ名を入れます
-        stageName.text = sName;
+        this.stageNo.text = stageNo;
+
+        //ステージ名
+        stageName.text = sm.StageName[no];
+
         //ステージ背景
-        backGround.sprite = sm.BackGroundMan[stageNo];
+        backGround.sprite = sm.BackGroundMan[no];
+        
         //フラグを入れます
-        scoresFlag = sm.ScoreMan[stageNo];
+        scoresFlag = sm.ScoreMan[no];
 
         //猫のハンコを入れます
         for (int i = 0; i < scores.Length; i++)
         {
             //アニメーションが再生されているなら
             //画像を入れます
-            if (sm.ScoreAnimMan[stageNo][i]) 
+            if (sm.ScoreAnimMan[no][i]) 
                 scores[i].sprite = hanko[scoresFlag[i]];
             else
                 scores[i].sprite = hanko[0];
@@ -74,16 +98,24 @@ public class StageContent : MonoBehaviour
         var cat = transform.Find("ClearAnim").GetComponent<ClearAnimMan>();
 
         //アニメーションが再生されているなら
-        if (sm.ClearAnimMan[stageNo])
+        if (sm.ClearAnimMan[no])
         {
             //クリアフラグを入れます
-            stageClear = sm.StageClearMan[stageNo];
+            stageClear = sm.StageClearMan[no];
         }
 
         //クリア時のオブジェクトの状態をセットします
-        cat.SetObject(sm.ClearAnimMan[stageNo]);
+        cat.SetObject(sm.ClearAnimMan[no]);
     }
     
+    /// <summary>
+    /// Stopオブジェクトを表示か非表示かを決めます
+    /// </summary>
+    public void SetStop(bool flag)
+    {
+        stop.SetActive(flag);
+    }
+
     #endregion
 
     #region アニメーションの再生
@@ -165,6 +197,9 @@ public class StageContent : MonoBehaviour
             //smのclearにflagを入れます
             sm.SetAnimFlag_C(stageNo, flag);
         }
+
+        //stageの長さ - 1番目までステージ解放を処理します
+
 
         //全てのアニメーション終了後
         //セーブ,画面操作可能にします

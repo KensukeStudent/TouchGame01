@@ -126,17 +126,6 @@ public class DokuroShot : Enemy
         }
     }
 
-    private void OnTriggerStay2D(Collider2D col)
-    {
-        if (col.CompareTag("Player") && Die)
-        {
-            //親がいる場合処理
-            //EventParent();
-            //削除処理
-            Explosion();
-        }
-    }
-
     /// <summary>
     /// 親を持っている場合、親の弾発射時間増やします
     /// </summary>

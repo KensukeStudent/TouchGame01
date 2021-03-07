@@ -21,6 +21,7 @@ public class StageContentManager : MonoBehaviour
     /// </summary>
     public void AnimGO()
     {
+        //ステージ番号
         var stageNo = GameManager.Instance.StageNo;
 
         //ステージ番号のリストを取り出します
@@ -32,5 +33,23 @@ public class StageContentManager : MonoBehaviour
 
         //ハンコとクリアのアニメーションを再生します
         sc.SetAnim(stageNo, sm.ScoreAnimMan[stageNo], sm.ClearAnimMan[stageNo], sm);
+
+        //次のステージを解放します
+        StageOpen(stageNo);
+    }
+
+    /// <summary>
+    /// 即ステージを解放します
+    /// </summary>
+    void StageOpen(int stageNo)
+    {
+        //全体のステージ数 - 1番目までステージ解放処理を行います
+        if (stageNo - 1 < StageManager.stageCount && stageNo < scList.Count - 1)
+        {
+            var sc = scList[stageNo + 1];
+
+            //次のscのstopを非表示にします
+            sc.SetStop(false);
+        }
     }
 }

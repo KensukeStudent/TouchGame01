@@ -337,7 +337,7 @@ GameObject:
   - component: {fileID: 629179292596193385}
   - component: {fileID: 629179292596193384}
   m_Layer: 5
-  m_Name: TMP SubMeshUI [Oswald Bold SDF Material + LiberationSans SDF Atlas]
+  m_Name: TMP SubMeshUI [nekomoji SDF Material + LiberationSans SDF Atlas]
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -1,5 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
+using TMPro;
+
 #pragma warning disable 649
 
 /// <summary>
@@ -11,6 +13,11 @@ public class UIManager : MonoBehaviour
     /// ステージ開始前キャンバス
     /// </summary>
     [SerializeField] GameObject stageBacCanvas;
+    /// <summary>
+    /// ステージ番号
+    /// </summary>
+    [SerializeField] TMP_Text stageNoText;
+
     /// <summary>
     /// ネコの手
     /// </summary>
@@ -32,6 +39,8 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         aud = catHand.GetComponent<AudioSource>();
+
+        stageNoText.text = "ステージ" + (GameManager.Instance.StageNo + 1);
     }
 
     private void Update()
@@ -74,6 +83,6 @@ public class UIManager : MonoBehaviour
         ScreenTransition.Instance.TimeST(0);
 
         //もう使わないので破棄します
-        Destroy(gameObject, aud.clip.length);
+        //Destroy(gameObject, aud.clip.length);
     }
 }

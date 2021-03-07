@@ -4,6 +4,9 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Text.RegularExpressions;
 
+/// <summary>
+/// EventSystemの拡張したクラス
+/// </summary>
 public class TitleUIManager : StandaloneInputModule
 {
     /// <summary>

@@ -94,7 +94,7 @@ public partial class PlayerController : MonoBehaviour, IAudio
     //1 ----> eat
     //2 ----> itemGet
     //3 ----> damage
-    //4 ----> gameOver
+    //4 ----> hpCure
     #endregion
     [SerializeField] AudioClip[] clip;
 

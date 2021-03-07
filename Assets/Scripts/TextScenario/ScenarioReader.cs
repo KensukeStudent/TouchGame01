@@ -3,6 +3,9 @@
 /// </summary>
 public class ScenarioReader
 {
+    /// <summary>
+    /// シナリオの読み込むID
+    /// </summary>
     public static string scenarioId = "opeing";
 
     /// <summary>

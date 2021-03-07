@@ -12,19 +12,32 @@ public class EffectCollider : MonoBehaviour
     /// </summary>
     float deleteTime = 0;
 
-    //当たり判定の拡大速度
+    /// <summary>
+    /// 当たり判定の拡大速度
+    /// </summary>
     float colSpeed;
 
-    //当たり範囲
+    /// <summary>
+    /// 当たり範囲
+    /// </summary>
     float colRange;
-    //最小値
+    /// <summary>
+    /// 最小値
+    /// </summary>
     [SerializeField] float colMin;
-    //最大値
+    /// <summary>
+    /// 最大値
+    /// </summary>
     [SerializeField] float colMax;
 
-    //衝突するレイヤー
+    /// <summary>
+    /// 衝突するレイヤー
+    /// </summary>
     [SerializeField] LayerMask hitLayer;
 
+    /// <summary>
+    /// 当たりコライダー
+    /// </summary>
     CircleCollider2D cc;
 
     [System.Obsolete]
@@ -49,6 +62,7 @@ public class EffectCollider : MonoBehaviour
 
     private void Update()
     {
+        //当たり判定を拡大していきます
         ExpandRange();
     }
 

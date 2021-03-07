@@ -186,4 +186,16 @@ public class Enemy : MonoBehaviour,IDamage
             }
         }
     }
+
+    private void OnTriggerStay2D(Collider2D col)
+    {
+        //倒される敵なら処理します
+        if (col.CompareTag("Player") && Die && Defeat)
+        {
+            //親がいる場合処理
+            EventParent();
+            //削除処理
+            Explosion();
+        }
+    }
 }

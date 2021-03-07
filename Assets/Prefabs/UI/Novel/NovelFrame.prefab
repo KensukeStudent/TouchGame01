@@ -412,13 +412,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 5899315597729108549}
-    characterCount: 76
+    characterCount: 0
     spriteCount: 0
-    spaceCount: 1
-    wordCount: 1
+    spaceCount: 0
+    wordCount: 0
     linkCount: 0
-    lineCount: 3
-    pageCount: 1
+    lineCount: 0
+    pageCount: 0
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
@@ -720,6 +720,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ClickImage
+      objectReference: {fileID: 0}
+    - target: {fileID: 6931021531005650193, guid: 7312cdabaa14b7043b1aacdaaf36cfa5,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6931021531005650194, guid: 7312cdabaa14b7043b1aacdaaf36cfa5,
         type: 3}
