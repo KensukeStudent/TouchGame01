@@ -307,6 +307,11 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1297193011}
+    - target: {fileID: 5256578103031992146, guid: c6b8e3c9d115eb245848ca683415fdc3,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5256578103031992147, guid: c6b8e3c9d115eb245848ca683415fdc3,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -452,9 +457,20 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1551693719}
-    - target: {fileID: 1806767002, guid: 1351fdf5984e2644fb0fd3eb296447d8, type: 3}
-      propertyPath: m_Color.a
-      value: 0
+    - target: {fileID: 5621052536393190401, guid: 1351fdf5984e2644fb0fd3eb296447d8,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1551693719}
+    - target: {fileID: 5621052536393190401, guid: 1351fdf5984e2644fb0fd3eb296447d8,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: MButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 5621052536393190401, guid: 1351fdf5984e2644fb0fd3eb296447d8,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 7694598710986219032, guid: 1351fdf5984e2644fb0fd3eb296447d8,
         type: 3}
@@ -580,6 +596,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 629179292596193384, guid: 9e8e0a0dd3689e249a9b81e2ef0e92e9,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 629179292733494135, guid: 9e8e0a0dd3689e249a9b81e2ef0e92e9,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -689,6 +710,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: StageBacCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 629179292733494139, guid: 9e8e0a0dd3689e249a9b81e2ef0e92e9,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9e8e0a0dd3689e249a9b81e2ef0e92e9, type: 3}

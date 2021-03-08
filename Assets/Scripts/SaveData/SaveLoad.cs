@@ -28,7 +28,7 @@ public class SaveLoad
         if (Save(sm))
         {
             //save時の演出
-            Debug.Log("セーブ完了");
+            //Debug.Log("セーブ完了");
             return;
         }
     } 
@@ -102,7 +102,7 @@ public class SaveLoad
         }
         catch (Exception e)
         {
-            Debug.Log("データがありません");
+            //Debug.Log("データがありません");
         }
 
         return ret;

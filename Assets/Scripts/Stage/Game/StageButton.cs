@@ -6,9 +6,26 @@
 public class StageButton : MonoBehaviour
 {
     /// <summary>
+    /// メニューのボタン達
+    /// </summary>
+    [SerializeField] GameObject buttons;
+
+    /// <summary>
     /// フロアを戻る時に表示するオブジェクト
     /// </summary>
     [SerializeField] GameObject warning;
+
+    #region Mボタン
+    
+    /// <summary>
+    /// Mボタンを押したときの処理 
+    /// </summary>
+    public void MButton()
+    {
+        //メニューのボタンを表示したり非表示したりします
+        buttons.SetActive(!buttons.activeInHierarchy);
+    }
+    #endregion
 
     #region フロアを抜ける
 

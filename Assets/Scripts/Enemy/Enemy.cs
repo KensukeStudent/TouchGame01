@@ -131,7 +131,7 @@ public class Enemy : MonoBehaviour,IDamage
     /// </summary>
     protected virtual void EventParent()
     {
-        Debug.Log("それぞれの敵に応じて処理内容が違います");
+        //Debug.Log("それぞれの敵に応じて処理内容が違います");
     }
 
     /// <summary>

@@ -44,8 +44,18 @@ public class FeedInOut : MonoBehaviour
             RightLeft
         };
 
+        //遷移の種類の番号
+        var no = ScreenTransition.Instance.Pattern;
+
         //Patternの遷移動作を入れます
-        st = sts[ScreenTransition.Instance.Pattern];
+        st = sts[no];
+
+        //番号が0,1なら猫の手を非表示にします
+        if(no != 2)
+        {
+            var child = transform.GetChild(0).gameObject;
+            child.SetActive(false);
+        }
     }
 
     private void Update()
