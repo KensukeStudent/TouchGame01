@@ -167,7 +167,7 @@ public class JsonInfo
     {
         //格納されたリストを取得
         var s = ID.GetDataNo(scenarioList.stories, storyId).scenario;
-
+        
         //srのリストにシナリオを入れます
         sr.SetArray(s);
     }

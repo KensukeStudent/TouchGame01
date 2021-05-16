@@ -77,10 +77,18 @@ public class EffectCollider : MonoBehaviour
         cc.radius = colRange;
     }
 
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        if(col.CompareTag("Player") || col.CompareTag("Enemy") || col.CompareTag("Block"))
+        {
+            //ヒットしたコライダーに応じて処理を変えます
+            HitCollider(col);
+        }
+    }
+
     /// <summary>
     /// Hitした物に応じて処理を変えます
     /// </summary>
-    /// <param name="col"></param>
     void HitCollider(Collider2D col)
     {
         switch (col.tag)
@@ -105,15 +113,6 @@ public class EffectCollider : MonoBehaviour
                 var b = col.GetComponent<BlocksScript>();
                 b.Destroy();
                 break;
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D col)
-    {
-        if(col.CompareTag("Player") || col.CompareTag("Enemy") || col.CompareTag("Block"))
-        {
-            //ヒットしたコライダーに応じて処理を変えます
-            HitCollider(col);
         }
     }
 

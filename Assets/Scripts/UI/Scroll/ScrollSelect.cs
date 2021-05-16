@@ -444,4 +444,12 @@ public class ScrollSelect : MonoBehaviour
         //画面に透明な画像を貼りクリックできなくさせます
         empty.enabled = selectGO;
     }
+
+    /// <summary>
+    /// ステージセレクトを初期化します
+    /// </summary>
+    public static void InitSelect()
+    {
+        selectGO = false;
+    }
 }

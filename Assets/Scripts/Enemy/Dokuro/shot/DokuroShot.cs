@@ -16,7 +16,7 @@ public class DokuroShot : Enemy
     /// <summary>
     /// フラグに応じてどの角度から生成するかを決めます
     /// </summary>
-    public bool[] Flag { private set; get; } = { true, true, true, true };
+    public bool[] DirectFlag { private set; get; } = { true, true, true, true };
 
     /// <summary>
     /// 弾の発射時間
@@ -27,19 +27,23 @@ public class DokuroShot : Enemy
     /// 弾のインターバル時間
     /// </summary>
     bool intervalMode = false;
-    // 画像のサイズ
-    float sizeX;
-    float sizeY;
+
+    /// <summary>
+    /// 画像サイズ   
+    /// </summary>
+    Vector2 size;
 
     Animator anim;
 
     protected override void Start()
     {
         base.Start();
-
+        //倒せる敵
         DefeatThisEnemy(true);
 
         anim = GetComponent<Animator>();
+        //画像サイズ取得
+        size = GetComponent<SpriteRenderer>().size;
     }
 
     private void Update()
@@ -54,28 +58,22 @@ public class DokuroShot : Enemy
     {
         timer += Time.deltaTime;
         //インターバルモード
-        if (intervalMode)
+        if (intervalMode && timer > ShotTime * 1.6f)
         {
             //弾を生成してから3秒間のインターバルを設ける
-            if (timer > ShotTime * 1.6f)
-            {
-                anim.SetBool("Shot", false);
-                intervalMode = false;
-                timer = 0;
-            }
+            anim.SetBool("Shot", false);
+            intervalMode = false;
+            timer = 0;
         }
-        else
+        else if(!intervalMode && timer > ShotTime)
         {
-            if (timer > ShotTime)
-            {
-                //指定方向に弾をだします
-                ShotFlag();
-                anim.SetBool("Shot", true);
-                //発射後インターバルを設けます
-                intervalMode = true;
-                //SEを鳴らします
-                PlaySE(1, 0.4f);
-            }
+            //指定方向に弾をだします
+            ShotFlag();
+            anim.SetBool("Shot", true);
+            //発射後インターバルを設けます
+            intervalMode = true;
+            //SEを鳴らします
+            PlaySE(1, 0.4f);
         }
     }
 
@@ -85,13 +83,16 @@ public class DokuroShot : Enemy
     void ShotFlag()
     {
         for (int i = 0; i < shotAngle.Length; i++)
-            if (Flag[i])
+        {
+            //発射フラグの方向
+            if (DirectFlag[i])
             {
                 var shot = Instantiate(shotObj, InstantPos(shotAngle[i]), Quaternion.Euler(0, 0, shotAngle[i]));
                 //指定した速度を代入
                 var dShot = shot.GetComponent<EnemyShot>();
                 dShot.SetSpeed(ShotSpeed);
             }
+        }
     }
 
     /// <summary>
@@ -100,9 +101,11 @@ public class DokuroShot : Enemy
     /// <param name="count">stateが入っている配列</param>
     public void SetShotStates(DokuroFloor d, D_Shot s, int count, string name)
     {
-        //速度,発射位置,発射時間,名前
+        //速度
         ShotSpeed = s.shotSpeed[count];
-        Flag = EnemyMan.SetDirect(s, count);
+        //発射方向フラグ
+        DirectFlag = EnemyMan.SetDirect(s, count);
+        //発射時間
         ShotTime = s.shotTime[count];
         //名前+state名
         this.name = name + d.state[count];
@@ -131,6 +134,7 @@ public class DokuroShot : Enemy
     /// </summary>
     protected override void EventParent()
     {
+        //親イベントがある場合のみ処理します
         if (!MyP) return;
         HaveParent();
         var d = MyP.GetComponent<DokuroShot>();
@@ -143,24 +147,25 @@ public class DokuroShot : Enemy
     Vector2 InstantPos(float angle)
     {
         var offset = transform.position;
+
         switch (angle)
         {
             //右
             case 0:
-                offset.x = transform.position.x + sizeX / 2;
-                //Debug.Log(offset.x);
+                offset.x = transform.position.x + size.x / 2;
+                Debug.Log(offset.x);
                 break;
             //上
             case 90:
-                offset.y = transform.position.y + sizeY / 2;
+                offset.y = transform.position.y + size.y / 2;
                 break;
             //左
             case 180:
-                offset.x = transform.position.x - sizeX / 2;
+                offset.x = transform.position.x - size.x / 2;
                 break;
             //下
             case 270:
-                offset.y = transform.position.y - sizeY / 2;
+                offset.y = transform.position.y - size.y / 2;
                 break;
         }
         return offset;

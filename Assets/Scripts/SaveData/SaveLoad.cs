@@ -6,12 +6,31 @@ using UnityEngine;
 public class SaveLoad
 {
     #region FilePath
-    public string SavePath { get; } = "SaveData/save.json";
-    public string BlockPath { get; } = "Json/Block.json";
-    public string EnemyPath { get; } = "Json/EnemyState.json";
-    public string FloorPath { get; } = "Json/JumpFloor.json";
-    public string HintPath { get; } = "Json/Hint.json";
-    public string ScenarioPath { get; } = "Scenario/Story.json";
+    /// <summary>
+    /// セーブデータ
+    /// </summary>
+    public string SavePath { get; } = "/save.json";
+    /// <summary>
+    /// ブロック
+    /// </summary>
+    public string BlockPath { get; } = "Json/Block";
+    /// <summary>
+    /// 敵一覧
+    /// </summary>
+    public string EnemyPath { get; } = "Json/EnemyState";
+    /// <summary>
+    /// フロア
+    /// </summary>
+    public string FloorPath { get; } = "Json/JumpFloor";
+    /// <summary>
+    /// ヒント
+    /// </summary>
+    public string HintPath { get; } = "Json/Hint";
+    /// <summary>
+    /// シナリオ
+    /// </summary>
+    public string ScenarioPath { get; } = "Scenario/Story";
+
     #endregion
 
     /// <summary>
@@ -25,12 +44,8 @@ public class SaveLoad
     /// <param name="sm"></param>
     public SaveLoad(StageManager sm)
     {
-        if (Save(sm))
-        {
-            //save時の演出
-            //Debug.Log("セーブ完了");
-            return;
-        }
+        //セーブ
+        Save(sm);
     } 
 
     /// <summary>
@@ -39,30 +54,16 @@ public class SaveLoad
     /// <param name="fileName">ファイル名</param>
     /// <param name="data">StageManagerクラス</param>
     /// <returns></returns>
-    public bool Save(StageManager sm)
+    public void Save(StageManager sm)
     {
-        bool ret = false;
-
         //セーブ情報を入れます
         var data = new StageData(sm);
-
-        string dataPath = Application.dataPath + "/Resources/" + SavePath;
-
+        //セーブpath
+        string dataPath = Application.persistentDataPath + SavePath;
         try
         {
-            //ファイルに書き込み(なければ作成)します
-            using (var sw = new StreamWriter(dataPath))
-            {
-                //データをJson化させます
-                string str = JsonMapper.ToJson(data);
-
-                //書き込み
-                sw.Write(str);
-
-                //ファイルを閉じます
-                sw.Close();//しなくてもよい
-            }
-            ret = true; //成功
+            //書き込みます
+            Write(dataPath, data);
         }
         catch (UnauthorizedAccessException e)
         {
@@ -71,6 +72,56 @@ public class SaveLoad
         catch (IOException e)
         {
             Debug.Log("ファイルの書き込みに失敗しました");
+            //ファイルの作成
+            File.Create(dataPath);
+            //書き込みます
+            //Write(dataPath, data);
+        }
+    }
+
+    /// <summary>
+    /// 書き込み
+    /// </summary>
+    /// <param name="dataPath">パス</param>
+    /// <param name="data">saveData</param>
+    void Write(string dataPath, StageData data)
+    {
+        //ファイルに書き込み(なければ作成)します
+        using (var sw = new StreamWriter(dataPath))
+        {
+            //データをJson化させます
+            string str = JsonMapper.ToJson(data);
+            //書き込み
+            sw.Write(str);
+            //ファイルを閉じます
+            sw.Close();//しなくてもよい
+        }
+    }
+
+    /// <summary>
+    /// セーブデータのロード
+    /// </summary>
+    /// <returns></returns>
+    public bool SaveDataLoad(ref StageData data)
+    {
+        //読み込み成功したらtrueを返します
+        bool ret = false;
+        var path = Application.persistentDataPath + SavePath;
+        try
+        {
+            //データがあれば読み取る
+            using (var sr = new StreamReader(path))
+            {
+                //json読み込み
+                var json = sr.ReadToEnd();
+                //読み込んだデータをオブジェクト化します
+                data = JsonMapper.ToObject<StageData>(json);
+                ret = true;
+            }
+        }
+        catch (Exception e)
+        {
+            //Debug.Log("データがありません");
         }
 
         return ret;
@@ -82,18 +133,21 @@ public class SaveLoad
     /// <typeparam name="T"></typeparam>
     /// <param name="fileName"></param>
     /// <param name="data"></param>
-    public bool Load<T>(string file,ref T data) where T : class
+    public bool Load<T>(string file , ref T data) where T : class
     {
         //読み込み成功したらtrueを返します
         bool ret = false;
 
+        //読み込みはすべてResouse.Loadから読み込み
+
         try
         {
-            //指定のfileから読み込みます
-            using (var sr = new StreamReader(Application.dataPath + "/Resources/" + file))
+            var jsonFile = Resources.Load<TextAsset>(file);
+
+            if (jsonFile)
             {
                 //ファイルの読み込みました
-                string json = sr.ReadToEnd();
+                string json = jsonFile.text;
                 //読み込んだデータをオブジェクト化します
                 data = JsonMapper.ToObject<T>(json);
                 //オブジェクト化成功
@@ -114,10 +168,14 @@ public class SaveLoad
     public void FileDelete(StageManager sm)
     {
         //指定のファイルパスのデータを削除します
-        string path = "/Resources/SaveData/save.json";
+        string path = Application.persistentDataPath + SavePath;
 
-        //ファイルの削除
-        File.Delete(Application.dataPath + path);
+        if(File.Exists(path))
+        {
+            //ファイルの削除  
+            File.Delete(path);
+            Debug.Log("存在する");
+        }
 
         //新たにデータを作成します
         sm.InitData();

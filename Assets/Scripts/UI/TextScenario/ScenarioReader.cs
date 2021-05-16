@@ -33,8 +33,9 @@ public class ScenarioReader
     public void SinarioModeInit()
     {
         ji = new JsonInfo();
+        
         //シナリオを読み込みます
-        ji.ScenarioJson();
+        ji.ScenarioJson();      
 
         //storyのIDをセットしてその配列を読み込みます
         SetStoriesID(scenarioId);

@@ -50,6 +50,7 @@ public class CameraContorller : MonoBehaviour
         //初期座標を入れます
         SetInit();
 
+        //現在のステージ番号を取得
         var no = GameManager.Instance.StageNo;
 
         aud = GetComponent<AudioSource>();
@@ -65,7 +66,9 @@ public class CameraContorller : MonoBehaviour
 
     private void Update()
     {
+        //フロア移動でオートで移動します
         if (autoMove) CamMove();
+        //それ以外はプレイヤーを追います
         else CamToPlayer();
     }
 
@@ -80,7 +83,6 @@ public class CameraContorller : MonoBehaviour
 
         //現在のステージ番号を取得
         var fileNo = GameManager.Instance.StageNo;
-        //var fileNo = 0;
 
         //座標を入れます
         MaxC = vecMax[fileNo];
@@ -141,7 +143,7 @@ public class CameraContorller : MonoBehaviour
     /// </summary>
     /// <param name="direction">移動方向</param>
     /// <param name="vec">自分の座標値</param>
-    /// <param name="nextVex">代入する座標値</param>
+    /// <param name="nextVec">代入する座標値</param>
     void SetVec(string direction, ref float vec, float nextVec)
     {
         switch (direction)

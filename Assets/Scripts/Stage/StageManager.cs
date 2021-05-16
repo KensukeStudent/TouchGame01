@@ -6,6 +6,8 @@ using UnityEngine;
 /// </summary>
 public class StageManager : MonoBehaviour
 {
+    public static StageManager Instance { private set; get; }
+
     /// <summary>
     /// ステージセレクト画面に入ったことはあるかどうか
     /// </summary>
@@ -26,10 +28,10 @@ public class StageManager : MonoBehaviour
     /// <summary>
     /// 各ステージの手数
     /// </summary>
-    readonly int[,] jumpCount = new int[stageC, scoreCount]  
+    readonly int[,] jumpCount = new int[stageC, scoreCount]
     {
         { 50, 35, 28 },
-        { 50, 35, 28 },
+        { 100, 75, 50 },
         { 50, 35, 28 },
         { 50, 35, 28 }
     };
@@ -65,6 +67,15 @@ public class StageManager : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
+
         DontDestroyOnLoad(this);
     }
 
@@ -76,11 +87,10 @@ public class StageManager : MonoBehaviour
     public void InitData()
     {
         var load = new SaveLoad();
-
         var data = new StageData();
 
         //セーブデータがあるなら
-        if (load.Load(load.SavePath,ref data))
+        if (load.SaveDataLoad(ref data))
         {
             //ロードします
             NotSetData();
@@ -245,6 +255,9 @@ public class StageManager : MonoBehaviour
         //ボタンに割り当てられたAudioを呼び出しSEを鳴らします
         var aud = b.GetComponent<AudioSource>();
         aud.Play();
+
+        //ステージセレクト完了
+        ScreenTransition.Instance.ChangeState(SceneState.stageSelect);
 
         //シーン遷移を開始します
         ScreenTransition.Instance.TimeST(0);

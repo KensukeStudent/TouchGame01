@@ -35,7 +35,7 @@ public class TextManager : MonoBehaviour
     /// <summary>
     /// 記述するテキスト欄
     /// </summary>
-    [SerializeField] TMP_Text text;
+    [SerializeField]public TMP_Text text;
     [Header("Audio")]
     [SerializeField] AudioSource clickAud;
     [SerializeField] AudioSource bgmAud;

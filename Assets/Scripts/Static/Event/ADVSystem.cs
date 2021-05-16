@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class ADV : MonoBehaviour
+public class ADVSystem : MonoBehaviour
 {
     /// <summary>
     /// ADV呼び出し時に一回限り呼ばれます

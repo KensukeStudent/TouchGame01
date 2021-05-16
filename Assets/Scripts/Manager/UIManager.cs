@@ -60,13 +60,19 @@ public class UIManager : MonoBehaviour
     {
         //猫の手を表示
         catHand.SetActive(true);
+        
+        //ゲーム開始
         GameManager.Instance.SetGame(true);
+
         //テキスト変更とアニメーションの停止
         var text = textObj.GetComponent<TMP_Text>();
         text.text = changeText;
+
         var tAnim = textObj.GetComponent<Animator>();
         tAnim.enabled = false;
+        
         var clip = aud.clip;
+        
         //現在のclipの長さ時間を待った後に処理開始
         Invoke(nameof(SetCatVoice), clip.length);
     }

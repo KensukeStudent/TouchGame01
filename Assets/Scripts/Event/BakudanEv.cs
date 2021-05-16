@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// バクダンイベント
 /// </summary>
-public class BakudanEv : MonoBehaviour
+public class BakudanEv : ADV
 {
     /// <summary>
     /// 取ったらバクダン生成するポジションを置きます
@@ -15,7 +15,7 @@ public class BakudanEv : MonoBehaviour
     /// <summary>
     /// 爆弾イベントのノベルパート
     /// </summary>
-    public string[] ADVBakudan()
+    public override string[] ADVPart()
     {
         //使っているコマンド
         //@F* ----> フォント(Font)
@@ -41,7 +41,7 @@ public class BakudanEv : MonoBehaviour
     /// テキスト内で動作させる関数をストックします
     /// </summary>
     /// <returns></returns>
-    public Action[] Actions()
+    public override Action[] Actions()
     {
         Action[] actions = { EventAnim, EventDelete };
         return actions;

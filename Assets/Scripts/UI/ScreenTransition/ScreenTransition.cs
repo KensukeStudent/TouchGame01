@@ -596,7 +596,7 @@ public class ScreenTransition : MonoBehaviour
                 {
                     var st1 = new Stage1Event();
                     //ADVパートを発火します
-                    ADV.StartADV(st1.ADVTutorial(), st1.Actions());
+                    ADVSystem.StartADV(st1.ADVPart(), st1.Actions());
                 }
                 
                 break;

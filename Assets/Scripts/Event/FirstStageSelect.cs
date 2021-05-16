@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 /// <summary>
 /// 初めてステージセレクトに入った時に呼ばれる
 /// </summary>
-public class FirstStageSelect : MonoBehaviour
+public class FirstStageSelect : ADV
 {
     [SerializeField] GameObject stopPanel;
 
@@ -16,7 +17,7 @@ public class FirstStageSelect : MonoBehaviour
         {
             StageManager.IsSelectScene = true;
 
-            ADV.StartADV(SelectADV(), Actions());
+            ADVSystem.StartADV(ADVPart(), Actions());
         }
         else
         {
@@ -28,7 +29,7 @@ public class FirstStageSelect : MonoBehaviour
     /// StageSelect画面ADVパート
     /// </summary>
     /// <returns></returns>
-    string[] SelectADV()
+    public override string[] ADVPart()
     {
         string[] adv =
         {
@@ -48,9 +49,9 @@ public class FirstStageSelect : MonoBehaviour
     /// ADVパート内で動かす演出
     /// </summary>
     /// <returns></returns>
-    System.Action[] Actions()
+    public override Action[] Actions()
     {
-        System.Action[] actions = { StopOn, StopOff };
+        Action[] actions = { StopOn, StopOff };
         return actions;
     }
 

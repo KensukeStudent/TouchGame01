@@ -87,8 +87,10 @@ public class FloorManager : MonoBehaviour
     {
         //配列0番目の要素分回します
         for (int i = 0; i < Floors.GetLength(0); i++)
+            
             //配列1番目の要素分回します
             for (int j = 0; j < Floors.GetLength(1); j++)
+
                 //Floors[i,j]のFloorObjにある要素分回します
                 for (int k = 0; k < Floors[i, j].FloorObj.Count; k++)
                 {

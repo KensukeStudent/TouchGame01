@@ -220,7 +220,7 @@ public partial class PlayerController : MonoBehaviour
                 var b = col.GetComponent<BakudanEv>();
 
                 //イベント開始
-                ADV.StartADV(b.ADVBakudan(), b.Actions());
+                ADVSystem.StartADV(b.ADVPart(), b.Actions());
                 break;
         }
     }

@@ -1,16 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System;
 
 /// <summary>
 /// ステージ1ADVパート
 /// </summary>
-public class Stage1Event : MonoBehaviour
+public class Stage1Event : ADV
 {
     /// <summary>
     /// ステージ１開始に流れるADVパート
     /// </summary>
-    public string[] ADVTutorial()
+    public override string[] ADVPart()
     {
         //使っているコマンド
         //@F* ----> フォント(Font)
@@ -37,9 +35,9 @@ public class Stage1Event : MonoBehaviour
     /// イベントアクション
     /// </summary>
     /// <returns></returns>
-    public System.Action[] Actions()
+    public override Action[] Actions()
     {
-        System.Action[] actions = {  };
+        Action[] actions = {  };
         return actions;
     }
 }
