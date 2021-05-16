@@ -174,7 +174,7 @@ public class SaveLoad
         {
             //ファイルの削除  
             File.Delete(path);
-            Debug.Log("存在する");
+            //Debug.Log("存在する");
         }
 
         //新たにデータを作成します

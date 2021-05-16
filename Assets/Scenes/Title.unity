@@ -684,16 +684,6 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1250374090}
-    - target: {fileID: 343790136590744315, guid: da05456ace5b73e46a43143085ff490d,
-        type: 3}
-      propertyPath: m_RenderMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1790567202956268560, guid: da05456ace5b73e46a43143085ff490d,
-        type: 3}
-      propertyPath: m_UiScaleMode
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5519860665688763337, guid: da05456ace5b73e46a43143085ff490d,
         type: 3}
       propertyPath: m_Name
@@ -802,21 +792,6 @@ PrefabInstance:
     - target: {fileID: 7635705039512690352, guid: da05456ace5b73e46a43143085ff490d,
         type: 3}
       propertyPath: m_Pivot.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7635705039512690352, guid: da05456ace5b73e46a43143085ff490d,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7635705039512690352, guid: da05456ace5b73e46a43143085ff490d,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7635705039512690352, guid: da05456ace5b73e46a43143085ff490d,
-        type: 3}
-      propertyPath: m_LocalScale.z
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

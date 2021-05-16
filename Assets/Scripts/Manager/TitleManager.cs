@@ -30,13 +30,16 @@ public class TitleManager : MonoBehaviour, IAudio
         var delete = new SaveLoad();
         var sm = GameObject.Find("StageManager").GetComponent<StageManager>();
         //データを削除し、新たにデータを作成します
-        delete.FileDelete(sm);                    /////ここが怪しい点
+        delete.FileDelete(sm);                    //ここが怪しい点
 
         //SEを鳴らします
         PlaySE(0);
 
         //sceneをノベルパート
         StartCoroutine(DelaySceneChange("NovelScene", aud.clip.length));
+
+        //opeingIDを読み込み
+        ScenarioReader.scenarioId = "opeing";
     }
 
     /// <summary>
