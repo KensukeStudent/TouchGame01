@@ -56,6 +56,8 @@ public class FeedInOut : MonoBehaviour
             var child = transform.GetChild(0).gameObject;
             child.SetActive(false);
         }
+
+        rt.localScale = new Vector3(1, 1, 1);
     }
 
     private void Update()
@@ -216,16 +218,24 @@ public class FeedInOut : MonoBehaviour
         {
             case "RIGHT":
                 //1フレームで進む値をgoalRectに代入することでピッタリにする
-                if (rt.anchoredPosition.x <= goalRectX - framePos)
+                if (rt.anchoredPosition.x <= goalRectX)
                     pos.x += Time.deltaTime * speedX;
-                else Flag = false;
+                else
+                {
+                    Flag = false;
+                    pos.x = goalRectX;
+                }
                 break;
 
             case "LEFT":
-                if (rt.anchoredPosition.x >= goalRectX - framePos)
+                if (rt.anchoredPosition.x >= goalRectX)
                     pos.x += Time.deltaTime * speedX;
                 else
+                {
                     Flag = false;
+                    pos.x = goalRectX;
+                }
+                    
                 break;
         }
 
