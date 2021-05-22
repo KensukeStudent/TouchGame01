@@ -180,7 +180,12 @@ public class CameraContorller : MonoBehaviour
         }
 
         //値を代入します
-        if(!autoMove) vec = nextVec;
+        if (!autoMove)
+        {
+            vec = nextVec;
+            var s = GameObject.FindWithTag("StageADV").GetComponent<StageADV>();
+            s.StageADVGO();
+        }
     }
 
     /// <summary>

@@ -12,6 +12,7 @@ TagManager:
   - Block
   - Floor
   - Item
+  - StageADV
   layers:
   - Default
   - TransparentFX

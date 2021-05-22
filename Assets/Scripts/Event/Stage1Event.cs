@@ -5,6 +5,22 @@
 /// </summary>
 public class Stage1Event : ADV
 {
+    delegate string[] advPart();
+    advPart[] advParts;
+
+    public bool[] advFlag { private set; get; } = new bool[3];
+
+    public Stage1Event()
+    {
+        //関数を設定
+        advParts = new advPart[]
+        {
+            ADVPart,
+            ADVPartTwoFloor,
+            ADVPartThreeFloor
+        };
+    }
+
     /// <summary>
     /// ステージ１開始に流れるADVパート
     /// </summary>
@@ -18,14 +34,45 @@ public class Stage1Event : ADV
         {
             "@F1「ゲーム解説に移ります",
             "このゲームは基本クリックゲームです。\n黒い丸のあるジャンプ先に飛んだり、敵の攻撃を回避することができます。",
-            "右下にあるブロックは同じ色の鍵を取得し、ブロック近くでブロックをクリックすることで開くことができます。",
+            "左上にある鍵は、同じ色のブロック近くでブロックをクリックすることで開くことができます。",
             "また、どんなブロックか知りたいときはブロックの近くに行き、ブロックをクリックしてみましょう。",
-            "ブロックが開かれたら、次のフロアへのヒント猫があらわれるのでマウスカーソルを合わせてみましょう。",
+            "試しにやってみましょう！",
+            "@D"
+        };
+
+        return tutorial;
+    }
+
+    /// <summary>
+    /// 2フロア専用の会話パート
+    /// </summary>
+    /// <returns></returns>
+    public string[] ADVPartTwoFloor()
+    {
+        string[] tutorial =
+        {
             "敵を倒す時はリンゴを食べて力がついた状態でないと倒せません。",
             "敵の攻撃に当たると左上の体力が減ります。体力がなくなるとゲームオーバーになります。",
-            "取ったアイテムを確認したいときやステージを途中で抜けたいときは右上の「M」のボタンを押しましょう。",
-            "お目当てのお魚を求めて、これから猫の冒険を一緒に楽しみましょう!」",
+            "敵を倒してみましょう！",
             "@D"
+        };
+
+        return tutorial;
+    }
+
+    /// <summary>
+    /// 3フロア専用の会話パート
+    /// </summary>
+    /// <returns></returns>
+    public string[] ADVPartThreeFloor()
+    {
+        string[] tutorial =
+        {
+           "ブロックが開かれたら、次のフロアへのヒント猫があらわれるのでマウスカーソルを合わせてみましょう。",
+           "取ったアイテムを確認したいときやステージを途中で抜けたいときは右上の「M」のボタンを押しましょう。",
+           "画面中央にあるのが、お魚です。クリックして取りましょう！",
+           "お目当てのお魚を求めて、これから猫の冒険を一緒に楽しみましょう!」",
+           "@D"
         };
 
         return tutorial;
@@ -39,5 +86,17 @@ public class Stage1Event : ADV
     {
         Action[] actions = {  };
         return actions;
+    }
+
+
+    /// <summary>
+    /// Stage1の会話パートを取得
+    /// </summary>
+    /// <param name="no"></param>
+    /// <returns></returns>
+    public string[] GetADV(int no)
+    {
+        advFlag[no] = true;
+        return advParts[no]();
     }
 }

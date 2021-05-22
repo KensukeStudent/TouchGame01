@@ -594,9 +594,8 @@ public class ScreenTransition : MonoBehaviour
                 //ステージ1の時にADVパートを入れます
                 if(GameManager.Instance.StageNo == 0)
                 {
-                    var st1 = new Stage1Event();
-                    //ADVパートを発火します
-                    ADVSystem.StartADV(st1.ADVPart(), st1.Actions());
+                    var sADV = GameObject.FindWithTag("StageADV").GetComponent<StageADV>();
+                    sADV.ADVGO(1);
                 }
                 
                 break;
