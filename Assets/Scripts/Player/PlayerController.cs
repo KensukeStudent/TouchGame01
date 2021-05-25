@@ -2,7 +2,7 @@
 using UnityEngine;
 #pragma warning disable 649
 
-public  enum State
+public  enum PlayerState
 {
     nomal,
     goal,
@@ -14,7 +14,7 @@ public  enum State
 /// </summary>
 public partial class PlayerController : MonoBehaviour, IAudio
 {
-    public static State currentState = State.nomal;
+    public static PlayerState currentState = PlayerState.nomal;
 
     /// <summary>
     /// 移動速度
@@ -101,7 +101,7 @@ public partial class PlayerController : MonoBehaviour, IAudio
     private void Start()
     {
         //ステートを初期化
-        currentState = State.nomal;
+        currentState = PlayerState.nomal;
 
         //アイテム管理クラス
         pi = new PlayerInventory();
@@ -120,7 +120,7 @@ public partial class PlayerController : MonoBehaviour, IAudio
 
     private void Update()
     {
-        if (currentState == State.goal || currentState == State.die) return;
+        if (currentState == PlayerState.goal || currentState == PlayerState.die) return;
 
         //マウス座標を取得しながらアクションを処理していきます
         Ray();
@@ -239,7 +239,7 @@ public partial class PlayerController : MonoBehaviour, IAudio
         //当たり判定の
         GetComponent<BoxCollider2D>().enabled = false;
         //倒れるステートに変更
-        currentState = State.die;
+        currentState = PlayerState.die;
 
         //アニメーション終了後シーン遷移
         var sm = GameObject.Find("StageManager").GetComponent<StageManager>();

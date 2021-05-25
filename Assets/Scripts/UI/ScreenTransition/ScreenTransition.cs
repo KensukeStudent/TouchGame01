@@ -22,7 +22,7 @@ public class ScreenTransition : MonoBehaviour
     /// <summary>
     /// 遷移のステート
     /// </summary>
-    SceneState state = SceneState.stageSelect;
+    public SceneState State { private set; get; } = SceneState.stageSelect;
     /// <summary>
     /// Scene遷移クラス
     /// </summary>
@@ -372,7 +372,7 @@ public class ScreenTransition : MonoBehaviour
     /// </summary>
     void SceneTransition()
     {
-        switch (state)
+        switch (State)
         {
             //ステージ選択(ボタン選択で呼ばれます)
             case SceneState.stageSelect:
@@ -530,7 +530,7 @@ public class ScreenTransition : MonoBehaviour
     /// </summary>
     void SetState()
     {
-        switch (state)
+        switch (State)
         {
             //ステージをクリアした際に呼ばれます
             case SceneState.stageSelect:
@@ -547,7 +547,7 @@ public class ScreenTransition : MonoBehaviour
                 ClearList();
 
                 //プレイヤーがステージをクリアしていたらアニメーションをさせます
-                if (PlayerController.currentState == State.goal)
+                if (PlayerController.currentState == PlayerState.goal)
                 {
                     //やりこみ要素でクリアしたものがあれば処理開始
                     var smc = GameObject.Find("StageContentManager").GetComponent<StageContentManager>();
@@ -595,7 +595,7 @@ public class ScreenTransition : MonoBehaviour
                 if(GameManager.Instance.StageNo == 0)
                 {
                     var sADV = GameObject.FindWithTag("StageADV").GetComponent<StageADV>();
-                    sADV.ADVGO(1);
+                    sADV.ADVGO(0);
                 }
                 
                 break;
@@ -639,7 +639,7 @@ public class ScreenTransition : MonoBehaviour
     /// </summary>
     public void ChangeState(SceneState nextState)
     {
-        state = nextState;
+        State = nextState;
     }
 
     #endregion

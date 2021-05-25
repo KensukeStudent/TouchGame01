@@ -182,7 +182,7 @@ public partial class PlayerController : MonoBehaviour
         sprite.color = Color.white;
 
         //ステートを変更します
-        currentState = State.goal;
+        currentState = PlayerState.goal;
 
         //取得したゴールオブジェクトを削除します
         Destroy(col.gameObject);

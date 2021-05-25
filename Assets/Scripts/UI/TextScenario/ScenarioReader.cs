@@ -68,6 +68,14 @@ public class ScenarioReader
     }
 
     /// <summary>
+    /// 出力するリストのIndex番号を初期化します
+    /// </summary>
+    public void ResetIndex()
+    {
+        index = -1;
+    }
+
+    /// <summary>
     /// シナリオを最後まで読み切りました
     /// </summary>
     /// <returns></returns>

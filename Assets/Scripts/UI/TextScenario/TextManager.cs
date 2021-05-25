@@ -143,7 +143,6 @@ public class TextManager : MonoBehaviour
             
             //ゲーム内イベント
             case MoziState.game:
-
                 //改行を25文字にセットします
                 lineCount = 25;
 
@@ -246,11 +245,18 @@ public class TextManager : MonoBehaviour
         }
 
         if (flag == 0)
-            //初期化
-            Init();//これからテキストを出力していきます
+        {
+            Init();
+            alpha.a = 1;
+            image.color = alpha;
+        }
         else
+        {
             //文章を読み終わります
-            gameObject.SetActive(false);
+            ClosedAVD();
+            alpha.a = 0;
+            image.color = alpha;
+        }
     }
 
     #endregion
@@ -639,6 +645,28 @@ public class TextManager : MonoBehaviour
         text.text = "";
         //シナリオに次の一文を割り当てます
         scenario = sr.IncreaseIndex();
+    }
+
+    /// <summary>
+    /// アドベンチャーパートを閉じます
+    /// </summary>
+    void ClosedAVD()
+    {
+        //会話リスト番号を初期化
+        sr.ResetIndex();
+        //初期化します
+        stop = 1;
+        //counterを0にします
+        counter = 0;
+        //行を0にします
+        line = 0;
+        //行の文字を0にします
+        lineLength = 0;
+        //timeを0にします
+        time = 0;
+        //表示テキストを空にします
+        text.text = "";
+        gameObject.SetActive(false);
     }
 
     /// <summary>

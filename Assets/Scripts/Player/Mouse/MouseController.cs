@@ -36,7 +36,7 @@ public class MouseController : MonoBehaviour
 
     private void Update()
     {
-        if (PlayerController.currentState != State.nomal) return;
+        if (PlayerController.currentState != PlayerState.nomal) return;
 
         //画像のマウスまでの距離を描画します
         if (Time.timeScale == 1) FromPlayerToMouse();
